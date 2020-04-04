@@ -1,4 +1,7 @@
 class Reader < ApplicationRecord
+    has_many :reviews
+    has_many :books, through: :reviews
+
     before_create :set_uuid
     self.primary_key = :id
 

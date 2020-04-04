@@ -12,30 +12,28 @@
 
 ActiveRecord::Schema.define(version: 2020_04_04_181817) do
 
-  create_table "authors", id: false, force: :cascade do |t|
-    t.string "id", null: false
+  create_table "authors", id: :string, force: :cascade do |t|
     t.string "name"
-    t.string "age"
   end
 
-  create_table "books", id: false, force: :cascade do |t|
-    t.string "id", null: false
+  create_table "books", id: :string, force: :cascade do |t|
     t.string "title"
-    t.integer "author_id", null: false
+    t.string "author_id", null: false
     t.index ["author_id"], name: "index_books_on_author_id"
   end
 
-  create_table "readers", id: false, force: :cascade do |t|
-    t.string "id", null: false
+  create_table "readers", id: :string, force: :cascade do |t|
     t.string "name"
-    t.string "age"
+    t.integer "age"
   end
 
-  create_table "reviews", id: false, force: :cascade do |t|
-    t.string "id", null: false
+  create_table "reviews", id: :string, force: :cascade do |t|
     t.integer "rating"
-    t.integer "reader_id", null: false
-    t.integer "book_id", null: false
+    t.text "description"
+    t.string "reader_id", null: false
+    t.string "book_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["book_id"], name: "index_reviews_on_book_id"
     t.index ["reader_id"], name: "index_reviews_on_reader_id"
   end

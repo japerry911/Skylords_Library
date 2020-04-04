@@ -1,4 +1,7 @@
 class Review < ApplicationRecord
+    belongs_to :book
+    belongs_to :reader
+
     before_create :set_uuid
     self.primary_key = :id
 

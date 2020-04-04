@@ -1,4 +1,6 @@
 class Author < ApplicationRecord
+    has_many :books
+
     before_create :set_uuid
     self.primary_key = :id
 
