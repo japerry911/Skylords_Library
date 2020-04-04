@@ -3,8 +3,38 @@ import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
-import { Container, Text } from 'native-base';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import WelcomeScreen from './src/screens/WelcomeScreen';
+import Colors from './src/constants/colors';
+import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
+
+const navigator = createStackNavigator({
+  Welcome: WelcomeScreen
+}, {
+  initialRouteName: 'Welcome',
+  defaultNavigationOptions: () => ({
+    headerLeft: () => <MaterialCommunityIcons 
+                    name='dog-side'
+                    size={40} 
+                    style={styles.headerLeftIconStyle}
+                />,
+    headerRight: () => <Entypo
+                    name='open-book'
+                    size={40}
+                    style={styles.headerRightIconStyle}
+                  />,
+    headerTitleStyle: { color: 'white' },
+    headerStyle: { backgroundColor: Colors.primary },
+    title: 'Skylord\'s Library'
+  })
+    /*
+    
+  }*/
+});
+
+const App = createAppContainer(navigator);
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -24,7 +54,7 @@ const fetchImages = async() => {
   return Promise.all(cacheImages);
 };
 
-export default function App() {
+export default () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const _preloadsAsync = async () => {
@@ -45,16 +75,15 @@ export default function App() {
   }
 
   return (
-    <Container style={styles.screenStyle}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </Container>
+    <App />
   );
 }
 
 const styles = StyleSheet.create({
-  screenStyle: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+  headerLeftIconStyle: {
+    marginLeft: 80
+  },
+  headerRightIconStyle: {
+    marginRight: 80
   }
 })
