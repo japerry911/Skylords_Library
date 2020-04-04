@@ -45,7 +45,10 @@ const fetchFonts = () => {
 };
 
 const fetchImages = async() => {
-  const images = [];
+  const images = [
+    require('./assets/LibraryWelcomeBackground.jpg'),
+    require('./assets/DogBooksWelcome.jpg')
+  ];
 
   const cacheImages = images.map(image => {
     return Asset.fromModule(image).downloadAsync();
