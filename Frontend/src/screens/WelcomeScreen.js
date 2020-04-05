@@ -3,7 +3,7 @@ import { StyleSheet, Image, ImageBackground } from 'react-native';
 import { Body, Container, H1, Text, Button } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const WelcomeScreen = () => {
+const WelcomeScreen = ({ navigation }) => {
     return (
         <ImageBackground
             style={styles.backgroundImageStyle}
@@ -37,6 +37,9 @@ const WelcomeScreen = () => {
                                 size={25}
                             />
                             <Text>Enter Sky's Library</Text>
+                        </Button>
+                        <Button style={styles.enterButtonStyle} onPress={() => navigation.navigate('SignUp')}>
+                            <Text>Sign up</Text>
                         </Button>
                     </Container>
                 </Body> 

@@ -3,14 +3,14 @@ Book.destroy_all
 User.destroy_all
 Author.destroy_all
 
-Skylord = User.create(name: 'Skylord Perry', age: 49)
-Cassidy = User.create(name: 'Cassidy Humphrey', age: 24)
-Jack = User.create(name: 'Jack Perry', age: 25)
-Troy = User.create(name: 'Troy Perry', age: 56)
-Cathy = User.create(name: 'Cathy Perry', age: 56)
-Bret = User.create(name: 'Bret Perry', age: 27)
-Grant = User.create(name: 'Grant Perry', age: 31)
-Sarah = User.create(name: 'Sarah Perry', age: 30)
+Skylord = User.create(username: 'SkylordPerry', age: 49, password: 'TEST')
+Cassidy = User.create(username: 'CassidyHumphrey', age: 24, password: 'TEST')
+Jack = User.create(username: 'JackPerry', age: 25, password: 'TEST')
+Troy = User.create(username: 'TroyPerry', age: 56, password: 'TEST')
+Cathy = User.create(username: 'CathyPerry', age: 56, password: 'TEST')
+Bret = User.create(username: 'BretPerry', age: 27, password: 'TEST')
+Grant = User.create(username: 'GrantPerry', age: 31, password: 'TEST')
+Sarah = User.create(username: 'SarahPerry', age: 30, password: 'TEST')
 
 LeoTolstoy = Author.create(name: 'Leo Tolstoy')
 ToniMorrison = Author.create(name: 'Toni Morrison')
