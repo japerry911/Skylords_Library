@@ -9,7 +9,7 @@ import WelcomeScreen from './src/screens/WelcomeScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SignInScreen from './src/screens/SignInScreen';
 import Colors from './src/constants/colors';
-import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
 
 const navigator = createStackNavigator({
@@ -20,12 +20,12 @@ const navigator = createStackNavigator({
   initialRouteName: 'Welcome',
   defaultNavigationOptions: () => ({
     headerLeft: () => <MaterialCommunityIcons 
-                    name='dog'
+                    name='paw'
                     size={40} 
                     style={styles.headerLeftIconStyle}
                 />,
-    headerRight: () => <Entypo
-                    name='open-book'
+    headerRight: () => <MaterialCommunityIcons
+                    name='menu'
                     size={40}
                     style={styles.headerRightIconStyle}
                   />,
@@ -44,14 +44,16 @@ const fetchFonts = () => {
   return Font.loadAsync({
     Roboto: require('native-base/Fonts/Roboto.ttf'),
     Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+    Avenir_next: require('./assets/fonts/AvenirNextLTPro-Regular.otf'),
+    Avenir_italicize: require('./assets/fonts/AvenirNextLTPro-It.otf'),
+    Avenir_bold: require('./assets/fonts/AvenirNextLTPro-Bold.otf'),
     ...Ionicons.font
   });
 };
 
 const fetchImages = async() => {
   const images = [
-    require('./assets/LibraryWelcomeBackground.jpg'),
-    require('./assets/DogBooksWelcome.jpg')
+    require('./assets/Library.png')
   ];
 
   const cacheImages = images.map(image => {
@@ -88,9 +90,11 @@ export default () => {
 
 const styles = StyleSheet.create({
   headerLeftIconStyle: {
-    marginLeft: 70,
+    color: 'white',
+    marginLeft: 10
   },
   headerRightIconStyle: {
-    marginRight: 70,
+    color: 'white',
+    marginRight: 10
   }
 })

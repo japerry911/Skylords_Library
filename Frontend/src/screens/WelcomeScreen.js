@@ -1,143 +1,80 @@
 import React from 'react';
-import { StyleSheet, Image, ImageBackground } from 'react-native';
-import { Body, Container, H1, Text, Button } from 'native-base';
+import { StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
+import { Text, View, Body, Footer } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Colors from '../constants/colors';
 
 const WelcomeScreen = ({ navigation }) => {
     return (
-        <ImageBackground
+        <ImageBackground 
             style={styles.backgroundImageStyle}
-            source={require('../../assets/LibraryWelcomeBackground.jpg')}
-            resizeMode='cover'
+            source={require('../../assets/Library.png')}
+            resizeMode='stretch'
         >
-                <Body style={styles.bodyContainerStyle}>
-                    <Container style={styles.titleContainerStyle}>
-                        <H1 style={styles.textTitleStyle}>
-                            Welcome to Skylord's Library!
-                        </H1>
-                    </Container>
-                    <Container style={styles.descriptionContainerStyle}>
-                        <Text style={styles.textStyle}>
-                            Sky's Library is every book reader's dream! Sky's Library will help guide you to your 
-                            next book with ease through our community-driven reviews. Many of the finest book readers 
-                            on this planet rely on Sky's Library for their book needs. Let us help you find the right book
-                            for <Text style={styles.highlightStyle}>YOU</Text>!
-                        </Text>
-                    </Container>
-                    <Container style={styles.imageContainerStyle}>
-                        <Image
-                            style={styles.mainImageStyle}
-                            source={require('../../assets/DogBooksWelcome.jpg')}
+            <View style={styles.childComponents}>
+                <Body style={styles.bodyStyle}>
+                    <Text style={styles.titleStyle}>
+                        Skylord's{'\n\t\t\t'}Library
+                        <MaterialCommunityIcons
+                            name='paw'
+                            size={20}
+                            color={Colors.primary}
                         />
-                    </Container>
-                    <Container style={styles.enterContainerStyle}>
-                        <Button 
-                            style={styles.enterButtonStyle}
-                            onPress={() => navigation.navigate('SignIn')}
-                        >
-                            <MaterialCommunityIcons
-                                name='dog-side'
-                                size={25}
-                            />
-                            <Text>Enter Sky's Library</Text>
-                        </Button>
-                        <Button style={styles.enterButtonStyle} onPress={() => navigation.navigate('SignUp')}>
-                            <Text>Sign up</Text>
-                        </Button>
-                    </Container>
-                </Body> 
+                    </Text>
+                    <Text style={styles.subtitleStyle}>
+                        Discover your favorite books with your favorite people<Text style={styles.highlightStyle}>.</Text>
+                    </Text>
+                </Body>
+                <TouchableOpacity>
+                <Footer style={styles.footerStyle}>
+                    <Text style={styles.footerTextStyle}>Get Started</Text>
+                </Footer>
+                </TouchableOpacity>
+            </View>
         </ImageBackground>
     );
 };
 
 const styles = StyleSheet.create({
-    titleContainerStyle: {
-        borderColor: 'white',
-        backgroundColor: '#86592d',
+    footerTextStyle: {
+        color: 'white',
+        fontSize: 30,
+        fontFamily: 'Avenir_bold',
+        marginTop: 30
+    },
+    footerStyle: {
+        backgroundColor: Colors.primary
+    },
+    childComponents: {
         flex: 1,
-        maxHeight: '10%',
-        maxWidth: '90%',
-        marginVertical: 30,
-        alignItems: 'center',
-        padding: 10,
-        justifyContent: 'center',
-        borderRadius: 20,
-        borderWidth: 3,
-        shadowOffset: {
-            height: 10,
-            width: 10
-        },
-        shadowOpacity: .75
+        backgroundColor: 'rgba(0,0,0,0.5)'
+    },
+    pawImageStyle: {
+        height: 10,
+        width: 10,
     },
     highlightStyle: {
-        color: 'pink'
+        fontSize: 20,
+        fontFamily: 'Avenir_bold',
+        color: Colors.primary
     },
-    descriptionContainerStyle: {
-        borderColor: 'white',
-        backgroundColor: '#86592d',
-        flex: 1,
-        maxHeight: '22%',
-        maxWidth: '80%',
-        marginVertical: 30,
+    subtitleStyle: {
+        color: 'white',
+        fontSize: 20,
+        fontFamily: 'Avenir_bold',
+        textAlign: 'center'
+    },
+    bodyStyle: {   
         alignItems: 'center',
-        padding: 10,
         justifyContent: 'center',
-        borderRadius: 20,
-        borderWidth: 3,
-        shadowOffset: {
-            height: 10,
-            width: 10
-        },
-        shadowOpacity: .75
-    },
-    textTitleStyle: {
-        fontSize: 16,
-        color: 'white'
-    }, 
-    textStyle: {
-        color: 'white'
     },
     backgroundImageStyle: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        flex: 1
     },
-    mainContainerStyle: { 
-        alignItems: 'center', 
-        justifyContent: 'center'
-    },
-    bodyContainerStyle: {
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        backgroundColor: '#cc9966',
-        maxHeight: '70%',
-        padding: 15
-    },
-    imageContainerStyle: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 100,
-        maxHeight: '20%',
-        overflow: 'hidden',
-        marginVertical: 30,
-        borderWidth: 3,
-        borderColor: 'white'
-    },
-    enterContainerStyle: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        maxHeight: '10%',
-        marginBottom: 40,
-        backgroundColor: 'transparent',
-        shadowOffset: {
-            height: 10,
-            width: 10
-        },
-        shadowOpacity: .75
-    },
-    enterButtonStyle: {
-        borderWidth: 3,
-        borderColor: 'white',
+    titleStyle: {
+        color: 'white',
+        fontFamily: 'Avenir_bold',
+        fontSize: 45
     }
 });
 
