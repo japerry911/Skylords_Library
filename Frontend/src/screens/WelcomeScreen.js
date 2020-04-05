@@ -31,7 +31,10 @@ const WelcomeScreen = ({ navigation }) => {
                         />
                     </Container>
                     <Container style={styles.enterContainerStyle}>
-                        <Button style={styles.enterButtonStyle}>
+                        <Button 
+                            style={styles.enterButtonStyle}
+                            onPress={() => navigation.navigate('SignIn')}
+                        >
                             <MaterialCommunityIcons
                                 name='dog-side'
                                 size={25}

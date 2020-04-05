@@ -7,13 +7,15 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
+import SignInScreen from './src/screens/SignInScreen';
 import Colors from './src/constants/colors';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
 
 const navigator = createStackNavigator({
   Welcome: WelcomeScreen,
-  SignUp: SignUpScreen
+  SignUp: SignUpScreen,
+  SignIn: SignInScreen
 }, {
   initialRouteName: 'Welcome',
   defaultNavigationOptions: () => ({
