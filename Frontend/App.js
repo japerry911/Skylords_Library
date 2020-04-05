@@ -16,7 +16,7 @@ const navigator = createStackNavigator({
   initialRouteName: 'Welcome',
   defaultNavigationOptions: () => ({
     headerLeft: () => <MaterialCommunityIcons 
-                    name='dog-side'
+                    name='dog'
                     size={40} 
                     style={styles.headerLeftIconStyle}
                 />,
@@ -84,9 +84,9 @@ export default () => {
 
 const styles = StyleSheet.create({
   headerLeftIconStyle: {
-    marginLeft: 80
+    marginLeft: 70,
   },
   headerRightIconStyle: {
-    marginRight: 80
+    marginRight: 70,
   }
 })
