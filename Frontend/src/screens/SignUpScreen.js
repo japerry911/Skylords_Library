@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Container, Header, Content, Form, Item, Label, Input, Button, Text } from 'native-base';
+import railsServer from '../api/railsServer';
 
-const onFormSubmit = (username, age, password) => {
-    
+const onFormSubmit = async (username, age, password, callback) => {
+    await railsServer.post('/users', { username, age, password });
+    callback();
 };
 
 const SignUpScreen = ({ navigation }) => {
@@ -54,7 +56,10 @@ const SignUpScreen = ({ navigation }) => {
                     >
                         <Text>GO BACK</Text>
                     </Button>
-                    <Button style={styles.buttonStyle}>
+                    <Button 
+                        style={styles.buttonStyle}
+                        onPress={() => onFormSubmit(username, age, password, () => navigation.navigate('Welcome'))}
+                    >
                         <Text>SIGN UP {username}!</Text>
                     </Button>
                 </Form>
