@@ -4,4 +4,10 @@ class ReadersController < ApplicationController
 
         render json: @readers 
     end
+
+    def show 
+        @reader = Reader.find(params[:id])
+
+        render json: @reader 
+    end
 end
