@@ -22,23 +22,23 @@ ActiveRecord::Schema.define(version: 2020_04_04_181817) do
     t.index ["author_id"], name: "index_books_on_author_id"
   end
 
-  create_table "readers", id: :string, force: :cascade do |t|
-    t.string "name"
-    t.integer "age"
-  end
-
   create_table "reviews", id: :string, force: :cascade do |t|
     t.integer "rating"
     t.text "description"
-    t.string "reader_id", null: false
+    t.string "user_id", null: false
     t.string "book_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["book_id"], name: "index_reviews_on_book_id"
-    t.index ["reader_id"], name: "index_reviews_on_reader_id"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
+  end
+
+  create_table "users", id: :string, force: :cascade do |t|
+    t.string "name"
+    t.integer "age"
   end
 
   add_foreign_key "books", "authors"
   add_foreign_key "reviews", "books"
-  add_foreign_key "reviews", "readers"
+  add_foreign_key "reviews", "users"
 end

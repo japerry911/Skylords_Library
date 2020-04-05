@@ -1,7 +1,7 @@
 class Book < ApplicationRecord
     belongs_to :author
     has_many :reviews
-    has_many :readers, through: :reviews
+    has_many :users, through: :reviews
 
     before_create :set_uuid
     self.primary_key = :id
