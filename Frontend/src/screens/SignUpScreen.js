@@ -104,7 +104,10 @@ const SignUpScreen = ({ navigation }) => {
                         <Text style={styles.buttonTextStyle}>Sign Up</Text>
                         <Icon name={validationStatus ? 'checkmark-circle' : 'close-circle'} />
                     </Button>
-                    <Button style={styles.goBackButtonStyle}>
+                    <Button 
+                        style={styles.goBackButtonStyle}
+                        onPress={() => navigation.navigate('GetStarted')}
+                    >
                         <Text style={styles.buttonTextStyle}>Go Back</Text>
                     </Button>
                 </View>
