@@ -23,7 +23,7 @@ const navigator = createStackNavigator({
   LearnMore: LearnMoreScreen,
   Home: HomeScreen
 }, {
-  initialRouteName: 'Welcome',
+  initialRouteName: 'SignIn',
   defaultNavigationOptions: () => ({
     headerLeft: () => <MaterialCommunityIcons 
                     name='paw'

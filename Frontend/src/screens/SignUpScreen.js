@@ -45,7 +45,7 @@ const SignUpScreen = ({ navigation }) => {
                             floatingLabel
                             style={styles.formItemStyle}
                         >
-                            <Label style={styles.roundedLabelStyle}>Enter your Username</Label>
+                            <Label style={styles.formItemLabelStyle}>Enter your Username</Label>
                             <Input
                                 value={username}
                                 onChangeText={newUsername => setUsername(newUsername)}
@@ -55,7 +55,7 @@ const SignUpScreen = ({ navigation }) => {
                             floatingLabel
                             style={styles.formItemStyle}
                         >
-                            <Label style={styles.roundedLabelStyle}>Enter your Age</Label>
+                            <Label style={styles.formItemLabelStyle}>Enter your Age</Label>
                             <Input
                                 value={age}
                                 onChangeText={newAge => setAge(newAge.replace(/[^0-9]/g, ''))}
@@ -69,7 +69,7 @@ const SignUpScreen = ({ navigation }) => {
                             success={passwordMatchingBool}
                             error={!passwordMatchingBool}
                         >
-                            <Label style={styles.roundedLabelStyle}>Enter your Password</Label>
+                            <Label style={styles.formItemLabelStyle}>Enter your Password</Label>
                             <Input
                                 value={password}
                                 onChangeText={newPassword => setPassword(newPassword)}
@@ -85,7 +85,7 @@ const SignUpScreen = ({ navigation }) => {
                             success={passwordMatchingBool}
                             error={!passwordMatchingBool}
                         >
-                            <Label style={styles.roundedLabelStyle}>Confirm your Password</Label>
+                            <Label style={styles.formItemLabelStyle}>Confirm your Password</Label>
                             <Input 
                                 value={confirmPassword}
                                 onChangeText={newConfirmPassword => setConfirmPassword(newConfirmPassword)}
@@ -118,11 +118,6 @@ const SignUpScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     formItemLabelStyle: {
-        color: Colors.accentLightGrayText,
-        fontFamily: 'Avenir_bold',
-        marginTop: 10
-    },
-    roundedLabelStyle: {
         color: Colors.accentLightGrayText
     },
     buttonTextStyle: {
