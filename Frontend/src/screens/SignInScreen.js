@@ -1,10 +1,35 @@
-import React from 'react';
-import { StyleSheet, ImageBackground, View, TouchableOpacity } from 'react-native';
-import { Text, Body, Form, Label, Input, Item, Button } from 'native-base';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, ImageBackground, View } from 'react-native';
+import { Text, Body, Form, Label, Input, Item, Button, Toast } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
+import railsServer from '../api/railsServer';
+
+const onFormSubmit = async (username, password, setInvalidLogin, successCallBack) => {
+    try {
+        await railsServer.post('/login', { user: { username, password }});
+        successCallBack();
+    } catch (error) {
+        setInvalidLogin(true);
+    }
+};
 
 const SignInScreen = ({ navigation }) => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [invalidLogin, setInvalidLogin] = useState(false);
+
+    useEffect(() => {
+        if (invalidLogin) {
+            Toast.show({
+                text: 'Invalid Credentials',
+                buttonText: 'Okay',
+                type: 'danger'
+            });
+            setInvalidLogin(false);
+        }
+    }, [invalidLogin]);
+
     return (
         <ImageBackground 
         style={styles.backgroundImageStyle}
@@ -31,17 +56,25 @@ const SignInScreen = ({ navigation }) => {
                                 style={styles.formItemStyle}
                             >
                                 <Label style={styles.formItemLabelStyle}>Enter your Username</Label>
-                                <Input />
+                                <Input 
+                                    value={username}
+                                    onChangeText={newUsername => setUsername(newUsername)}
+                                />
                             </Item>
                             <Item 
                                 floatingLabel
                                 style={styles.formItemStyle}
                             >
                                 <Label style={styles.formItemLabelStyle}>Enter your Password</Label>
-                                <Input />
+                                <Input 
+                                    value={password}
+                                    onChangeText={newPassword => setPassword(newPassword)}
+                                    secureTextEntry
+                                />
                             </Item>
                             <Button
                                 style={styles.loginButtonStyle}
+                                onPress={() => onFormSubmit(username, password, setInvalidLogin, () => navigation.navigate('Home'))}
                             >
                                 <Text style={styles.buttonText}>Login</Text>    
                             </Button>
