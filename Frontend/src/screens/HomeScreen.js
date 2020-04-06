@@ -4,6 +4,7 @@ import { Container, Body, Footer, Text } from 'native-base';
 import Colors from '../constants/colors';
 import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import railsServer from '../api/railsServer';
+import StarRating from 'react-native-star-rating';
 
 const HomeScreen = ({ navigation }) => {
     const user = navigation.getParam('user');
@@ -35,6 +36,9 @@ const HomeScreen = ({ navigation }) => {
                                 style={styles.iconStyle}
                                 size={25}
                             />
+                            <Text style={styles.iconTextStyle}>
+                                All
+                            </Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity>
@@ -44,6 +48,9 @@ const HomeScreen = ({ navigation }) => {
                                 style={styles.iconStyle}
                                 size={28}
                             />
+                            <Text style={styles.iconTextStyle}>
+                                Tell Us
+                            </Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity>
@@ -53,6 +60,9 @@ const HomeScreen = ({ navigation }) => {
                                 style={styles.iconStyle}
                                 size={27}
                             />
+                            <Text style={styles.iconTextStyle}>
+                                Trending
+                            </Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity>
@@ -62,6 +72,9 @@ const HomeScreen = ({ navigation }) => {
                                 style={styles.iconStyle}
                                 size={28}
                             />
+                            <Text style={styles.iconTextStyle}>
+                                Reviews
+                            </Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -79,6 +92,14 @@ const HomeScreen = ({ navigation }) => {
                         <Text style={styles.mostRecentReviewTextStyle}>
                             "{mostRecentObject.review.description}" {'\n\t'}- {mostRecentObject.user.username}
                         </Text>
+                        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                        <StarRating
+                            disabled={true}
+                            maxStars={5}
+                            rating={mostRecentObject.review.rating}
+                            starSize={20}
+                        />
+                        </View>
                     </View>
                 </View>
             </Body>
@@ -90,6 +111,12 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    iconTextStyle: {
+        fontSize: 11,
+        fontFamily: 'Avenir_bold',
+        color: Colors.accentLightGrayText,
+        textAlign: 'center'
+    },
     mostRecentImageStyle: {
         height: 200, 
         width: 125, 
@@ -102,7 +129,7 @@ const styles = StyleSheet.create({
     mostRecentReviewStyle: {
         backgroundColor: Colors.accentLightGray,
         padding: 10,
-        marginVertical: 10,
+        marginVertical: 5,
         borderRadius: 10
     },
     mostRecentReviewTextStyle: {
@@ -125,8 +152,11 @@ const styles = StyleSheet.create({
     },
     iconViewStyle: {
         backgroundColor: Colors.accentLightGray,
-        paddingHorizontal: 10,
-        borderRadius: 10
+        paddingHorizontal: 5,
+        paddingVertical: 5,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginHorizontal: 20
     },
     iconStyle: {
         color: Colors.primaryOrange
