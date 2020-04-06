@@ -18,15 +18,17 @@ const WelcomeScreen = ({ navigation }) => {
                         <MaterialCommunityIcons
                             name='paw'
                             size={20}
-                            color={Colors.primary}
+                            color={Colors.primaryOrange}
                         />
                     </Text>
                     <Text style={styles.subtitleStyle}>
                         Discover your favorite books with your favorite people<Text style={styles.highlightStyle}>.</Text>
                     </Text>
                 </Body>
-                <TouchableOpacity>
-                <Footer style={styles.footerStyle}>
+                <TouchableOpacity onPress={() => navigation.navigate('GetStarted')}>
+                <Footer 
+                    style={styles.footerStyle}
+                >
                     <Text style={styles.footerTextStyle}>Get Started</Text>
                 </Footer>
                 </TouchableOpacity>
@@ -40,10 +42,12 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 30,
         fontFamily: 'Avenir_bold',
-        marginTop: 30
+        marginTop: 10
     },
     footerStyle: {
-        backgroundColor: Colors.primary
+        backgroundColor: Colors.primaryOrange,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     childComponents: {
         flex: 1,
@@ -56,7 +60,7 @@ const styles = StyleSheet.create({
     highlightStyle: {
         fontSize: 20,
         fontFamily: 'Avenir_bold',
-        color: Colors.primary
+        color: Colors.primaryOrange
     },
     subtitleStyle: {
         color: 'white',

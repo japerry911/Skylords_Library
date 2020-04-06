@@ -8,6 +8,8 @@ import { createStackNavigator } from 'react-navigation-stack';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SignInScreen from './src/screens/SignInScreen';
+import GetStartedScreen from './src/screens/GetStartedScreen';
+import LearnMoreScreen from './src/screens/LearnMoreScreen';
 import Colors from './src/constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
@@ -15,7 +17,9 @@ import { StyleSheet } from 'react-native';
 const navigator = createStackNavigator({
   Welcome: WelcomeScreen,
   SignUp: SignUpScreen,
-  SignIn: SignInScreen
+  SignIn: SignInScreen,
+  GetStarted: GetStartedScreen,
+  LearnMore: LearnMoreScreen
 }, {
   initialRouteName: 'Welcome',
   defaultNavigationOptions: () => ({
@@ -30,7 +34,7 @@ const navigator = createStackNavigator({
                     style={styles.headerRightIconStyle}
                   />,
     headerTitleStyle: { color: 'white' },
-    headerStyle: { backgroundColor: Colors.primary },
+    headerStyle: { backgroundColor: Colors.primaryOrange },
     title: 'Skylord\'s Library'
   })
     /*
@@ -53,7 +57,8 @@ const fetchFonts = () => {
 
 const fetchImages = async() => {
   const images = [
-    require('./assets/Library.png')
+    require('./assets/Library.png'),
+    require('./assets/GetStartedImage.jpeg')
   ];
 
   const cacheImages = images.map(image => {
