@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 2020_04_05_175007) do
   create_table "users", id: :string, force: :cascade do |t|
     t.string "username"
     t.integer "age"
-    t.string "password"
+    t.string "password_digest"
   end
 
   add_foreign_key "books", "authors"

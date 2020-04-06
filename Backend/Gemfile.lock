@@ -56,6 +56,8 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2)
+    bcrypt (3.1.13)
+    bcrypt (3.1.13-java)
     bootsnap (1.4.6)
       msgpack (~> 1.0)
     bootsnap (1.4.6-java)
@@ -174,6 +176,7 @@ PLATFORMS
   x86-mswin32
 
 DEPENDENCIES
+  bcrypt (~> 3.1.7)
   bootsnap (>= 1.4.2)
   byebug
   listen (>= 3.0.5, < 3.2)
