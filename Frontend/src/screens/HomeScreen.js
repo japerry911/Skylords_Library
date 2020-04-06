@@ -1,11 +1,22 @@
-import React from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { Container, Body, Footer, Text } from 'native-base';
 import Colors from '../constants/colors';
 import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import railsServer from '../api/railsServer';
 
 const HomeScreen = ({ navigation }) => {
     const user = navigation.getParam('user');
+    const [mostRecentObject, setMostRecentObject] = useState({ user: {}, book: {}, review: {} });
+
+    useEffect(() => {
+        const fetchMostRecentReview = async () => {
+            const response = await railsServer.get('/most_recent_review');
+            setMostRecentObject(response.data);
+        }
+
+        fetchMostRecentReview();
+    }, []);
 
     return (
         <Container style={styles.mainContainerStyle}>
@@ -54,6 +65,22 @@ const HomeScreen = ({ navigation }) => {
                         </View>
                     </TouchableOpacity>
                 </View>
+                <View style={styles.mostRecentViewStyle}>
+                    <Text style={styles.mostRecentTitleStyle}>
+                        Recent Reviews
+                    </Text>
+                    <View style={styles.mostRecentImageViewStyle}>
+                        <Image
+                            source={{ uri: mostRecentObject.book.image_url }}
+                            style={styles.mostRecentImageStyle}
+                        />
+                    </View>
+                    <View style={styles.mostRecentReviewStyle}>
+                        <Text style={styles.mostRecentReviewTextStyle}>
+                            "{mostRecentObject.review.description}" {'\n\t'}- {mostRecentObject.user.username}
+                        </Text>
+                    </View>
+                </View>
             </Body>
             <Footer style={styles.footerStyle}>
 
@@ -63,17 +90,46 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    mostRecentImageStyle: {
+        height: 200, 
+        width: 125, 
+        opacity: .75
+    },
+    mostRecentViewStyle: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    mostRecentReviewStyle: {
+        backgroundColor: Colors.accentLightGray,
+        padding: 10,
+        marginVertical: 10,
+        borderRadius: 10
+    },
+    mostRecentReviewTextStyle: {
+        color: Colors.accentLightGrayText,
+        fontFamily: 'Avenir_italicize'
+    },
+    mostRecentTitleStyle: {
+        fontSize: 20,
+        fontFamily: 'Avenir_medium',
+        marginTop: '10%',
+        color: Colors.accentLightGrayText
+    },
+    mostRecentImageViewStyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        maxWidth: '90%',
+        overflow: 'hidden',
+        marginTop: 20,
+        borderRadius: 10
+    },
     iconViewStyle: {
         backgroundColor: Colors.accentLightGray,
         paddingHorizontal: 10,
-        paddingTop: 10,
-        paddingBottom: 5,
-        borderRadius: 10,
-        borderColor: Colors.accentLightGrayText,
-        borderWidth: 1,
+        borderRadius: 10
     },
     iconStyle: {
-        color: Colors.primaryOrange,
+        color: Colors.primaryOrange
     },
     bodyIconViewStyle: {
         marginTop: 20,
@@ -86,6 +142,7 @@ const styles = StyleSheet.create({
         marginTop: '10%',
         fontSize: 20,
         fontFamily: 'Avenir_bold',
+        color: Colors.accentLightGrayText
     },
     subtitleGreetingStyle: {
         fontFamily: 'Avenir_next',

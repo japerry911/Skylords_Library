@@ -51,6 +51,7 @@ const fetchFonts = () => {
     Avenir_next: require('./assets/fonts/AvenirNextLTPro-Regular.otf'),
     Avenir_italicize: require('./assets/fonts/AvenirNextLTPro-It.otf'),
     Avenir_bold: require('./assets/fonts/AvenirNextLTPro-Bold.otf'),
+    Avenir_medium: require('./assets/fonts/Avenir-Medium.otf'),
     ...Ionicons.font
   });
 };
