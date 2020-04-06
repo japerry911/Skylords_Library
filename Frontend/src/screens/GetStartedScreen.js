@@ -23,7 +23,10 @@ const GetStartedScreen = ({ navigation}) => {
                         Connect with our community to discover the perfect book<Text style={styles.highlightStyle}>.</Text>
                     </Text>
                 </View>
-                <Button style={styles.signUpButtonStyle}>
+                <Button 
+                    style={styles.signUpButtonStyle}
+                    onPress={() => navigation.navigate('SignUp')}
+                >
                     <View style={styles.test}>
                     <Text style={styles.buttonTextStyle}>Sign Up</Text>
                     </View>
