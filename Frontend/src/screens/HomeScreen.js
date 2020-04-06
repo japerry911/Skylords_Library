@@ -4,7 +4,7 @@ import { Container, Body, Footer, Text } from 'native-base';
 import Colors from '../constants/colors';
 import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import railsServer from '../api/railsServer';
-import StarRating from 'react-native-star-rating';
+import { Rating } from 'react-native-ratings';
 
 const HomeScreen = ({ navigation }) => {
     const user = navigation.getParam('user');
@@ -86,19 +86,29 @@ const HomeScreen = ({ navigation }) => {
                         <Image
                             source={{ uri: mostRecentObject.book.image_url }}
                             style={styles.mostRecentImageStyle}
+                        />                        
+                        <TouchableOpacity style={styles.bookmarkIconStyle}>
+                        <MaterialIcons
+                            name='bookmark'
+                            style={styles.bookmarkIconStyle}
+                            size={25}
                         />
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.mostRecentReviewStyle}>
                         <Text style={styles.mostRecentReviewTextStyle}>
                             "{mostRecentObject.review.description}" {'\n\t'}- {mostRecentObject.user.username}
                         </Text>
                         <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                        <StarRating
-                            disabled={true}
-                            maxStars={5}
-                            rating={mostRecentObject.review.rating}
-                            starSize={20}
-                        />
+                            <Rating 
+                                type='star'
+                                startingValue={mostRecentObject.review.rating}
+                                imageSize={20}
+                                tintColor={Colors.accentLightGray}
+                                selectedColor={Colors.primaryOrange}
+                                type='custom'
+                                ratingColor={Colors.primaryOrange}
+                            />
                         </View>
                     </View>
                 </View>
@@ -111,6 +121,12 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    bookmarkIconStyle: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        color: Colors.primaryOrange
+    },
     iconTextStyle: {
         fontSize: 11,
         fontFamily: 'Avenir_bold',
@@ -148,7 +164,6 @@ const styles = StyleSheet.create({
         maxWidth: '90%',
         overflow: 'hidden',
         marginTop: 20,
-        borderRadius: 10
     },
     iconViewStyle: {
         backgroundColor: Colors.accentLightGray,
