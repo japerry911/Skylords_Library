@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   resources :books, only: [:index, :show]
   resources :users, only: [:index, :show, :create]
   resources :reviews, only: [:index, :show]
+  post '/login', to: 'sessions#login'
 end
