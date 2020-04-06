@@ -40,9 +40,6 @@ const navigator = createStackNavigator({
     headerStyle: { backgroundColor: Colors.primaryOrange },
     title: 'Skylord\'s Library'
   })
-    /*
-    
-  }*/
 });
 
 const App = createAppContainer(navigator);

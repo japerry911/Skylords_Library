@@ -59,6 +59,8 @@ const SignInScreen = ({ navigation }) => {
                                 <Input 
                                     value={username}
                                     onChangeText={newUsername => setUsername(newUsername)}
+                                    autoCapitalize='none'
+                                    autoCorrect={false}
                                 />
                             </Item>
                             <Item 
@@ -70,6 +72,8 @@ const SignInScreen = ({ navigation }) => {
                                     value={password}
                                     onChangeText={newPassword => setPassword(newPassword)}
                                     secureTextEntry
+                                    autoCapitalize='none'
+                                    autoCorrect={false}
                                 />
                             </Item>
                             <Button
