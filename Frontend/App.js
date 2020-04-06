@@ -14,6 +14,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import Colors from './src/constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
+import { Root } from 'native-base';
 
 const navigator = createStackNavigator({
   Welcome: WelcomeScreen,
@@ -91,7 +92,9 @@ export default () => {
   }
 
   return (
-    <App />
+    <Root>
+      <App />
+    </Root>
   );
 }
 

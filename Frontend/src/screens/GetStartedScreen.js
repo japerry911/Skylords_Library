@@ -31,7 +31,10 @@ const GetStartedScreen = ({ navigation}) => {
                     <Text style={styles.buttonTextStyle}>Sign Up</Text>
                     </View>
                 </Button>
-                <Button style={styles.signInButtonStyle}>
+                <Button 
+                    style={styles.signInButtonStyle}
+                    onPress={() => navigation.navigate('SignIn')}
+                >
                     <Text style={styles.buttonTextStyle}>Sign In</Text>
                 </Button>
             </Body>
