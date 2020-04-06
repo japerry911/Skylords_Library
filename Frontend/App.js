@@ -10,6 +10,7 @@ import SignUpScreen from './src/screens/SignUpScreen';
 import SignInScreen from './src/screens/SignInScreen';
 import GetStartedScreen from './src/screens/GetStartedScreen';
 import LearnMoreScreen from './src/screens/LearnMoreScreen';
+import HomeScreen from './src/screens/HomeScreen';
 import Colors from './src/constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
@@ -19,7 +20,8 @@ const navigator = createStackNavigator({
   SignUp: SignUpScreen,
   SignIn: SignInScreen,
   GetStarted: GetStartedScreen,
-  LearnMore: LearnMoreScreen
+  LearnMore: LearnMoreScreen,
+  Home: HomeScreen
 }, {
   initialRouteName: 'Welcome',
   defaultNavigationOptions: () => ({

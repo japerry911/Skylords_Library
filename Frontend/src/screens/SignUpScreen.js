@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Container, Body, Text, Form, Label, Item, Input, Button, Icon } from 'native-base';
 import Colors from '../constants/colors';
+import railsServer from '../api/railsServer';
 
-const onFormSubmit = (username, age, password, callBack) => {};
+const onFormSubmit = async (username, age, password, callBack) => {
+    await railsServer.post('/users', { username, age, password });
+    callBack();
+};
 
-const SignUpScreen = () => {
+const SignUpScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [age, setAge] = useState('');
     const [password, setPassword] = useState('');
@@ -95,6 +99,7 @@ const SignUpScreen = () => {
                     <Button 
                         style={styles.signUpButtonStyle}
                         disabled={!validationStatus}
+                        onPress={() => onFormSubmit(username, age, password, () => navigation.navigate('Home'))}
                     >
                         <Text style={styles.buttonTextStyle}>Sign Up</Text>
                         <Icon name={validationStatus ? 'checkmark-circle' : 'close-circle'} />
