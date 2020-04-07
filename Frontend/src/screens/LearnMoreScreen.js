@@ -104,7 +104,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.accentLightWhite,
         width: '85%',
         marginTop: '5%',
-        padding: 10
+        padding: 10,
+        borderRadius: 10
     },
     subContainerStyle: {
         backgroundColor: Colors.accentLightGray,
