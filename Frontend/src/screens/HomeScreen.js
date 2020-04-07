@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
-import { Container, Body, Footer, Text } from 'native-base';
+import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
+import { Container, Body, Footer, Text, Spinner, } from 'native-base';
 import Colors from '../constants/colors';
-import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import railsServer from '../api/railsServer';
-import { Rating } from 'react-native-ratings';
 import FooterIconButton from '../components/FooterIconButton';
 import axios from 'axios';
+import RecentReviewItem from '../components/RecentReviewItem';
 
 const HomeScreen = ({ navigation }) => {
     const user = navigation.getParam('user');
@@ -17,8 +17,8 @@ const HomeScreen = ({ navigation }) => {
         const source = CancelToken.source()
 
         try {
-            railsServer.get('/most_recent_review', { cancelToken: source.token })
-                .then(response => setMostRecentObject(response.data));
+            railsServer.get('/most_recent_two_reviews', { cancelToken: source.token })
+            .then(response => setMostRecentObject(response.data));
         } catch (error) {
             if (axios.isCancel(error)) {
                 console.log('Canceled');
@@ -27,129 +27,121 @@ const HomeScreen = ({ navigation }) => {
             }
         }
     }, []);
-
-    return (
-        <Container style={styles.mainContainerStyle}>
-            <Body style={styles.bodyStyle}>
-                <Text style={styles.greetingMessageStyle}>
-                    Hello, {user.username}!
-                </Text>
-                <Text style={styles.subtitleGreetingStyle}>
-                    Let's find your new favorite book.
-                </Text>
-                <View style={styles.bodyIconViewStyle}>
-                    <TouchableOpacity style={styles.iconTOStyle}>
-                        <View style={styles.iconViewStyle}>
-                            <SimpleLineIcons
-                                name='book-open'
-                                style={styles.iconStyle}
-                                size={25}
-                            />
-                            <Text style={styles.iconTextStyle}>
-                                All
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconTOStyle}>
-                        <View style={styles.iconViewStyle}>
-                            <FontAwesome
-                                name='pencil-square-o'
-                                style={styles.iconStyle}
-                                size={28}
-                            />
-                            <Text style={styles.iconTextStyle}>
-                                Tell Us
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconTOStyle}>
-                        <View style={styles.iconViewStyle}>
-                            <MaterialCommunityIcons
-                                name='fire'
-                                style={styles.iconStyle}
-                                size={27}
-                            />
-                            <Text style={styles.iconTextStyle}>
-                                Trending
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconTOStyle}>
-                        <View style={styles.iconViewStyle}>
-                            <MaterialIcons 
-                                name='message'
-                                style={styles.iconStyle}
-                                size={28}
-                            />
-                            <Text style={styles.iconTextStyle}>
-                                Reviews
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.mostRecentViewStyle}>
-                    <Text style={styles.mostRecentTitleStyle}>
-                        Recent Reviews
+    
+    return ( 
+        <Container>
+            {mostRecentObject.book.image_url === undefined ||
+             mostRecentObject.user.username === undefined ||
+             mostRecentObject.review.description === undefined ||
+             mostRecentObject.review.rating === undefined ?
+            <Container style={{justifyContent: 'center'}}>
+                <Spinner color='green' />
+            </Container> : 
+            <Container style={styles.mainContainerStyle}>
+                <Body style={styles.bodyStyle}>
+                    <Text style={styles.greetingMessageStyle}>
+                        Hello, {user.username}!
                     </Text>
-                    <View style={styles.mostRecentImageViewStyle}>
-                        <Image
-                            source={{ uri: mostRecentObject.book.image_url }}
-                            style={styles.mostRecentImageStyle}
-                        />                       
+                    <Text style={styles.subtitleGreetingStyle}>
+                        Let's find your new favorite book.
+                    </Text>
+                    <View style={styles.bodyIconViewStyle}>
+                        <TouchableOpacity style={styles.iconTOStyle}>
+                            <View style={styles.iconViewStyle}>
+                                <SimpleLineIcons
+                                    name='book-open'
+                                    style={styles.iconStyle}
+                                    size={25}
+                                />
+                                <Text style={styles.iconTextStyle}>
+                                    All
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.iconTOStyle}>
+                            <View style={styles.iconViewStyle}>
+                                <FontAwesome
+                                    name='pencil-square-o'
+                                    style={styles.iconStyle}
+                                    size={28}
+                                />
+                                <Text style={styles.iconTextStyle}>
+                                    Tell Us
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.iconTOStyle}>
+                            <View style={styles.iconViewStyle}>
+                                <MaterialCommunityIcons
+                                    name='fire'
+                                    style={styles.iconStyle}
+                                    size={27}
+                                />
+                                <Text style={styles.iconTextStyle}>
+                                    Trending
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.iconTOStyle}>
+                            <View style={styles.iconViewStyle}>
+                                <MaterialIcons 
+                                    name='message'
+                                    style={styles.iconStyle}
+                                    size={28}
+                                />
+                                <Text style={styles.iconTextStyle}>
+                                    Reviews
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.mostRecentReviewStyle}>
-                        <Text style={styles.mostRecentReviewItalStyle}>
-                            "{mostRecentObject.review.description}" {'\n\t'}- <Text style={styles.mostRecentReviewMedStyle}>
-                                {mostRecentObject.user.username}</Text>
+                    <ScrollView>
+                        <Text style={styles.mostRecentTitleStyle}>
+                            Recent Reviews
                         </Text>
-                        <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                            <Rating 
-                                type='star'
-                                startingValue={mostRecentObject.review.rating}
-                                imageSize={20}
-                                tintColor={Colors.accentLightGray}
-                                selectedColor={Colors.primaryOrange}
-                                type='custom'
-                                ratingColor={Colors.primaryOrange}
-                            />
-                        </View>
-                    </View>
-                </View>
-            </Body>
-            <Footer style={styles.footerStyle}>
-                <FooterIconButton
-                    iconComponent={<MaterialCommunityIcons
-                                        name='home-outline'
-                                        size={35}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => {}}
-                />
-                <FooterIconButton
-                    iconComponent={<FontAwesome
-                                        name='star-o'
-                                        size={35}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => {}}
-                />
-                <FooterIconButton
-                    iconComponent={<FontAwesome
-                                        name='bookmark-o'
-                                        size={32}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => {}}
-                />
-                <FooterIconButton
-                    iconComponent={<FontAwesome
-                                        name='user-o'
-                                        size={32}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => {}}
-                />
-            </Footer>
+                        <RecentReviewItem
+                            imageUrl={mostRecentObject.book.image_url}
+                            description={mostRecentObject.review.description}
+                            username={mostRecentObject.user.username}
+                            rating={mostRecentObject.review.rating}
+                        />
+                    </ScrollView>
+                </Body>
+                <Footer style={styles.footerStyle}>
+                    <FooterIconButton
+                        iconComponent={<MaterialCommunityIcons
+                                            name='home-outline'
+                                            size={35}
+                                            style={styles.footerIconStyle}
+                                        />}
+                        onPress={() => {}}
+                    />
+                    <FooterIconButton
+                        iconComponent={<FontAwesome
+                                            name='star-o'
+                                            size={35}
+                                            style={styles.footerIconStyle}
+                                        />}
+                        onPress={() => {}}
+                    />
+                    <FooterIconButton
+                        iconComponent={<FontAwesome
+                                            name='bookmark-o'
+                                            size={32}
+                                            style={styles.footerIconStyle}
+                                        />}
+                        onPress={() => {}}
+                    />
+                    <FooterIconButton
+                        iconComponent={<FontAwesome
+                                            name='user-o'
+                                            size={32}
+                                            style={styles.footerIconStyle}
+                                        />}
+                        onPress={() => {}}
+                    />
+                </Footer>
+            </Container>}
         </Container>
     );
 };
@@ -158,6 +150,13 @@ const styles = StyleSheet.create({
     footerStyle: {
         justifyContent: 'space-evenly',
         backgroundColor: Colors.accentLightGray
+    },
+    mostRecentTitleStyle: {
+        fontSize: 20,
+        fontFamily: 'Avenir_medium',
+        marginVertical: '5%',
+        color: Colors.accentLightGrayText,
+        textAlign: 'center'
     },
     footerIconStyle: {
         marginTop: 5,
@@ -168,45 +167,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Avenir_bold',
         color: Colors.accentLightGrayText,
         textAlign: 'center'
-    },
-    mostRecentImageStyle: {
-        height: 200, 
-        width: 125, 
-        opacity: .75
-    },
-    mostRecentViewStyle: {
-        height: '80%',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingBottom: '10%'
-    },
-    mostRecentReviewStyle: {
-        backgroundColor: Colors.accentLightGray,
-        padding: 10,
-        marginVertical: 5,
-        borderRadius: 10
-    },
-    mostRecentReviewItalStyle: {
-        color: Colors.accentLightGrayText,
-        fontFamily: 'Avenir_italicize'
-    },
-    mostRecentReviewMedStyle: {
-        color: Colors.accentLightGrayText,
-        fontFamily: 'Avenir_medium'
-    },
-    mostRecentTitleStyle: {
-        fontSize: 20,
-        fontFamily: 'Avenir_medium',
-        marginTop: '5%',
-        color: Colors.accentLightGrayText
-    },
-    mostRecentImageViewStyle: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        maxWidth: '90%',
-        overflow: 'hidden',
-        marginTop: 7,
-        borderRadius: 10
     },
     iconViewStyle: {
         backgroundColor: Colors.accentLightGray,
@@ -230,7 +190,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         width: '70%' ,
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-evenly',
+        marginBottom: '3%'
     },
     greetingMessageStyle: {
         marginTop: '10%',
