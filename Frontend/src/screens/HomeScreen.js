@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
-import { Container, Body, Footer, Text, Spinner, } from 'native-base';
+import { Container, Body, Footer, Text, Spinner, Drawer } from 'native-base';
 import Colors from '../constants/colors';
 import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import railsServer from '../api/railsServer';
@@ -9,9 +9,9 @@ import axios from 'axios';
 import RecentReviewItem from '../components/RecentReviewItem';
 
 const HomeScreen = ({ navigation }) => {
-    const user = navigation.getParam('user');
     const [mostRecentObjects, setMostRecentObjects] = useState(undefined);
-    
+    const user = navigation.dangerouslyGetParent().state.params.params.user;
+
     useEffect(() => {
         const CancelToken = axios.CancelToken
         const source = CancelToken.source()
