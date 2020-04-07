@@ -4,8 +4,12 @@ import { Container, Body, Text, Form, Label, Item, Input, Button, Icon } from 'n
 import Colors from '../constants/colors';
 import railsServer from '../api/railsServer';
 
-const onFormSubmit = async (username, age, password, callBack) => {
+const onFormSubmit = async (username, age, password, callBack, setUsername, setAge, setPassword, setConfirmPassword) => {
     await railsServer.post('/users', { user: { username, age, password }});
+    setUsername('');
+    setAge('');
+    setPassword('');
+    setConfirmPassword('');
     callBack();
 };
 
@@ -99,7 +103,8 @@ const SignUpScreen = ({ navigation }) => {
                     <Button 
                         style={styles.signUpButtonStyle}
                         disabled={!validationStatus}
-                        onPress={() => onFormSubmit(username, age, password, () => navigation.navigate('SignIn'))}
+                        onPress={() => onFormSubmit(username, age, password, () => navigation.navigate('SignIn'),
+                                                    setUsername, setAge, setPassword, setConfirmPassword)}
                     >
                         <Text style={styles.buttonTextStyle}>Sign Up</Text>
                         <Icon name={validationStatus ? 'checkmark-circle' : 'close-circle'} />
