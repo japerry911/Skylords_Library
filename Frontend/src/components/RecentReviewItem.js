@@ -41,15 +41,15 @@ const styles = StyleSheet.create({
         opacity: .50
     },
     mostRecentViewStyle: {
-        height: '80%',
+        height: 500,
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         paddingBottom: '10%'
     },
     mostRecentReviewStyle: {
         backgroundColor: Colors.accentLightGray,
         padding: 10,
-        marginVertical: 5,
+        marginTop: '5%',
         borderRadius: 10
     },
     mostRecentReviewItalStyle: {

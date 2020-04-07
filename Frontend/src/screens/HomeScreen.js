@@ -10,7 +10,7 @@ import RecentReviewItem from '../components/RecentReviewItem';
 
 const HomeScreen = ({ navigation }) => {
     const user = navigation.getParam('user');
-    const [mostRecentObject, setMostRecentObject] = useState({ user: {}, book: {}, review: {} });
+    const [mostRecentObjects, setMostRecentObjects] = useState(undefined);
     
     useEffect(() => {
         const CancelToken = axios.CancelToken
@@ -18,7 +18,7 @@ const HomeScreen = ({ navigation }) => {
 
         try {
             railsServer.get('/most_recent_two_reviews', { cancelToken: source.token })
-            .then(response => setMostRecentObject(response.data));
+            .then(response => setMostRecentObjects(response.data.reviews));
         } catch (error) {
             if (axios.isCancel(error)) {
                 console.log('Canceled');
@@ -30,10 +30,7 @@ const HomeScreen = ({ navigation }) => {
     
     return ( 
         <Container>
-            {mostRecentObject.book.image_url === undefined ||
-             mostRecentObject.user.username === undefined ||
-             mostRecentObject.review.description === undefined ||
-             mostRecentObject.review.rating === undefined ?
+            {mostRecentObjects === undefined ?
             <Container style={{justifyContent: 'center'}}>
                 <Spinner color='green' />
             </Container> : 
@@ -99,12 +96,17 @@ const HomeScreen = ({ navigation }) => {
                         <Text style={styles.mostRecentTitleStyle}>
                             Recent Reviews
                         </Text>
-                        <RecentReviewItem
-                            imageUrl={mostRecentObject.book.image_url}
-                            description={mostRecentObject.review.description}
-                            username={mostRecentObject.user.username}
-                            rating={mostRecentObject.review.rating}
-                        />
+                        {mostRecentObjects.map(mostRecentObject => {
+                            return (
+                                <RecentReviewItem
+                                    key={mostRecentObject.review.id}
+                                    imageUrl={mostRecentObject.book.image_url}
+                                    description={mostRecentObject.review.description === undefined ? '' : mostRecentObject.review.description}
+                                    username={mostRecentObject.user.username}
+                                    rating={mostRecentObject.review.rating}
+                                />
+                            );
+                        })}
                     </ScrollView>
                 </Body>
                 <Footer style={styles.footerStyle}>

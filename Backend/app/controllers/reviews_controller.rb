@@ -11,11 +11,17 @@ class ReviewsController < ApplicationController
         render json: @review 
     end
     
-    def most_recent_review
-        @most_recent_review = Review.order(created_at: :desc).first
-        @book = @most_recent_review.book
-        @user = { username: @most_recent_review.user.username, age: @most_recent_review.user.age }  
+    def most_recent_two_reviews
+        @most_recent_2_reviews = Review.order(created_at: :desc).limit(2)
 
-        render json: { user: @user, book: @book, review: @most_recent_review }
+        @book1 = @most_recent_2_reviews[0].book
+        @book2 = @most_recent_2_reviews[1].book
+        @user1 = { username: @most_recent_2_reviews[0].user.username, age: @most_recent_2_reviews[0].user.age }
+        @user2 = { username: @most_recent_2_reviews[1].user.username, age: @most_recent_2_reviews[1].user.age }
+
+        render json: { reviews: [
+                                { user: @user1, book: @book1, review: @most_recent_2_reviews[0] }, 
+                                { user: @user2, book: @book2, review: @most_recent_2_reviews[1] }
+                                ]}
     end
 end

@@ -5,7 +5,7 @@ import Colors from '../constants/colors';
 import railsServer from '../api/railsServer';
 
 const onFormSubmit = async (username, age, password, callBack) => {
-    await railsServer.post('/users', { username, age, password });
+    await railsServer.post('/users', { user: { username, age, password }});
     callBack();
 };
 
@@ -99,7 +99,7 @@ const SignUpScreen = ({ navigation }) => {
                     <Button 
                         style={styles.signUpButtonStyle}
                         disabled={!validationStatus}
-                        onPress={() => onFormSubmit(username, age, password, () => navigation.navigate('Home'))}
+                        onPress={() => onFormSubmit(username, age, password, () => navigation.navigate('SignIn'))}
                     >
                         <Text style={styles.buttonTextStyle}>Sign Up</Text>
                         <Icon name={validationStatus ? 'checkmark-circle' : 'close-circle'} />
