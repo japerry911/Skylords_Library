@@ -40,9 +40,6 @@ const navigator = createStackNavigator({
     headerStyle: { backgroundColor: Colors.primaryOrange },
     title: 'Skylord\'s Library'
   })
-    /*
-    
-  }*/
 });
 
 const App = createAppContainer(navigator);
@@ -54,6 +51,7 @@ const fetchFonts = () => {
     Avenir_next: require('./assets/fonts/AvenirNextLTPro-Regular.otf'),
     Avenir_italicize: require('./assets/fonts/AvenirNextLTPro-It.otf'),
     Avenir_bold: require('./assets/fonts/AvenirNextLTPro-Bold.otf'),
+    Avenir_medium: require('./assets/fonts/Avenir-Medium.otf'),
     ...Ionicons.font
   });
 };
@@ -61,7 +59,8 @@ const fetchFonts = () => {
 const fetchImages = async() => {
   const images = [
     require('./assets/Library.png'),
-    require('./assets/GetStartedImage.jpeg')
+    require('./assets/GetStartedImage.jpeg'),
+    require('./assets/DogBookPets.jpg')
   ];
 
   const cacheImages = images.map(image => {

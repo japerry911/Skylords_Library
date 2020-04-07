@@ -9,7 +9,6 @@ const GetStartedScreen = ({ navigation}) => {
             <Body style={styles.bodyStyle}>
                 <View style={styles.imageViewStyle}>
                     <Image 
-                        style={styles.imageStyle}
                         source={require('../../assets/GetStartedImage.jpeg')}
                     />
                     <Text
@@ -110,9 +109,6 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         marginTop: 20,
         borderRadius: 10
-    },
-    imageStyle: {
-
     },
     highlightStyle: {
         color: Colors.primaryOrange,
