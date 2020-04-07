@@ -4,7 +4,7 @@ import { Container, Text, Button } from 'native-base';
 import Colors from '../constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const LearnMoreScreen = () => {
+const LearnMoreScreen = ({ navigation }) => {
     return (
         <Container style={styles.mainContainerStyle}>
             <View style={styles.imageViewStyle}>
@@ -49,6 +49,7 @@ const LearnMoreScreen = () => {
                 </View>
                 <Button
                     style={styles.buttonStyle}
+                    onPress={() => navigation.navigate('SignUp')}
                 >
                     <Text style={styles.buttonText}>
                         Sign Up
