@@ -60,7 +60,7 @@ const fetchImages = async() => {
   const images = [
     require('./assets/Library.png'),
     require('./assets/GetStartedImage.jpeg'),
-    require('./assets/paw.png')
+    require('./assets/DogBookPets.jpg')
   ];
 
   const cacheImages = images.map(image => {
