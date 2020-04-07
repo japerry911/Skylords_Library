@@ -7,8 +7,8 @@ import railsServer from '../api/railsServer';
 
 const onFormSubmit = async (username, password, setInvalidLogin, successCallBack) => {
     try {
-        const user = await railsServer.post('/login', { user: { username, password }});
-        successCallBack(user.data.user);
+        const response = await railsServer.post('/login', { user: { username, password }});
+        successCallBack(response.data.user);
     } catch (error) {
         setInvalidLogin(true);
     }
@@ -78,7 +78,7 @@ const SignInScreen = ({ navigation }) => {
                             </Item>
                             <Button
                                 style={styles.loginButtonStyle}
-                                onPress={() => onFormSubmit(username, password, setInvalidLogin, user => navigation.navigate('Home', { user }))}
+                                onPress={() => onFormSubmit(username, password, setInvalidLogin, user => navigation.navigate('Home', { screen: 'SignInStack', params: { user }}))}
                             >
                                 <Text style={styles.buttonText}>Login</Text>    
                             </Button>

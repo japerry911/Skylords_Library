@@ -5,6 +5,7 @@ import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer'
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SignInScreen from './src/screens/SignInScreen';
@@ -13,36 +14,96 @@ import LearnMoreScreen from './src/screens/LearnMoreScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import Colors from './src/constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Root } from 'native-base';
 
-const navigator = createStackNavigator({
-  Welcome: WelcomeScreen,
-  SignUp: SignUpScreen,
-  SignIn: SignInScreen,
-  GetStarted: GetStartedScreen,
-  LearnMore: LearnMoreScreen,
-  Home: HomeScreen
-}, {
-  initialRouteName: 'LearnMore',
-  defaultNavigationOptions: () => ({
-    headerLeft: () => <MaterialCommunityIcons 
-                    name='paw'
-                    size={40} 
-                    style={styles.headerLeftIconStyle}
-                />,
-    headerRight: () => <MaterialCommunityIcons
-                    name='menu'
-                    size={40}
-                    style={styles.headerRightIconStyle}
-                  />,
-    headerTitleStyle: { color: 'white' },
-    headerStyle: { backgroundColor: Colors.primaryOrange },
-    title: 'Skylord\'s Library'
-  })
-});
+const foundationHeaderOptions = {
+  headerStyle: { backgroundColor: Colors.primaryOrange },
+  headerTitleStyle: { color: 'white' },
+  headerLeft: () => <MaterialCommunityIcons
+                      name='paw'
+                      size={40}
+                      style={styles.headerLeftIconStyle}
+                    />
+};
 
-const App = createAppContainer(navigator);
+const WelcomeStack = createStackNavigator(
+  { Welcome: WelcomeScreen },
+  {
+    defaultNavigationOptions: () => ({
+      title: 'Skylord\'s Library',
+      ...foundationHeaderOptions
+    })
+  }
+);
+
+const GetStartedStack = createStackNavigator(
+  { GetStarted: GetStartedScreen },
+  {
+    defaultNavigationOptions: () => ({
+      title: 'Getting Started',
+      ...foundationHeaderOptions
+    })
+  }
+);
+
+const LearnMoreStack = createStackNavigator(
+  { LearnMore: LearnMoreScreen },
+  {
+    defaultNavigationOptions: () => ({
+      title: 'Learn More',
+      ...foundationHeaderOptions
+    })
+  }
+);
+
+const SignUpStack = createStackNavigator(
+  { SignUp: SignUpScreen },
+  {
+    defaultNavigationOptions: () => ({
+      title: 'Sign Up',
+      ...foundationHeaderOptions
+    })
+  }
+);
+
+const SignInStack = createStackNavigator(
+  { SignIn: SignInScreen },
+  {
+    defaultNavigationOptions: () => ({
+      title: 'Sign In',
+      ...foundationHeaderOptions
+    })
+  }
+);
+
+const HomeStack = createStackNavigator(
+  { Home: HomeScreen },
+  {
+    defaultNavigationOptions: ({ navigation }) => ({
+      title: 'Home',
+      headerRight: () =>  <TouchableOpacity onPress={() => navigation.openDrawer()}>
+                                          <MaterialCommunityIcons
+                                              name='menu'
+                                              size={40}
+                                              style={styles.headerRightIconStyle}
+                                          />
+                                        </TouchableOpacity>,
+      ...foundationHeaderOptions
+    })
+  }
+)
+
+const DrawerNavigator = createDrawerNavigator({
+  'Welcome': WelcomeStack,
+  'Get Started': GetStartedStack,
+  'Learn More': LearnMoreStack,
+  'Sign Up': SignUpStack,
+  'Sign In': SignInStack,
+  'Home': HomeStack
+})
+
+const App = createAppContainer(DrawerNavigator);
 
 const fetchFonts = () => {
   return Font.loadAsync({
