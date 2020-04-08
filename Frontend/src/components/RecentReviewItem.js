@@ -6,31 +6,31 @@ import Colors from '../constants/colors';
 
 const RecentReviewItem = ({ imageUrl, description, username, rating }) => {
     return (
-        <View style={styles.mostRecentViewStyle}>
-            <View style={styles.mostRecentImageViewStyle}>
-                <Image
-                    source={{ uri: imageUrl }}
-                    style={styles.mostRecentImageStyle}
-                />                       
-                </View>
-                <View style={styles.mostRecentReviewStyle}>
-                    <Text style={styles.mostRecentReviewItalStyle}>
-                        "{description}" {'\n\t'}- <Text style={styles.mostRecentReviewMedStyle}>
-                        {username}</Text>
-                    </Text>
-                    <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                    <Rating 
-                        type='star'
-                        startingValue={rating}
-                        imageSize={20}
-                        tintColor={Colors.accentLightGray}
-                        selectedColor={Colors.primaryOrange}
-                        type='custom'
-                        ratingColor={Colors.primaryOrange}
-                    />
-                </View>
+    <View style={styles.mostRecentViewStyle}>
+        <View style={styles.mostRecentImageViewStyle}>
+            <Image
+                source={{ uri: imageUrl }}
+                style={styles.mostRecentImageStyle}
+            />                       
+        </View>
+        <View style={styles.mostRecentReviewStyle}>
+            <Text style={styles.mostRecentReviewItalStyle}>
+                "{description}" {'\n\t'}- <Text style={styles.mostRecentReviewMedStyle}>
+                {username}</Text>
+            </Text>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <Rating 
+                    type='star'
+                    startingValue={rating}
+                    imageSize={20}
+                    tintColor={Colors.accentLightGray}
+                    selectedColor={Colors.primaryOrange}
+                    type='custom'
+                    ratingColor={Colors.primaryOrange}
+                />
             </View>
         </View>
+    </View>
     );
 };
 

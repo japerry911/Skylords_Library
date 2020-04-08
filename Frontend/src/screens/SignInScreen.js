@@ -27,7 +27,7 @@ const SignInScreen = ({ navigation }) => {
                 text: 'Invalid Credentials',
                 buttonText: 'Okay',
                 type: 'danger',
-                duration: 6000
+                duration: 3000
             });
             setInvalidLogin(false);
         }

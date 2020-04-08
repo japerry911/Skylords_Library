@@ -179,11 +179,10 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         borderRadius: 10,
         alignItems: 'center',
-        marginHorizontal: 20,
-        width: '50%'
+        marginHorizontal: '5%',
+        width: '80%',
     },
     iconTOStyle: {
-        width: '50%',
         justifyContent: 'center',
         alignItems: 'center'
     },
