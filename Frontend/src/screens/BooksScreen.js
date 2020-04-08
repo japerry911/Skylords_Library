@@ -52,10 +52,12 @@ const BooksScreen = ({ navigation }) => {
                     data={booksData}
                     keyExtractor={book => book.id}
                     renderItem={({ item }) => <BookListItem 
+                                                bookId={item.id}
                                                 title={item.title} 
                                                 author={item.author.name}
                                                 imageUrl={item.image_url}
                                                 description={item.description}
+                                                navigation={navigation}
                                             />}
                 />
             </View>
