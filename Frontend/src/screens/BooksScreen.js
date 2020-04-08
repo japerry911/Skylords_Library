@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
 import { Container, Text } from 'native-base';
 import Colors from '../constants/colors';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const BooksScreen = ({ navigation }) => {
-    console.log(navigation);
+    const [booksData, setBooksData] = useState([]);
 
     return (
         <Container style={styles.mainContainerStyle}>

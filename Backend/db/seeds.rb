@@ -19,12 +19,24 @@ CarlosRuizZafon = Author.create(name: 'Carlos Ruiz Zafon')
 JrrTolkien = Author.create(name: 'J.R.R Tolkien')
 KhaledHosseini = Author.create(name: 'Khaled Hosseini')
 
-TheKiteRunner = Book.create(title: 'The Kite Runner', author: KhaledHosseini, image_url: 'https://images2.penguinrandomhouse.com/cover/9781594631931')
-LoRFellowship = Book.create(title: 'The Fellowship of the Ring', author: JrrTolkien, image_url: 'https://images3.penguinrandomhouse.com/cover/9780345339706')
-WarAndPeace = Book.create(title: 'War and Peace', author: LeoTolstoy, image_url: 'https://images4.penguinrandomhouse.com/cover/9781400079988')
-SongOfSolomon = Book.create(title: 'Song of Solomon', author: ToniMorrison, image_url: 'https://images3.penguinrandomhouse.com/cover/9781400033423')
-Ulysses = Book.create(title: 'Ulysses', author: JamesJoyce, image_url: 'https://images3.penguinrandomhouse.com/cover/9780679722762')
-TheShadowOfTheWind = Book.create(title: 'The Shadow of the Wind', author: CarlosRuizZafon, image_url: 'https://images2.penguinrandomhouse.com/cover/9780143126393')
+TheKiteRunner = Book.create(title: 'The Kite Runner', author: KhaledHosseini, 
+                            image_url: 'https://images2.penguinrandomhouse.com/cover/9781594631931',
+                            description: 'The Kite Runner is a 21st century classic. You’ve already read it? Read it again!')
+LoRFellowship = Book.create(title: 'The Fellowship of the Ring', author: JrrTolkien, 
+                            image_url: 'https://images3.penguinrandomhouse.com/cover/9780345339706',
+                            description: 'The movie is great, but the book is even better!')
+WarAndPeace = Book.create(title: 'War and Peace', author: LeoTolstoy, 
+                            image_url: 'https://images4.penguinrandomhouse.com/cover/9781400079988',
+                            description: 'A legendary masterpiece! Challenge yourself with this classic novel.')
+SongOfSolomon = Book.create(title: 'Song of Solomon', author: ToniMorrison, 
+                            image_url: 'https://images3.penguinrandomhouse.com/cover/9781400033423',
+                            description: 'Don’t miss out on reading a novel by this Nobel Prize winning author.')
+Ulysses = Book.create(title: 'Ulysses', author: JamesJoyce, 
+                      image_url: 'https://images3.penguinrandomhouse.com/cover/9780679722762',
+                      description: 'This is a modernist literature lovers dream!')
+TheShadowOfTheWind = Book.create(title: 'The Shadow of the Wind', author: CarlosRuizZafon, 
+                                 image_url: 'https://images2.penguinrandomhouse.com/cover/9780143126393',
+                                 description: 'An amazing novel that is a must read for all!')
 
 Review.create(rating: 5, user: Cassidy, book: TheKiteRunner)
 Review.create(rating: 5, user: Bret, book: LoRFellowship)
