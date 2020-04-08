@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
         width: '90%',
         height: '100%',
         borderRadius: 10,
-        marginTop: '5%',
+        marginVertical: '5%',
     }
 });
 
