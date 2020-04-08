@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Text, Body } from 'native-base';
-import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Image, FlatList } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 import axios from 'axios';
 import railsServer from '../api/railsServer';
 import { Rating } from 'react-native-ratings';
+import ShowReviewItem from '../components/ShowReviewItem';
 
 const calcAverageRating = reviews => {
     const total = reviews.reduce((total, review) => total + review.rating, 0);
@@ -71,7 +72,15 @@ const ShowBookScreen = ({ route, navigation }) => {
                     source={{ uri: bookDetails.image_url }}
                     style={styles.imageStyle}
                 />
-                <Text>REVIEWS GO HERE</Text>
+                <View style={styles.flatListViewStyle}>
+                    <FlatList
+                        data={bookDetails.reviews}
+                        keyExtractor={review => review.id}
+                        renderItem={({ item }) => <ShowReviewItem 
+                                                    description={item.description}
+                                                  />}
+                    />
+                </View>
             </Body>
         </Container>
     );
