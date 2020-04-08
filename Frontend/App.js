@@ -12,6 +12,7 @@ import SignInScreen from './src/screens/SignInScreen';
 import GetStartedScreen from './src/screens/GetStartedScreen';
 import LearnMoreScreen from './src/screens/LearnMoreScreen';
 import HomeScreen from './src/screens/HomeScreen';
+import BooksScreen from './src/screens/BooksScreen';
 import Colors from './src/constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet, TouchableOpacity } from 'react-native';
@@ -55,6 +56,7 @@ const AuthStack = () => {
   return (
     <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen name='Home' component={HomeScreen} />
+      <Drawer.Screen name='Books' component={BooksScreen} />
     </Drawer.Navigator>
   );
 };
@@ -62,7 +64,7 @@ const AuthStack = () => {
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Welcome'>
+      <Stack.Navigator initialRouteName='Authed'>
         <Stack.Screen 
           name='Welcome' 
           component={WelcomeStack} 
