@@ -8,9 +8,9 @@ import FooterIconButton from '../components/FooterIconButton';
 import axios from 'axios';
 import RecentReviewItem from '../components/RecentReviewItem';
 
-const HomeScreen = () => {
+const HomeScreen = ({ route }) => {
     const [mostRecentObjects, setMostRecentObjects] = useState(undefined);
-    const user = {username: 'jack'}//navigation.dangerouslyGetParent().state.params.user;
+    const user = route.params.user;
 
     useEffect(() => {
         const CancelToken = axios.CancelToken

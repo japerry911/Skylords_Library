@@ -80,7 +80,7 @@ const SignInScreen = ({ navigation }) => {
                             <Button
                                 style={styles.loginButtonStyle}
                                 onPress={() => onFormSubmit(username, password, setInvalidLogin, 
-                                    user => navigation.navigate('Authed' , { user }))}
+                                    user => navigation.navigate('Authed' , { screen: 'Home', params: { user }}))}
                             >
                                 <Text style={styles.buttonText}>Login</Text>    
                             </Button>
