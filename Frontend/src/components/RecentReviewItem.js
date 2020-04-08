@@ -27,6 +27,7 @@ const RecentReviewItem = ({ imageUrl, description, username, rating }) => {
                     selectedColor={Colors.primaryOrange}
                     type='custom'
                     ratingColor={Colors.primaryOrange}
+                    readonly
                 />
             </View>
         </View>

@@ -23,6 +23,7 @@ const ShowReviewItem = ({ review }) => {
                 type='custom'
                 ratingColor={Colors.primaryOrange}
                 style={styles.ratingStyle}
+                readonly
             />
         </View>
     );
@@ -37,7 +38,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: Colors.accentLightGrayText,
         paddingHorizontal: 20,
-        paddingBottom: 10
+        paddingBottom: 5,
+        textAlign: 'center'
     },
     mainViewStyle: {
         backgroundColor: Colors.accentLightGray,

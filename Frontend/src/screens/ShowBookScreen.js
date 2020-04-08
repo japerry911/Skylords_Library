@@ -58,27 +58,28 @@ const ShowBookScreen = ({ route, navigation }) => {
             </View>
             <Body>
                 <View style={styles.flatListViewStyle}>
-                        <FlatList
-                            showsVerticalScrollIndicator={false}
-                            ListHeaderComponent={
-                                <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                                    <Text style={styles.descriptionTextStyle}>
-                                        {bookDetails.description}
-                                    </Text>
-                                    <Rating 
-                                        type='star'
-                                        startingValue={averageRating}
-                                        imageSize={20}
-                                        tintColor={Colors.accentLightWhite}
-                                        selectedColor={Colors.primaryOrange}
-                                        type='custom'
-                                        ratingColor={Colors.primaryOrange}
-                                    />
-                                    <Image
-                                        source={{ uri: bookDetails.image_url }}
-                                        style={styles.imageStyle}
-                                    />
-                                </View>}
+                    <FlatList
+                        showsVerticalScrollIndicator={false}
+                        ListHeaderComponent={
+                            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                                <Text style={styles.descriptionTextStyle}>
+                                    {bookDetails.description}
+                                </Text>
+                                <Rating 
+                                    type='star'
+                                    startingValue={averageRating}
+                                    imageSize={20}
+                                    tintColor={Colors.accentLightWhite}
+                                    selectedColor={Colors.primaryOrange}
+                                    type='custom'
+                                    ratingColor={Colors.primaryOrange}
+                                    readonly
+                                />
+                                <Image
+                                    source={{ uri: bookDetails.image_url }}
+                                    style={styles.imageStyle}
+                                />
+                            </View>}
                         data={bookDetails.reviews}
                         renderItem={({ item }) => <ShowReviewItem review={item} />}
                     />
