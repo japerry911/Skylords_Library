@@ -5,7 +5,7 @@ import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SignInScreen from './src/screens/SignInScreen';
@@ -15,7 +15,6 @@ import HomeScreen from './src/screens/HomeScreen';
 import Colors from './src/constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { createAppContainer } from 'react-navigation';
 
 const foundationHeaderOptions = {
   headerStyle: { backgroundColor: Colors.primaryOrange },
@@ -25,6 +24,15 @@ const foundationHeaderOptions = {
                       size={40}
                       style={styles.headerLeftIconStyle}
                     />
+};
+
+const CustomDrawerContent = props => {
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem label='Sign Out' onPress={() => alert('Woohoo!!!')} />
+    </DrawerContentScrollView>
+  );
 };
 
 const Stack = createStackNavigator();
@@ -44,7 +52,7 @@ const WelcomeStack = () => {
 
 const AuthStack = () => {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen name='Home' component={HomeScreen} />
     </Drawer.Navigator>
   );
