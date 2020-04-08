@@ -59,6 +59,7 @@ const BooksScreen = ({ navigation }) => {
                                                 description={item.description}
                                                 navigation={navigation}
                                             />}
+                    showsVerticalScrollIndicator={false}
                 />
             </View>
             <Footer style={styles.footerStyle}>
