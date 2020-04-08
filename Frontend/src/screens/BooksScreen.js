@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
-import { Container, Text } from 'native-base';
+import { Container, Text, Footer } from 'native-base';
 import Colors from '../constants/colors';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 import railsServer from '../api/railsServer';
+import BookListItem from '../components/BookListItem';
+import FooterIconButton from '../components/FooterIconButton';
 
 const BooksScreen = ({ navigation }) => {
     const [booksData, setBooksData] = useState([]);
@@ -48,20 +50,69 @@ const BooksScreen = ({ navigation }) => {
                 <FlatList
                     data={booksData}
                     keyExtractor={book => book.id}
-                    renderItem={({ item }) => <Text>{item.title}</Text>}
+                    renderItem={({ item }) => <BookListItem 
+                                                title={item.title} 
+                                                author={item.author.name}
+                                                imageUrl={item.image_url}
+                                                description={item.description}
+                                            />}
                 />
             </View>
+            <Footer style={styles.footerStyle}>
+                <FooterIconButton
+                    iconComponent={<MaterialCommunityIcons
+                                        name='home-outline'
+                                        size={35}
+                                        style={styles.footerIconStyle}
+                                    />}
+                    onPress={() => {}}
+                />
+                <FooterIconButton
+                    iconComponent={<FontAwesome
+                                        name='star-o'
+                                        size={35}
+                                        style={styles.footerIconStyle}
+                                    />}
+                    onPress={() => {}}
+                />
+                <FooterIconButton
+                    iconComponent={<FontAwesome
+                                        name='bookmark-o'
+                                        size={32}
+                                        style={styles.footerIconStyle}
+                                    />}
+                    onPress={() => {}}
+                />
+                <FooterIconButton
+                    iconComponent={<FontAwesome
+                                        name='user-o'
+                                        size={32}
+                                        style={styles.footerIconStyle}
+                                    />}
+                    onPress={() => {}}
+                />
+            </Footer>
         </Container>
     );
 };
 
 const styles = StyleSheet.create({
+    footerIconStyle: {
+        marginTop: 5,
+        color: Colors.primaryOrange
+    },
+    footerStyle: {
+        justifyContent: 'space-evenly',
+        backgroundColor: Colors.accentLightGray
+    },
     flatListViewStyle: {
         backgroundColor: Colors.accentLightWhite,
         flex: 1, 
         marginTop: '5%',
-        marginBottom: '15%',
-        marginHorizontal: '10%',
+        marginBottom: '2%',
+        marginHorizontal: '5%',
+        paddingVertical: '2%',
+        paddingHorizontal: '5%',
         borderRadius: 10
     },
     subtitleTitleStyle: {

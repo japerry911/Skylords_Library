@@ -2,7 +2,7 @@ class BooksController < ApplicationController
     def index 
         @books = Book.all 
 
-        render json: { books: @books }
+        render json: { books: @books }, include: :author
     end
 
     def show
