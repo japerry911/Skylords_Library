@@ -24,7 +24,7 @@ const GetStartedScreen = ({ navigation}) => {
                 </View>
                 <Button 
                     style={styles.signUpButtonStyle}
-                    onPress={() => navigation.navigate('SignUp')}
+                    onPress={() => navigation.navigate('Sign Up')}
                 >
                     <View style={styles.test}>
                     <Text style={styles.buttonTextStyle}>Sign Up</Text>
@@ -32,14 +32,14 @@ const GetStartedScreen = ({ navigation}) => {
                 </Button>
                 <Button 
                     style={styles.signInButtonStyle}
-                    onPress={() => navigation.navigate('SignIn')}
+                    onPress={() => navigation.navigate('Sign In')}
                 >
                     <Text style={styles.buttonTextStyle}>Sign In</Text>
                 </Button>
             </Body>
             <TouchableOpacity 
                 style={styles.footerStyle}
-                onPress={() => navigation.navigate('LearnMore')}
+                onPress={() => navigation.navigate('Learn More')}
             >
                 <Footer
                     style={styles.footerStyle}

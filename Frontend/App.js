@@ -3,9 +3,9 @@ import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator } from 'react-navigation-drawer'
+import { NavigationContainer, DrawerActions } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack'
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SignInScreen from './src/screens/SignInScreen';
@@ -15,7 +15,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import Colors from './src/constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Root } from 'native-base';
+import { createAppContainer } from 'react-navigation';
 
 const foundationHeaderOptions = {
   headerStyle: { backgroundColor: Colors.primaryOrange },
@@ -27,83 +27,61 @@ const foundationHeaderOptions = {
                     />
 };
 
-const WelcomeStack = createStackNavigator(
-  { Welcome: WelcomeScreen },
-  {
-    defaultNavigationOptions: () => ({
-      title: 'Skylord\'s Library',
-      ...foundationHeaderOptions
-    })
-  }
-);
+const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
-const GetStartedStack = createStackNavigator(
-  { GetStarted: GetStartedScreen },
-  {
-    defaultNavigationOptions: () => ({
-      title: 'Getting Started',
-      ...foundationHeaderOptions
-    })
-  }
-);
+const WelcomeStack = () => {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name='Welcome' component={WelcomeScreen} />
+      <Drawer.Screen name='Get Started' component={GetStartedScreen} />
+      <Drawer.Screen name='Learn More' component={LearnMoreScreen} />
+      <Drawer.Screen name='Sign Up' component={SignUpScreen} />
+      <Drawer.Screen name='Sign In' component={SignInScreen} />
+    </Drawer.Navigator>
+  );
+};
 
-const LearnMoreStack = createStackNavigator(
-  { LearnMore: LearnMoreScreen },
-  {
-    defaultNavigationOptions: () => ({
-      title: 'Learn More',
-      ...foundationHeaderOptions
-    })
-  }
-);
+const AuthStack = () => {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name='Home' component={HomeScreen} />
+    </Drawer.Navigator>
+  );
+};
 
-const SignUpStack = createStackNavigator(
-  { SignUp: SignUpScreen },
-  {
-    defaultNavigationOptions: () => ({
-      title: 'Sign Up',
-      ...foundationHeaderOptions
-    })
-  }
-);
-
-const SignInStack = createStackNavigator(
-  { SignIn: SignInScreen },
-  {
-    defaultNavigationOptions: () => ({
-      title: 'Sign In',
-      ...foundationHeaderOptions
-    })
-  }
-);
-
-const HomeStack = createStackNavigator(
-  { Home: HomeScreen },
-  {
-    defaultNavigationOptions: ({ navigation }) => ({
-      title: 'Home',
-      headerRight: () =>  <TouchableOpacity onPress={() => navigation.openDrawer()}>
-                                          <MaterialCommunityIcons
-                                              name='menu'
-                                              size={40}
-                                              style={styles.headerRightIconStyle}
-                                          />
-                                        </TouchableOpacity>,
-      ...foundationHeaderOptions
-    })
-  }
-)
-
-const DrawerNavigator = createDrawerNavigator({
-  'Welcome': WelcomeStack,
-  'Get Started': GetStartedStack,
-  'Learn More': LearnMoreStack,
-  'Sign Up': SignUpStack,
-  'Sign In': SignInStack,
-  'Home': HomeStack
-})
-
-const App = createAppContainer(DrawerNavigator);
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='Welcome'>
+        <Stack.Screen 
+          name='Welcome' 
+          component={WelcomeStack} 
+          options={({ navigation }) => ({ title: 'Skylord\'s Library', ...foundationHeaderOptions, headerRight: () => 
+            <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+              <MaterialCommunityIcons 
+                name='menu'
+                size={35}
+                style={{ backgroundColor: Colors.primaryOrange, color: Colors.accentLightWhite }}
+              />
+            </TouchableOpacity> })}
+        />
+        <Stack.Screen 
+          name='Authed' 
+          component={AuthStack} 
+          options={({ navigation }) => ({ title: 'Skylord\'s Library', ...foundationHeaderOptions, headerRight: () => 
+            <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+              <MaterialCommunityIcons 
+                name='menu'
+                size={35}
+                style={{ backgroundColor: Colors.primaryOrange, color: Colors.accentLightWhite }}
+              />
+            </TouchableOpacity> })}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -152,9 +130,7 @@ export default () => {
   }
 
   return (
-    <Root>
       <App />
-    </Root>
   );
 }
 
