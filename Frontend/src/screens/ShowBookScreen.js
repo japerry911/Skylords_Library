@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Text, Body } from 'native-base';
-import { StyleSheet, TouchableOpacity, View, Image, FlatList } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Container, Text, Body, Footer } from 'native-base';
+import { StyleSheet, TouchableOpacity, View, Image, FlatList, ScrollView } from 'react-native';
+import { MaterialIcons, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 import axios from 'axios';
 import railsServer from '../api/railsServer';
 import { Rating } from 'react-native-ratings';
 import ShowReviewItem from '../components/ShowReviewItem';
+import FooterIconButton from '../components/FooterIconButton';
 
 const calcAverageRating = reviews => {
     const total = reviews.reduce((total, review) => total + review.rating, 0);
@@ -25,7 +26,7 @@ const ShowBookScreen = ({ route, navigation }) => {
 
         try {
             railsServer.get(`/books/${bookId}`, { cancelToken: source.token })
-                .then(response => setBookDetails(response.data.book));
+                .then(response => setBookDetails(response.data));
         } catch (error) {
             if (axios.isCancel(error)) {
                 console.log('Canceled');
@@ -55,38 +56,89 @@ const ShowBookScreen = ({ route, navigation }) => {
                     {bookDetails.title}
                 </Text>
             </View>
-            <Body style={styles.mainBodyStyle}>
-                <Text style={styles.descriptionTextStyle}>
-                    {bookDetails.description}
-                </Text>
-                <Rating 
-                    type='star'
-                    startingValue={averageRating}
-                    imageSize={20}
-                    tintColor={Colors.accentLightWhite}
-                    selectedColor={Colors.primaryOrange}
-                    type='custom'
-                    ratingColor={Colors.primaryOrange}
-                />
-                <Image
-                    source={{ uri: bookDetails.image_url }}
-                    style={styles.imageStyle}
-                />
+            <Body>
                 <View style={styles.flatListViewStyle}>
-                    <FlatList
+                        <FlatList
+                            showsVerticalScrollIndicator={false}
+                            ListHeaderComponent={
+                                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                                    <Text style={styles.descriptionTextStyle}>
+                                        {bookDetails.description}
+                                    </Text>
+                                    <Rating 
+                                        type='star'
+                                        startingValue={averageRating}
+                                        imageSize={20}
+                                        tintColor={Colors.accentLightWhite}
+                                        selectedColor={Colors.primaryOrange}
+                                        type='custom'
+                                        ratingColor={Colors.primaryOrange}
+                                    />
+                                    <Image
+                                        source={{ uri: bookDetails.image_url }}
+                                        style={styles.imageStyle}
+                                    />
+                                </View>}
                         data={bookDetails.reviews}
-                        keyExtractor={review => review.id}
-                        renderItem={({ item }) => <ShowReviewItem 
-                                                    description={item.description}
-                                                  />}
+                        renderItem={({ item }) => <ShowReviewItem review={item} />}
                     />
                 </View>
             </Body>
+            <Footer style={styles.footerStyle}>
+                <FooterIconButton
+                    iconComponent={<MaterialCommunityIcons
+                                        name='home-outline'
+                                        size={35}
+                                        style={styles.footerIconStyle}
+                                    />}
+                    onPress={() => {}}
+                />
+                <FooterIconButton
+                    iconComponent={<FontAwesome
+                                        name='star-o'
+                                        size={35}
+                                        style={styles.footerIconStyle}
+                                    />}
+                    onPress={() => {}}
+                />
+                <FooterIconButton
+                    iconComponent={<FontAwesome
+                                        name='bookmark-o'
+                                        size={32}
+                                        style={styles.footerIconStyle}
+                                    />}
+                    onPress={() => {}}
+                />
+                <FooterIconButton
+                    iconComponent={<FontAwesome
+                                        name='user-o'
+                                        size={32}
+                                        style={styles.footerIconStyle}
+                                    />}
+                    onPress={() => {}}
+                />
+            </Footer>
         </Container>
     );
 };
 
 const styles = StyleSheet.create({
+    footerIconStyle: {
+        marginTop: 5,
+        color: Colors.primaryOrange
+    },
+    footerStyle: {
+        justifyContent: 'space-evenly',
+        backgroundColor: Colors.accentLightGray
+    },
+    flatListViewStyle: {
+        backgroundColor: Colors.accentLightWhite,
+        flex: 1, 
+        marginBottom: '2%',
+        marginHorizontal: '5%',
+        paddingHorizontal: '5%',
+        borderRadius: 10
+    },
     averageRatingStyle: {
         justifyContent: 'center',
         textAlign: 'center'
@@ -101,12 +153,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Avenir_medium',
         color: Colors.accentLightGrayText,
         padding: 10
-    },
-    mainBodyStyle: {
-        backgroundColor: Colors.accentLightWhite,
-        borderRadius: 10,
-        marginHorizontal: '2%',
-        alignItems: 'center'
     },
     backIconStyle: {
         height: 50,
