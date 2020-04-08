@@ -6,9 +6,11 @@ import Colors from '../constants/colors';
 import railsServer from '../api/railsServer';
 import { NavigationActions } from 'react-navigation';
 
-const onFormSubmit = async (username, password, setInvalidLogin, successCallBack) => {
+const onFormSubmit = async (username, password, setInvalidLogin, successCallBack, setUsername, setPassword) => {
     try {
         const response = await railsServer.post('/login', { user: { username, password }});
+        setUsername('');
+        setPassword('');
         successCallBack(response.data.user);
     } catch (error) {
         setInvalidLogin(true);
@@ -80,7 +82,7 @@ const SignInScreen = ({ navigation }) => {
                             <Button
                                 style={styles.loginButtonStyle}
                                 onPress={() => onFormSubmit(username, password, setInvalidLogin, 
-                                    user => navigation.navigate('Authed' , { screen: 'Home', params: { user }}))}
+                                    user => navigation.navigate('Authed' , { screen: 'Home', params: { user }}), setUsername, setPassword)}
                             >
                                 <Text style={styles.buttonText}>Login</Text>    
                             </Button>

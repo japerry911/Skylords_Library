@@ -30,7 +30,7 @@ const CustomDrawerContent = props => {
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
-      <DrawerItem label='Sign Out' onPress={() => alert('Woohoo!!!')} />
+      <DrawerItem label='Sign Out' onPress={() => props.navigation.navigate('Welcome', 'Sign In')} />
     </DrawerContentScrollView>
   );
 };
