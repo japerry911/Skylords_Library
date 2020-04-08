@@ -103,7 +103,7 @@ const SignUpScreen = ({ navigation }) => {
                     <Button 
                         style={styles.signUpButtonStyle}
                         disabled={!validationStatus}
-                        onPress={() => onFormSubmit(username, age, password, () => navigation.navigate('SignIn'),
+                        onPress={() => onFormSubmit(username, age, password, () => navigation.navigate('Sign In'),
                                                     setUsername, setAge, setPassword, setConfirmPassword)}
                     >
                         <Text style={styles.buttonTextStyle}>Sign Up</Text>
@@ -111,7 +111,7 @@ const SignUpScreen = ({ navigation }) => {
                     </Button>
                     <Button 
                         style={styles.goBackButtonStyle}
-                        onPress={() => navigation.navigate('GetStarted')}
+                        onPress={() => navigation.navigate('Get Started')}
                     >
                         <Text style={styles.buttonTextStyle}>Go Back</Text>
                     </Button>

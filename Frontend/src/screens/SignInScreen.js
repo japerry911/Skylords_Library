@@ -4,6 +4,7 @@ import { Text, Body, Form, Label, Input, Item, Button, Toast } from 'native-base
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 import railsServer from '../api/railsServer';
+import { NavigationActions } from 'react-navigation';
 
 const onFormSubmit = async (username, password, setInvalidLogin, successCallBack) => {
     try {
@@ -78,7 +79,8 @@ const SignInScreen = ({ navigation }) => {
                             </Item>
                             <Button
                                 style={styles.loginButtonStyle}
-                                onPress={() => onFormSubmit(username, password, setInvalidLogin, user => navigation.navigate('Home', { user }))}
+                                onPress={() => onFormSubmit(username, password, setInvalidLogin, 
+                                    user => navigation.navigate('Authed' , { user }))}
                             >
                                 <Text style={styles.buttonText}>Login</Text>    
                             </Button>
@@ -87,7 +89,7 @@ const SignInScreen = ({ navigation }) => {
                             Don't have an account?&nbsp;
                             <Text 
                                 style={styles.signUpText}
-                                onPress={() => navigation.navigate('SignUp')}
+                                onPress={() => navigation.navigate('Sign Up')}
                             >
                                 Sign Up.</Text>
                         </Text>

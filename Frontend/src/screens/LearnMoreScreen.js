@@ -49,7 +49,7 @@ const LearnMoreScreen = ({ navigation }) => {
                 </View>
                 <Button
                     style={styles.buttonStyle}
-                    onPress={() => navigation.navigate('SignUp')}
+                    onPress={() => navigation.navigate('Sign Up')}
                 >
                     <Text style={styles.buttonText}>
                         Sign Up
