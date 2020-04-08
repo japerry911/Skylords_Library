@@ -8,9 +8,9 @@ import FooterIconButton from '../components/FooterIconButton';
 import axios from 'axios';
 import RecentReviewItem from '../components/RecentReviewItem';
 
-const HomeScreen = ({ route }) => {
+const HomeScreen = ({ route, navigation }) => {
     const [mostRecentObjects, setMostRecentObjects] = useState(undefined);
-    const user = route.params.user;
+    const user = route.param === undefined ? { username: '' } : route.params.user;
 
     useEffect(() => {
         const CancelToken = axios.CancelToken
@@ -43,7 +43,10 @@ const HomeScreen = ({ route }) => {
                         Let's find your new favorite book.
                     </Text>
                     <View style={styles.bodyIconViewStyle}>
-                        <TouchableOpacity style={styles.iconTOStyle}>
+                        <TouchableOpacity 
+                            style={styles.iconTOStyle}
+                            onPress={() => navigation.navigate('Books')}
+                        >
                             <View style={styles.iconViewStyle}>
                                 <SimpleLineIcons
                                     name='book-open'
