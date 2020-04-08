@@ -78,7 +78,7 @@ const SignInScreen = ({ navigation }) => {
                             </Item>
                             <Button
                                 style={styles.loginButtonStyle}
-                                onPress={() => onFormSubmit(username, password, setInvalidLogin, user => navigation.navigate('Home', { screen: 'SignInStack', params: { user }}))}
+                                onPress={() => onFormSubmit(username, password, setInvalidLogin, user => navigation.navigate('Home', { user }))}
                             >
                                 <Text style={styles.buttonText}>Login</Text>    
                             </Button>

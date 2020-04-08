@@ -10,7 +10,7 @@ import RecentReviewItem from '../components/RecentReviewItem';
 
 const HomeScreen = ({ navigation }) => {
     const [mostRecentObjects, setMostRecentObjects] = useState(undefined);
-    const user = navigation.dangerouslyGetParent().state.params.params.user;
+    const user = navigation.dangerouslyGetParent().state.params.user;
 
     useEffect(() => {
         const CancelToken = axios.CancelToken

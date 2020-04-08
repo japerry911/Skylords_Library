@@ -3,9 +3,9 @@ import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator } from 'react-navigation-drawer'
+import { NavigationContainer, DrawerActions } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack'
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SignInScreen from './src/screens/SignInScreen';
@@ -15,7 +15,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import Colors from './src/constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Root } from 'native-base';
+import { createAppContainer } from 'react-navigation';
 
 const foundationHeaderOptions = {
   headerStyle: { backgroundColor: Colors.primaryOrange },
@@ -27,7 +27,7 @@ const foundationHeaderOptions = {
                     />
 };
 
-const WelcomeStack = createStackNavigator(
+/*const WelcomeStack = createStackNavigator(
   { Welcome: WelcomeScreen },
   {
     defaultNavigationOptions: () => ({
@@ -103,7 +103,49 @@ const DrawerNavigator = createDrawerNavigator({
   'Home': HomeStack
 })
 
-const App = createAppContainer(DrawerNavigator);
+const App = createAppContainer(DrawerNavigator);*/
+
+const Drawer = createDrawerNavigator();
+
+const test = () => {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name='Welcome' component={WelcomeScreen} />
+      <Drawer.Screen name='GetStarted' component={GetStartedScreen} />
+    </Drawer.Navigator>
+  );
+};
+
+const test2 = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='Home' component={HomeScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const Stack = createStackNavigator();
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='Test'>
+        <Stack.Screen 
+          name='dick' 
+          component={test} 
+          options={({ navigation }) => ({ title: 'boobies', ...foundationHeaderOptions, headerRight: () => <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          <MaterialCommunityIcons 
+            name='menu'
+            size={35}
+            style={{ backgroundColor: Colors.primaryOrange, color: Colors.accentLightWhite }}
+          />
+        </TouchableOpacity> })}
+        />
+        <Stack.Screen name='Test2' component={test2} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -152,9 +194,7 @@ export default () => {
   }
 
   return (
-    <Root>
       <App />
-    </Root>
   );
 }
 
