@@ -15,6 +15,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import Colors from './src/constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Root } from 'native-base';
 
 const foundationHeaderOptions = {
   headerStyle: { backgroundColor: Colors.primaryOrange },
@@ -138,7 +139,9 @@ export default () => {
   }
 
   return (
+    <Root>
       <App />
+    </Root>
   );
 }
 

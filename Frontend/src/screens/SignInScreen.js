@@ -4,7 +4,6 @@ import { Text, Body, Form, Label, Input, Item, Button, Toast } from 'native-base
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 import railsServer from '../api/railsServer';
-import { NavigationActions } from 'react-navigation';
 
 const onFormSubmit = async (username, password, setInvalidLogin, successCallBack, setUsername, setPassword) => {
     try {
@@ -27,7 +26,8 @@ const SignInScreen = ({ navigation }) => {
             Toast.show({
                 text: 'Invalid Credentials',
                 buttonText: 'Okay',
-                type: 'danger'
+                type: 'danger',
+                duration: 6000
             });
             setInvalidLogin(false);
         }
