@@ -48,6 +48,7 @@ const BooksScreen = ({ navigation }) => {
             </View>
             <View style={styles.flatListViewStyle}>
                 <FlatList
+                    style={styles.flatListStyle}
                     data={booksData}
                     keyExtractor={book => book.id}
                     renderItem={({ item }) => <BookListItem 
@@ -97,6 +98,9 @@ const BooksScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    flatListStyle: {
+        flex: 1
+    },
     footerIconStyle: {
         marginTop: 5,
         color: Colors.primaryOrange
@@ -111,7 +115,6 @@ const styles = StyleSheet.create({
         marginTop: '5%',
         marginBottom: '2%',
         marginHorizontal: '5%',
-        paddingVertical: '2%',
         paddingHorizontal: '5%',
         borderRadius: 10
     },
