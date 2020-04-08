@@ -8,6 +8,6 @@ class BooksController < ApplicationController
     def show
         @book = Book.find(params[:id])
 
-        render json: @book
+        render json: { book: @book }, include: :author, include: :reviews
     end
 end

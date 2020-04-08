@@ -8,6 +8,8 @@ const ShowBookScreen = ({ route, navigation }) => {
     const [bookDetails, setBookDetails] = useState({});
     const bookId = route.params.bookId;
 
+    console.log(bookId);
+
     useEffect(() => {}, []);
 
     return (
