@@ -3,7 +3,7 @@ import { Text } from 'native-base';
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import Colors from '../constants/colors';
 
-const BookListItem = ({ title, author, imageUrl, description }) => {
+const BookListItem = ({ bookId, title, author, imageUrl, description, navigation }) => {
     return (
         <View style={styles.itemViewStyle}>
             <Image
@@ -21,7 +21,10 @@ const BookListItem = ({ title, author, imageUrl, description }) => {
                     {description}
                 </Text>
             </View>
-            <TouchableOpacity style={styles.viewButtonStyle}>
+            <TouchableOpacity 
+                style={styles.viewButtonStyle}
+                onPress={() => navigation.navigate('ShowBook', { bookId })}
+            >
                 <Text style={styles.highlightStyle}>
                     View
                 </Text>

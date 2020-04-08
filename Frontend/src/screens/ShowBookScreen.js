@@ -1,23 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
-import { Container, Text, Footer } from 'native-base';
-import Colors from '../constants/colors';
+import { Container, Text, Body, Footer } from 'native-base';
+import { StyleSheet, TouchableOpacity, View, Image, FlatList, ScrollView } from 'react-native';
 import { MaterialIcons, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
+import Colors from '../constants/colors';
 import axios from 'axios';
 import railsServer from '../api/railsServer';
-import BookListItem from '../components/BookListItem';
+import { Rating } from 'react-native-ratings';
+import ShowReviewItem from '../components/ShowReviewItem';
 import FooterIconButton from '../components/FooterIconButton';
 
-const BooksScreen = ({ navigation }) => {
-    const [booksData, setBooksData] = useState([]);
+const calcAverageRating = reviews => {
+    const total = reviews.reduce((total, review) => total + review.rating, 0);
+    return total / reviews.length;
+};
+
+const ShowBookScreen = ({ route, navigation }) => {
+    const [bookDetails, setBookDetails] = useState({});
+    const [averageRating, setAverageRating] = useState(0);
+
+    const bookId = route.params.bookId;
 
     useEffect(() => {
-        const CancelToken = axios.CancelToken;
-        const source = CancelToken.source();
+        const CancelToken = axios.CancelToken
+        const source = CancelToken.source()
 
         try {
-            railsServer.get('/books', { cancelToken: source.token })
-                .then(response => setBooksData(response.data.books));
+            railsServer.get(`/books/${bookId}`, { cancelToken: source.token })
+                .then(response => setBookDetails(response.data));
         } catch (error) {
             if (axios.isCancel(error)) {
                 console.log('Canceled');
@@ -27,40 +36,55 @@ const BooksScreen = ({ navigation }) => {
         }
     }, []);
 
+    useEffect(() => {
+        if (bookDetails.reviews !== undefined) {
+            setAverageRating(calcAverageRating(bookDetails.reviews));
+        }
+    }, [bookDetails]);
+
     return (
         <Container style={styles.mainContainerStyle}>
             <View style={styles.headerViewStyle}>
-                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                <TouchableOpacity onPress={() => navigation.pop()}>
                     <MaterialIcons 
                         name='chevron-left'
                         size={40}
                         style={styles.backIconStyle}
                     />
                 </TouchableOpacity>
-                <View style={styles.headerTextViewStyle}>
-                    <Text style={styles.headerTitleStyle}>
-                        All Books
-                    </Text>
-                    <Text style={styles.subtitleTitleStyle}>
-                        Let's find your new favorite book.
-                    </Text>
+                <Text style={styles.headerTitleStyle}>
+                    {bookDetails.title}
+                </Text>
+            </View>
+            <Body>
+                <View style={styles.flatListViewStyle}>
+                    <FlatList
+                        showsVerticalScrollIndicator={false}
+                        ListHeaderComponent={
+                            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                                <Text style={styles.descriptionTextStyle}>
+                                    {bookDetails.description}
+                                </Text>
+                                <Rating 
+                                    type='star'
+                                    startingValue={averageRating}
+                                    imageSize={20}
+                                    tintColor={Colors.accentLightWhite}
+                                    selectedColor={Colors.primaryOrange}
+                                    type='custom'
+                                    ratingColor={Colors.primaryOrange}
+                                    readonly
+                                />
+                                <Image
+                                    source={{ uri: bookDetails.image_url }}
+                                    style={styles.imageStyle}
+                                />
+                            </View>}
+                        data={bookDetails.reviews}
+                        renderItem={({ item }) => <ShowReviewItem review={item} />}
+                    />
                 </View>
-            </View>
-            <View style={styles.flatListViewStyle}>
-                <FlatList
-                    style={styles.flatListStyle}
-                    data={booksData}
-                    keyExtractor={book => book.id}
-                    renderItem={({ item }) => <BookListItem 
-                                                bookId={item.id}
-                                                title={item.title} 
-                                                author={item.author.name}
-                                                imageUrl={item.image_url}
-                                                description={item.description}
-                                                navigation={navigation}
-                                            />}
-                />
-            </View>
+            </Body>
             <Footer style={styles.footerStyle}>
                 <FooterIconButton
                     iconComponent={<MaterialCommunityIcons
@@ -100,9 +124,6 @@ const BooksScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    flatListStyle: {
-        flex: 1
-    },
     footerIconStyle: {
         marginTop: 5,
         color: Colors.primaryOrange
@@ -114,27 +135,39 @@ const styles = StyleSheet.create({
     flatListViewStyle: {
         backgroundColor: Colors.accentLightWhite,
         flex: 1, 
-        marginTop: '5%',
         marginBottom: '2%',
         marginHorizontal: '5%',
         paddingHorizontal: '5%',
         borderRadius: 10
     },
-    subtitleTitleStyle: {
+    averageRatingStyle: {
+        justifyContent: 'center',
+        textAlign: 'center'
+    },
+    imageStyle: {
+        height: 200, 
+        width: 125,
+        opacity: .50,
+        marginVertical: '3%'
+    },
+    descriptionTextStyle: {
+        fontFamily: 'Avenir_medium',
         color: Colors.accentLightGrayText,
-        fontSize: 14,
-        fontFamily: 'Avenir_medium'
+        padding: 10
     },
     backIconStyle: {
+        height: 50,
         color: Colors.primaryOrange
     },
     mainContainerStyle: {
-        backgroundColor: Colors.accentLightGray
+        backgroundColor: Colors.accentLightGray,
     },
     headerViewStyle: {
         marginTop: '5%',
         marginLeft: '5%',
         flexDirection: 'row',
+        alignItems: 'center',
+        
     },
     headerTitleStyle: {
         color: Colors.accentLightGrayText,
@@ -143,4 +176,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default BooksScreen;
+export default ShowBookScreen;
