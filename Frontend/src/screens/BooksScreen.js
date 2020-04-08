@@ -3,9 +3,27 @@ import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
 import { Container, Text } from 'native-base';
 import Colors from '../constants/colors';
 import { MaterialIcons } from '@expo/vector-icons';
+import axios from 'axios';
+import railsServer from '../api/railsServer';
 
 const BooksScreen = ({ navigation }) => {
     const [booksData, setBooksData] = useState([]);
+
+    useEffect(() => {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
+        try {
+            railsServer.get('/books', { cancelToken: source.token })
+                .then(response => setBooksData(response.data.books));
+        } catch (error) {
+            if (axios.isCancel(error)) {
+                console.log('Canceled');
+            } else {
+                throw error;
+            }
+        }
+    }, []);
 
     return (
         <Container style={styles.mainContainerStyle}>
@@ -28,6 +46,9 @@ const BooksScreen = ({ navigation }) => {
             </View>
             <View style={styles.flatListViewStyle}>
                 <FlatList
+                    data={booksData}
+                    keyExtractor={book => book.id}
+                    renderItem={({ item }) => <Text>{item.title}</Text>}
                 />
             </View>
         </Container>

@@ -18,7 +18,7 @@ const HomeScreen = ({ route, navigation }) => {
 
         try {
             railsServer.get('/most_recent_two_reviews', { cancelToken: source.token })
-            .then(response => setMostRecentObjects(response.data.reviews));
+                .then(response => setMostRecentObjects(response.data.reviews));
         } catch (error) {
             if (axios.isCancel(error)) {
                 console.log('Canceled');
