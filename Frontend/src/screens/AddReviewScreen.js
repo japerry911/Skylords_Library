@@ -8,11 +8,19 @@ import FooterIconButton from '../components/FooterIconButton';
 import axios from 'axios';
 import railsServer from '../api/railsServer';
 
+const onFormSubmit = async (bookAddBool, title, author, rating, description) => {
+    if (bookAddBool) {
+        // Create the new Book
+        
+    }
+};
+
 const AddReviewScreen = ({ navigation }) => {
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [addBookCheck, setAddBookCheck] = useState(false);
     const [rating, setRating] = useState(0);
+    const [description, setDescription] = useState(null);
     const [existingTitle, setExistingTitle] = useState(false);
     const [existingBooksList, setExistingBooksList] = useState([]);
 
@@ -96,6 +104,17 @@ const AddReviewScreen = ({ navigation }) => {
                         <Text style={styles.checkBoxTextStyle}>
                             Add Book
                         </Text>
+                        <Item
+                            floatingLabel
+                            style={styles.formImageItemStyle}
+                        >
+                        <Label style={styles.formImageLabelStyle}>Enter Book Image URL</Label>
+                        <Input
+                            autoCapitalize='none'
+                            autoCorrect={false}
+                            disabled={!addBookCheck}
+                        />          
+                        </Item>                  
                     </View>
                     <Item 
                         floatingLabel
@@ -123,7 +142,7 @@ const AddReviewScreen = ({ navigation }) => {
                             type='custom'
                             ratingColor={Colors.primaryOrange}
                             onFinishRating={newRating => setRating(newRating)}
-                            fractions={2}
+                            fractions={1}
                         />
                     </View>
                     <View style={styles.descriptionViewStyle}>
@@ -136,6 +155,8 @@ const AddReviewScreen = ({ navigation }) => {
                             bordered
                             placeholder='Enter your review (optional)'
                             placeholderTextColor={Colors.accentLightGrayText}
+                            value={description}
+                            onChangeText={newDescription => setDescription(newDescription)}
                         />
                     </View>
                     <Button style={styles.postButtonStyle}>
@@ -235,9 +256,18 @@ const styles = StyleSheet.create({
     formItemStyle: {
         width: '95%'
     },
+    formImageItemStyle: {
+        width: '50%',
+        marginLeft: '15%',
+        alignSelf: 'flex-end'
+    },
     formItemLabelStyle: {
         color: Colors.accentLightGrayText
     },
+    formImageLabelStyle: {
+        fontSize: 13,
+        color: Colors.accentLightGrayText
+    }, 
     bodyViewStyle: {
         backgroundColor: Colors.accentLightWhite,
         height: '80%',
