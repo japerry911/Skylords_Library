@@ -12,9 +12,14 @@ class BooksController < ApplicationController
     end
 
     def create
-        @new_book = Book.create(title: params[:title], image_url: params[:image_url], 
-                                description: params[:description], author_id: params[:author_id])
+        @new_book = Book.create(book_params)
 
-        render json: @new_book
+        render json: { book: @new_book }
     end
+
+    private
+
+        def book_params
+            params.require(:book).permit([:title, :image_url, :description, :author_id])
+        end
 end

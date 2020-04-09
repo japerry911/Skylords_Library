@@ -8,17 +8,58 @@ import FooterIconButton from '../components/FooterIconButton';
 import axios from 'axios';
 import railsServer from '../api/railsServer';
 
-const onFormSubmit = async (bookAddBool, title, author, rating, description) => {
+const onFormSubmit = async (bookAddBool, imageUrl, title, author, rating, description) => {
+    let bookId;
+
     if (bookAddBool) {
-        // Create the new Author and then create the new Book
+        // Create the new Author if doesn't exist and then create the new Book
+
+        // Pull all authors
+        const authorsResponse = await railsServer.get('/authors');
+        const authorsList = authorsResponse.data.authors.map(authorObject => {
+            return(
+                { name: authorObject.name, id: authorObject.id }
+            );
+        });
+
+        // Check if Author currently exists in database, if not, create a new entry
+        let authorId;
+        const authorExists = authorsList.find(authorObject => authorObject.name === author) !== undefined; 
         
+        if (!authorExists) {
+            // Author Creation: 
+            const authorResponse = await railsServer.post('/authors', { author: { name: author }});
+            authorId = authorResponse.data.id;
+        } else {
+            authorId = authorsList.find(authorObject => authorObject.name === author).id; 
+        }
+
+        // Create the Book
+        const bookResponse = await railsServer.post('/books', 
+        { book: { title: title, author_id: authorId, description: null, image_url: imageUrl }});
+        bookId = bookResponse.data.book.id;
+    } else {
+        // Look Up Book Id by comparing to array of all books & ids
+        const bookResponse = await railsServer.get('/books');
+        const booksList = bookResponse.data.books.map(bookObject => {
+            return (
+                { id: bookObject.id, title: bookObject.title }
+            );
+        })
+
+        bookId = booksList.find(bookObject => bookObject.title === title).id;
     }
+
+    console.log(bookId);
+
+    // Add a Review!@_#)!)#
 };
 
 const AddReviewScreen = ({ navigation }) => {
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [addBookCheck, setAddBookCheck] = useState(false);
+    const [imageUrl, setImageUrl] = useState('');
     const [rating, setRating] = useState(0);
     const [description, setDescription] = useState(null);
     const [existingTitle, setExistingTitle] = useState(false);
@@ -35,7 +76,8 @@ const AddReviewScreen = ({ navigation }) => {
                 .then(books => setExistingBooksList(books.map(book => {
                     return (
                         { title: book.title, author: book.author.name }
-                    )})));
+                    );
+                })));
 
         } catch (error) {
             if (axios.isCancel(error)) {
@@ -113,6 +155,8 @@ const AddReviewScreen = ({ navigation }) => {
                             autoCapitalize='none'
                             autoCorrect={false}
                             disabled={!addBookCheck}
+                            value={imageUrl}
+                            onChangeText={newImageUrl => setImageUrl(newImageUrl)}
                         />          
                         </Item>                  
                     </View>
@@ -159,7 +203,10 @@ const AddReviewScreen = ({ navigation }) => {
                             onChangeText={newDescription => setDescription(newDescription)}
                         />
                     </View>
-                    <Button style={styles.postButtonStyle}>
+                    <Button 
+                        style={styles.postButtonStyle}
+                        onPress={() => onFormSubmit(addBookCheck, imageUrl, title, author, rating, description)}
+                    >
                         <Text style={styles.buttonText}>
                             Post
                         </Text>
