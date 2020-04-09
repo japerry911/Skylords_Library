@@ -25,7 +25,7 @@ const SignInScreen = ({ navigation }) => {
         }
     }, [invalidLogin]);
 
-    const onFormSubmit = async successCallBack => {
+    const onFormSubmit = async () => {
         const loginSuccess = await signInUser(username, password);
 
         if (loginSuccess) {
