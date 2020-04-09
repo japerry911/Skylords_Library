@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Container, Text, Input, Label, Item, CheckBox, Textarea, Button, Footer, Icon } from 'native-base';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import Colors from '../constants/colors';
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import FooterIconButton from '../components/FooterIconButton';
 import axios from 'axios';
@@ -227,12 +227,12 @@ const AddReviewScreen = ({ navigation }) => {
                     onPress={() => navigation.navigate('Home')}
                 />
                 <FooterIconButton
-                    iconComponent={<FontAwesome
-                                        name='star-o'
+                    iconComponent={<AntDesign
+                                        name='book'
                                         size={35}
                                         style={styles.footerIconStyle}
                                     />}
-                    onPress={() => {}}
+                    onPress={() => navigation.navigate('Books')}
                 />
                 <FooterIconButton
                     iconComponent={<FontAwesome

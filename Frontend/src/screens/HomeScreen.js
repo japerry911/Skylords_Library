@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
 import { Container, Body, Footer, Text, Spinner, Drawer } from 'native-base';
 import Colors from '../constants/colors';
-import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import railsServer from '../api/railsServer';
 import FooterIconButton from '../components/FooterIconButton';
 import axios from 'axios';
@@ -130,12 +130,12 @@ const HomeScreen = ({ route, navigation }) => {
                         onPress={() => {}}
                     />
                     <FooterIconButton
-                        iconComponent={<FontAwesome
-                                            name='star-o'
+                        iconComponent={<AntDesign
+                                            name='book'
                                             size={35}
                                             style={styles.footerIconStyle}
                                         />}
-                        onPress={() => {}}
+                        onPress={() => navigation.navigate('Books')}
                     />
                     <FooterIconButton
                         iconComponent={<FontAwesome
