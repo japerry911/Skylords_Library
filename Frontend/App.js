@@ -14,6 +14,7 @@ import LearnMoreScreen from './src/screens/LearnMoreScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import BooksScreen from './src/screens/BooksScreen';
 import ShowBookScreen from './src/screens/ShowBookScreen';
+import AddReviewScreen from './src/screens/AddReviewScreen';
 import Colors from './src/constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet, TouchableOpacity } from 'react-native';
@@ -58,6 +59,7 @@ const AuthStack = () => {
     <Drawer.Navigator initialRouteName='Books' drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen name='Home' component={HomeScreen} />
       <Drawer.Screen name='Books' component={BooksStack} />
+      <Drawer.Screen name='Add a Review' component={AddReviewScreen} />
     </Drawer.Navigator>
   );
 };

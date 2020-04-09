@@ -58,7 +58,10 @@ const HomeScreen = ({ route, navigation }) => {
                                 </Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.iconTOStyle}>
+                        <TouchableOpacity 
+                            style={styles.iconTOStyle}
+                            onPress={() => navigation.navigate('Add a Review')}
+                        >
                             <View style={styles.iconViewStyle}>
                                 <FontAwesome
                                     name='pencil-square-o'
