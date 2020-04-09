@@ -10,4 +10,16 @@ class BooksController < ApplicationController
 
         render json: @book, include: { author: {}, reviews: { include: { user: { only: [:username] }}}}
     end
+
+    def create
+        @new_book = Book.create(book_params)
+
+        render json: { book: @new_book }
+    end
+
+    private
+
+        def book_params
+            params.require(:book).permit([:title, :image_url, :description, :author_id])
+        end
 end

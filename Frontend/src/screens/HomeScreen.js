@@ -10,7 +10,7 @@ import RecentReviewItem from '../components/RecentReviewItem';
 
 const HomeScreen = ({ route, navigation }) => {
     const [mostRecentObjects, setMostRecentObjects] = useState(undefined);
-    const user = route.param === undefined ? { username: '' } : route.params.user;
+    const user = route.params === undefined ? { username: '' } : route.params.user;
 
     useEffect(() => {
         const CancelToken = axios.CancelToken
@@ -58,7 +58,10 @@ const HomeScreen = ({ route, navigation }) => {
                                 </Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.iconTOStyle}>
+                        <TouchableOpacity 
+                            style={styles.iconTOStyle}
+                            onPress={() => navigation.navigate('Add a Review')}
+                        >
                             <View style={styles.iconViewStyle}>
                                 <FontAwesome
                                     name='pencil-square-o'
