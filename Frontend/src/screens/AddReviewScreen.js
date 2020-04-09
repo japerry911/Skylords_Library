@@ -133,6 +133,9 @@ const AddReviewScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    textAreaStyle: {
+        minWidth: '95%'
+    },
     footerIconStyle: {
         marginTop: 5,
         color: Colors.primaryOrange
@@ -148,10 +151,10 @@ const styles = StyleSheet.create({
     },
     postButtonStyle: {
         backgroundColor: Colors.primaryOrange,
-        marginVertical: 15,
+        marginVertical: 8,
         justifyContent: 'center',
         alignItems: 'center',
-        minWidth: '50%',
+        minWidth: '50%'
     },
     formElementTitleStyle: {
         color: Colors.accentLightGrayText,
@@ -168,16 +171,16 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     checkBoxViewStyle: {
-        marginTop: '3%',
+        marginTop: '5%',
         flexDirection: 'row',
         alignItems: 'center',
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
+        height: '10%'
     },
     checkBoxTextStyle: {
         color: Colors.accentLightGrayText,
         fontSize: 13,
         marginLeft: '6%'
-
     },
     formItemStyle: {
         width: '95%'
@@ -191,7 +194,8 @@ const styles = StyleSheet.create({
         marginHorizontal: '4%',
         paddingHorizontal: '4%',
         borderRadius: 10,
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingTop: '2%'
     },
     backIconStyle: {
         height: 50,
