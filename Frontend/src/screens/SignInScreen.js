@@ -7,14 +7,12 @@ import { Context as UserContext } from '../contexts/userContext';
 
 const SignInScreen = ({ navigation }) => {
     const userContext = useContext(UserContext);
-    const { state, signInUser } = userContext;
+    const { signInUser } = userContext;
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [invalidLogin, setInvalidLogin] = useState(false);
     
-    console.log(state);
-
     useEffect(() => {
         if (invalidLogin) {
             Toast.show({
