@@ -56,7 +56,7 @@ const WelcomeStack = () => {
 
 const AuthStack = () => {
   return (
-    <Drawer.Navigator initialRouteName='Books' drawerContent={props => <CustomDrawerContent {...props} />}>
+    <Drawer.Navigator initialRouteName='Add a Review' drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen name='Home' component={HomeScreen} />
       <Drawer.Screen name='Books' component={BooksStack} />
       <Drawer.Screen name='Add a Review' component={AddReviewScreen} />
