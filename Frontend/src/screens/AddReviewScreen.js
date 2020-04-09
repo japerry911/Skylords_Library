@@ -115,7 +115,7 @@ const AddReviewScreen = ({ navigation }) => {
     return (
         <Container style={styles.mainContainerStyle}>
             <View style={styles.headerViewStyle}>
-                <TouchableOpacity onPress={() => navigation.pop()}>
+                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                     <MaterialIcons 
                         name='chevron-left'
                         size={40}
