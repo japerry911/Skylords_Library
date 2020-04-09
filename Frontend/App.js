@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Root } from 'native-base';
 import { userContext } from './src/contexts/userContext';
 import { MainNavigator } from './navigation';
+import userReducer from './src/reducers/userReducer';
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -34,8 +34,13 @@ const fetchImages = async() => {
   return Promise.all(cacheImages);
 };
 
+const initialState = {
+  user: {}
+};
+
 export default () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [state, dispatch] = useReducer(userReducer, initialState);
 
   const _preloadsAsync = async () => {
     const fontAssets = fetchFonts();
@@ -56,8 +61,8 @@ export default () => {
 
   return (
     <Root>
-      <userContext.Provider value={{user: {}}}>
-      <MainNavigator />
+      <userContext.Provider value={ { state, dispatch }}>
+        <MainNavigator />
       </userContext.Provider>
     </Root>
   );
