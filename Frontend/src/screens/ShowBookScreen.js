@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Text, Body, Footer } from 'native-base';
-import { StyleSheet, TouchableOpacity, View, Image, FlatList, ScrollView } from 'react-native';
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
+import { StyleSheet, TouchableOpacity, View, Image, FlatList } from 'react-native';
+import { MaterialIcons, MaterialCommunityIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 import axios from 'axios';
 import railsServer from '../api/railsServer';
@@ -95,12 +95,12 @@ const ShowBookScreen = ({ route, navigation }) => {
                     onPress={() => {}}
                 />
                 <FooterIconButton
-                    iconComponent={<FontAwesome
-                                        name='star-o'
+                    iconComponent={<AntDesign
+                                        name='book'
                                         size={35}
                                         style={styles.footerIconStyle}
                                     />}
-                    onPress={() => {}}
+                    onPress={() => navigation.navigate('Books')}
                 />
                 <FooterIconButton
                     iconComponent={<FontAwesome
