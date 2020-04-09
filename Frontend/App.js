@@ -3,59 +3,10 @@ import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
-import { NavigationContainer, DrawerActions } from '@react-navigation/native';
-import Colors from './src/constants/colors';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Root } from 'native-base';
 import { userContext } from './src/contexts/userContext';
-import { WelcomeStack, AuthStack } from './navigation';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-
-const Stack = createStackNavigator();
-const foundationHeaderOptions = {
-  headerStyle: { backgroundColor: Colors.primaryOrange },
-  headerTitleStyle: { color: 'white' },
-  headerLeft: () => <MaterialCommunityIcons
-                      name='paw'
-                      size={40}
-                      style={styles.headerLeftIconStyle}
-                    />
-};
-
-const App = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='Welcome'>
-        <Stack.Screen 
-          name='Welcome' 
-          component={WelcomeStack} 
-          options={({ navigation }) => ({ title: 'Skylord\'s Library', ...foundationHeaderOptions, headerRight: () => 
-            <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-              <MaterialCommunityIcons 
-                name='menu'
-                size={35}
-                style={{ backgroundColor: Colors.primaryOrange, color: Colors.accentLightWhite }}
-              />
-            </TouchableOpacity> })}
-        />
-        <Stack.Screen 
-          name='Authed' 
-          component={AuthStack} 
-          options={({ navigation }) => ({ title: 'Skylord\'s Library', ...foundationHeaderOptions, headerRight: () => 
-            <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-              <MaterialCommunityIcons 
-                name='menu'
-                size={35}
-                style={{ backgroundColor: Colors.primaryOrange, color: Colors.accentLightWhite }}
-              />
-            </TouchableOpacity> })}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
+import { MainNavigator } from './navigation';
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -106,19 +57,8 @@ export default () => {
   return (
     <Root>
       <userContext.Provider value={{user: {}}}>
-      <App />
+      <MainNavigator />
       </userContext.Provider>
     </Root>
   );
 }
-
-const styles = StyleSheet.create({
-  headerLeftIconStyle: {
-    color: 'white',
-    marginLeft: 10
-  },
-  headerRightIconStyle: {
-    color: 'white',
-    marginRight: 10
-  }
-})
