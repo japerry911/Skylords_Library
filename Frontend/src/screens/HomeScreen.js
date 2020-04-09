@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
 import { Container, Body, Footer, Text, Spinner, Drawer } from 'native-base';
 import Colors from '../constants/colors';
@@ -7,10 +7,15 @@ import railsServer from '../api/railsServer';
 import FooterIconButton from '../components/FooterIconButton';
 import axios from 'axios';
 import RecentReviewItem from '../components/RecentReviewItem';
+import { Context as UserContext } from '../contexts/userContext';
 
 const HomeScreen = ({ route, navigation }) => {
     const [mostRecentObjects, setMostRecentObjects] = useState(undefined);
-    const user = route.params === undefined ? { username: '' } : route.params.user;
+
+    const userContext = useContext(UserContext);
+    const { state } = userContext;
+
+    const user = state.user;
 
     useEffect(() => {
         const CancelToken = axios.CancelToken
