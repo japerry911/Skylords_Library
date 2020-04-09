@@ -4,9 +4,7 @@ import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { Root } from 'native-base';
-import { userContext } from './src/contexts/userContext';
 import { MainNavigator } from './navigation';
-import userReducer from './src/reducers/userReducer';
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -40,7 +38,6 @@ const initialState = {
 
 export default () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [state, dispatch] = useReducer(userReducer, initialState);
 
   const _preloadsAsync = async () => {
     const fontAssets = fetchFonts();
@@ -61,9 +58,7 @@ export default () => {
 
   return (
     <Root>
-      <userContext.Provider value={ { state, dispatch }}>
-        <MainNavigator />
-      </userContext.Provider>
+      <MainNavigator />
     </Root>
   );
 }
