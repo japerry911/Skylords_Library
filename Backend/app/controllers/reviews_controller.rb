@@ -10,6 +10,12 @@ class ReviewsController < ApplicationController
 
         render json: @review
     end
+
+    def create 
+        @new_review = Review.create(review_params)
+
+        render json: { review: @new_review }
+    end
     
     def most_recent_two_reviews
         @most_recent_2_reviews = Review.order(created_at: :desc).limit(2)
@@ -24,4 +30,10 @@ class ReviewsController < ApplicationController
                                 { user: @user2, book: @book2, review: @most_recent_2_reviews[1] }
                                 ]}
     end
+
+    private
+    
+        def review_params
+            params.require(:review).permit(:book_id, :user_id, :rating, :description)
+        end
 end

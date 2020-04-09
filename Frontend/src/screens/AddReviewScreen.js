@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Container, Text, Input, Label, Item, CheckBox, Textarea, Button, Footer, Icon } from 'native-base';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import Colors from '../constants/colors';
@@ -7,55 +7,9 @@ import { Rating } from 'react-native-ratings';
 import FooterIconButton from '../components/FooterIconButton';
 import axios from 'axios';
 import railsServer from '../api/railsServer';
+import { Context as UserContext } from '../contexts/userContext';
 
-const onFormSubmit = async (bookAddBool, imageUrl, title, author, rating, description) => {
-    let bookId;
-
-    if (bookAddBool) {
-        // Create the new Author if doesn't exist and then create the new Book
-
-        // Pull all authors
-        const authorsResponse = await railsServer.get('/authors');
-        const authorsList = authorsResponse.data.authors.map(authorObject => {
-            return(
-                { name: authorObject.name, id: authorObject.id }
-            );
-        });
-
-        // Check if Author currently exists in database, if not, create a new entry
-        let authorId;
-        const authorExists = authorsList.find(authorObject => authorObject.name === author) !== undefined; 
-        
-        if (!authorExists) {
-            // Author Creation: 
-            const authorResponse = await railsServer.post('/authors', { author: { name: author }});
-            authorId = authorResponse.data.id;
-        } else {
-            authorId = authorsList.find(authorObject => authorObject.name === author).id; 
-        }
-
-        // Create the Book
-        const bookResponse = await railsServer.post('/books', 
-        { book: { title: title, author_id: authorId, description: null, image_url: imageUrl }});
-        bookId = bookResponse.data.book.id;
-    } else {
-        // Look Up Book Id by comparing to array of all books & ids
-        const bookResponse = await railsServer.get('/books');
-        const booksList = bookResponse.data.books.map(bookObject => {
-            return (
-                { id: bookObject.id, title: bookObject.title }
-            );
-        })
-
-        bookId = booksList.find(bookObject => bookObject.title === title).id;
-    }
-
-    console.log(bookId);
-
-    // Add a Review!@_#)!)#
-};
-
-const AddReviewScreen = ({ navigation, route }) => {
+const AddReviewScreen = ({ navigation }) => {
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [addBookCheck, setAddBookCheck] = useState(false);
@@ -65,7 +19,56 @@ const AddReviewScreen = ({ navigation, route }) => {
     const [existingTitle, setExistingTitle] = useState(false);
     const [existingBooksList, setExistingBooksList] = useState([]);
 
-    console.log(route.params);
+    const userContext = useContext(UserContext);
+    const { state } = userContext;
+
+    const onFormSubmit = async () => {
+        let bookId;
+
+        if (addBookCheck) {
+            // Create the new Author if doesn't exist and then create the new Book
+    
+            // Pull all authors
+            const authorsResponse = await railsServer.get('/authors');
+            const authorsList = authorsResponse.data.authors.map(authorObject => {
+                return(
+                    { name: authorObject.name, id: authorObject.id }
+                );
+            });
+    
+            // Check if Author currently exists in database, if not, create a new entry
+            let authorId;
+            const authorExists = authorsList.find(authorObject => authorObject.name === author) !== undefined; 
+            
+            if (!authorExists) {
+                // Author Creation: 
+                const authorResponse = await railsServer.post('/authors', { author: { name: author }});
+                authorId = authorResponse.data.id;
+            } else {
+                authorId = authorsList.find(authorObject => authorObject.name === author).id; 
+            }
+    
+            // Create the Book
+            const bookResponse = await railsServer.post('/books', 
+            { book: { title, author_id: authorId, description: null, image_url: imageUrl }});
+            bookId = bookResponse.data.book.id;
+        } else {
+            // Look Up Book Id by comparing to array of all books & ids
+            const bookResponse = await railsServer.get('/books');
+            const booksList = bookResponse.data.books.map(bookObject => {
+                return (
+                    { id: bookObject.id, title: bookObject.title }
+                );
+            })
+    
+            bookId = booksList.find(bookObject => bookObject.title === title).id;
+        }
+    
+        const userId = state.user.id;
+
+        //Posting of the Review with userId (from UserContext) and previously obtained bookId 
+        await railsServer.post('/reviews', { review: { book_id: bookId, user_id: userId, rating, description }});
+    };
 
     // Pull all existing books into state array on first/only first render
     useEffect(() => {
@@ -207,7 +210,7 @@ const AddReviewScreen = ({ navigation, route }) => {
                     </View>
                     <Button 
                         style={styles.postButtonStyle}
-                        onPress={() => onFormSubmit(addBookCheck, imageUrl, title, author, rating, description)}
+                        onPress={() => onFormSubmit()}
                     >
                         <Text style={styles.buttonText}>
                             Post
