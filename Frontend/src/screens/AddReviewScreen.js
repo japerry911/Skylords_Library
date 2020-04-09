@@ -1,15 +1,61 @@
-import React, { useState } from 'react';
-import { Container, Text, Form, Input, Label, Item, CheckBox, Textarea, Button, Footer } from 'native-base';
+import React, { useState, useEffect } from 'react';
+import { Container, Text, Input, Label, Item, CheckBox, Textarea, Button, Footer, Icon } from 'native-base';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import Colors from '../constants/colors';
 import { MaterialIcons, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import FooterIconButton from '../components/FooterIconButton';
+import axios from 'axios';
+import railsServer from '../api/railsServer';
 
 const AddReviewScreen = ({ navigation }) => {
     const [title, setTitle] = useState('');
+    const [author, setAuthor] = useState('');
     const [addBookCheck, setAddBookCheck] = useState(false);
     const [rating, setRating] = useState(0);
+    const [existingTitle, setExistingTitle] = useState(false);
+    const [existingBooksList, setExistingBooksList] = useState([]);
+
+    // Pull all existing books into state array on first/only first render
+    useEffect(() => {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source()
+
+        try {
+            railsServer.get('/books', { cancelToken: source.token })
+                .then(response => response.data.books)
+                .then(books => setExistingBooksList(books.map(book => {
+                    return (
+                        { title: book.title, author: book.author.name }
+                    )})));
+
+        } catch (error) {
+            if (axios.isCancel(error)) {
+                console.log('Canceled');
+            } else {
+                throw error;
+            }
+        }
+    }, []);
+
+    // Check if the book is in the title list, if it is change existingTitle to true
+    useEffect(() => {
+        if (addBookCheck) {
+            setExistingTitle(true);
+        } else {
+            setExistingTitle(existingBooksList.find(book => book.title === title) === undefined ? false : true);
+        }
+    }, [title, addBookCheck]);
+
+    // Once the Existing Title is true, look up an author to autofill author box (only if the title exists)
+    useEffect(() => {
+        if (!existingTitle) return;
+
+        const bookDetails = existingBooksList.find(book => book.title === title);
+        if (bookDetails) {
+            setAuthor(bookDetails.author);
+        }
+    }, [existingTitle]);
 
     return (
         <Container style={styles.mainContainerStyle}>
@@ -29,6 +75,8 @@ const AddReviewScreen = ({ navigation }) => {
                     <Item 
                         floatingLabel
                         style={styles.formItemStyle}
+                        success={existingTitle}
+                        error={!existingTitle}
                     >
                         <Label style={styles.formItemLabelStyle}>Enter Book Title</Label>
                         <Input 
@@ -37,6 +85,7 @@ const AddReviewScreen = ({ navigation }) => {
                             autoCapitalize='none'
                             autoCorrect={false}
                         />
+                        <Icon name={existingTitle ? 'checkmark-circle' : 'close-circle'} />
                     </Item>
                     <View style={styles.checkBoxViewStyle}>
                         <CheckBox 
@@ -54,10 +103,11 @@ const AddReviewScreen = ({ navigation }) => {
                     >
                         <Label style={styles.formItemLabelStyle}>Enter Book Author</Label>
                         <Input 
-                            value={title}
-                            onChangeText={newTitle => setTitle(newTitle)}
+                            value={author}
+                            onChangeText={newAuthor => setAuthor(newAuthor)}
                             autoCapitalize='none'
                             autoCorrect={false}
+                            disabled={!addBookCheck}
                         />
                     </Item>
                     <View style={styles.ratingViewStyle}>
