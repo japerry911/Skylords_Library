@@ -1,22 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, ImageBackground, View } from 'react-native';
 import { Text, Body, Form, Label, Input, Item, Button, Toast } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 import railsServer from '../api/railsServer';
-
-const onFormSubmit = async (username, password, setInvalidLogin, successCallBack, setUsername, setPassword) => {
-    try {
-        const response = await railsServer.post('/login', { user: { username, password }});
-        setUsername('');
-        setPassword('');
-        successCallBack(response.data.user);
-    } catch (error) {
-        setInvalidLogin(true);
-    }
-};
+import { Context as UserContext } from '../contexts/userContext';
 
 const SignInScreen = ({ navigation }) => {
+    const userContext = useContext(UserContext);
+    const { state, signInUser } = userContext;
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [invalidLogin, setInvalidLogin] = useState(false);
@@ -32,6 +25,18 @@ const SignInScreen = ({ navigation }) => {
             setInvalidLogin(false);
         }
     }, [invalidLogin]);
+
+    const onFormSubmit = async successCallBack => {
+        const loginSuccess = await signInUser(username, password);
+
+        if (loginSuccess) {
+            setUsername('');
+            setPassword('')
+            navigation.navigate('Authed', { screen: 'Home'});
+        } else {
+            setInvalidLogin(true);
+        }
+    };
 
     return (
         <ImageBackground 
@@ -81,8 +86,7 @@ const SignInScreen = ({ navigation }) => {
                             </Item>
                             <Button
                                 style={styles.loginButtonStyle}
-                                onPress={() => onFormSubmit(username, password, setInvalidLogin, 
-                                    user => navigation.navigate('Authed' , { screen: 'Home', params: { user }}), setUsername, setPassword)}
+                                onPress={() => onFormSubmit()}
                             >
                                 <Text style={styles.buttonText}>Login</Text>    
                             </Button>

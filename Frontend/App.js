@@ -1,10 +1,11 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState } from 'react';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { Root } from 'native-base';
 import { MainNavigator } from './navigation';
+import { Provider as UserProvider } from './src/contexts/userContext';
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -58,7 +59,9 @@ export default () => {
 
   return (
     <Root>
-      <MainNavigator />
+      <UserProvider>
+        <MainNavigator />
+      </UserProvider>
     </Root>
   );
 }

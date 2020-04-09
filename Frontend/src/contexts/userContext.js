@@ -1,10 +1,7 @@
-import { createContext } from 'react';
 import railsServer from '../api/railsServer';
 import createDataContext from './createDataContext';
 
 const INITIAL_STATE = {user: {}};
-
-const userContext = createContext(INITIAL_STATE);
 
 const userReducer = ((state, action) => {
     switch (action.type) {
@@ -27,11 +24,10 @@ const userReducer = ((state, action) => {
 const signInUser = dispatch => {
     return async (username, password) => {
         try {
-            const response = await railsServer.post('/login', { username, password });
-            dispatch({ type: 'MODIFY_USER', payload: response.user });
+            const response = await railsServer.post('/login', { user: { username, password }});
+            dispatch({ type: 'MODIFY_USER', payload: response.data.user });
             return true;
         } catch (error) {
-            console.log(error);
             return false;
         }
     };
