@@ -3,7 +3,6 @@ import { StyleSheet, ImageBackground, View } from 'react-native';
 import { Text, Body, Form, Label, Input, Item, Button, Toast } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
-import railsServer from '../api/railsServer';
 import { Context as UserContext } from '../contexts/userContext';
 
 const SignInScreen = ({ navigation }) => {
@@ -13,6 +12,8 @@ const SignInScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [invalidLogin, setInvalidLogin] = useState(false);
+    
+    console.log(state);
 
     useEffect(() => {
         if (invalidLogin) {

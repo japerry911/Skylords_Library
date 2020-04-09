@@ -14,7 +14,9 @@ import AddReviewScreen from './src/screens/AddReviewScreen';
 import React from 'react';
 import Colors from './src/constants/colors';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-  
+import { useContext } from 'react';
+import { Context as UserContext } from './src/contexts/userContext';
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const foundationHeaderOptions = {
@@ -28,24 +30,31 @@ const foundationHeaderOptions = {
 };
 
 const CustomDrawerContent = props => {
-return (
-    <DrawerContentScrollView {...props}>
-        <DrawerItemList {...props} />
-        <DrawerItem label='Sign Out' onPress={() => props.navigation.navigate('Welcome', 'Sign In')} /> 
-    </DrawerContentScrollView>
-);
+  const userContext = useContext(UserContext);
+  const { signOutUser } = userContext;
+
+  return (
+      <DrawerContentScrollView {...props}>
+          <DrawerItemList {...props} />
+          <DrawerItem label='Sign Out' onPress={() => { 
+            signOutUser();
+            props.navigation.navigate('Welcome', 'Sign In');
+          }}
+          /> 
+      </DrawerContentScrollView>
+  );
 };
 
 const WelcomeStack = () => {
-return (
-    <Drawer.Navigator>
-        <Drawer.Screen name='Welcome' component={WelcomeScreen} />
-        <Drawer.Screen name='Get Started' component={GetStartedScreen} />
-        <Drawer.Screen name='Learn More' component={LearnMoreScreen} />
-        <Drawer.Screen name='Sign Up' component={SignUpScreen} />
-        <Drawer.Screen name='Sign In' component={SignInScreen} />
-    </Drawer.Navigator>
-);
+  return (
+      <Drawer.Navigator>
+          <Drawer.Screen name='Welcome' component={WelcomeScreen} />
+          <Drawer.Screen name='Get Started' component={GetStartedScreen} />
+          <Drawer.Screen name='Learn More' component={LearnMoreScreen} />
+          <Drawer.Screen name='Sign Up' component={SignUpScreen} />
+          <Drawer.Screen name='Sign In' component={SignInScreen} />
+      </Drawer.Navigator>
+  );
 };
 
 const AuthStack = () => {
