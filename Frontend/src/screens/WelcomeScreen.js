@@ -26,9 +26,6 @@ const WelcomeScreen = ({ navigation }) => {
                         Discover your favorite books with your favorite people<Text style={styles.highlightStyle}>.</Text>
                     </Text>
                 </Body>
-                <userContext.Consumer>
-                    {(value) => console.log(value)}
-                </userContext.Consumer>
                 <TouchableOpacity onPress={() => navigation.navigate('Get Started')}>
                 <Footer 
                     style={styles.footerStyle}

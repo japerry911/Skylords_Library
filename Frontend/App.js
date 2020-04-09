@@ -4,23 +4,16 @@ import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationContainer, DrawerActions } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack'
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
-import WelcomeScreen from './src/screens/WelcomeScreen';
-import SignUpScreen from './src/screens/SignUpScreen';
-import SignInScreen from './src/screens/SignInScreen';
-import GetStartedScreen from './src/screens/GetStartedScreen';
-import LearnMoreScreen from './src/screens/LearnMoreScreen';
-import HomeScreen from './src/screens/HomeScreen';
-import BooksScreen from './src/screens/BooksScreen';
-import ShowBookScreen from './src/screens/ShowBookScreen';
-import AddReviewScreen from './src/screens/AddReviewScreen';
 import Colors from './src/constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Root } from 'native-base';
 import { userContext } from './src/contexts/userContext';
+import { WelcomeStack, AuthStack } from './navigation';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
+const Stack = createStackNavigator();
 const foundationHeaderOptions = {
   headerStyle: { backgroundColor: Colors.primaryOrange },
   headerTitleStyle: { color: 'white' },
@@ -29,49 +22,6 @@ const foundationHeaderOptions = {
                       size={40}
                       style={styles.headerLeftIconStyle}
                     />
-};
-
-const CustomDrawerContent = props => {
-  return (
-    <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-      <DrawerItem label='Sign Out' onPress={() => props.navigation.navigate('Welcome', 'Sign In')} />
-    </DrawerContentScrollView>
-  );
-};
-
-const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
-
-const WelcomeStack = () => {
-  return (
-    <Drawer.Navigator>
-      <Drawer.Screen name='Welcome' component={WelcomeScreen} />
-      <Drawer.Screen name='Get Started' component={GetStartedScreen} />
-      <Drawer.Screen name='Learn More' component={LearnMoreScreen} />
-      <Drawer.Screen name='Sign Up' component={SignUpScreen} />
-      <Drawer.Screen name='Sign In' component={SignInScreen} />
-    </Drawer.Navigator>
-  );
-};
-
-const AuthStack = () => {
-  return (
-    <Drawer.Navigator initialRouteName='Home' drawerContent={props => <CustomDrawerContent {...props} />}>
-      <Drawer.Screen name='Home' component={HomeScreen} />
-      <Drawer.Screen name='Books' component={BooksStack} />
-      <Drawer.Screen name='Add a Review' component={AddReviewScreen} />
-    </Drawer.Navigator>
-  );
-};
-
-const BooksStack = () => {
-  return (
-    <Stack.Navigator initialRouteName='Books' headerMode='none'>
-      <Stack.Screen name='Books' component={BooksScreen} />
-      <Stack.Screen name='ShowBook' component={ShowBookScreen} />
-    </Stack.Navigator> 
-  );
 };
 
 const App = () => {
