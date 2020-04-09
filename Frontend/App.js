@@ -19,6 +19,7 @@ import Colors from './src/constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Root } from 'native-base';
+import { userContext } from './src/contexts/userContext';
 
 const foundationHeaderOptions = {
   headerStyle: { backgroundColor: Colors.primaryOrange },
@@ -56,7 +57,7 @@ const WelcomeStack = () => {
 
 const AuthStack = () => {
   return (
-    <Drawer.Navigator initialRouteName='Add a Review' drawerContent={props => <CustomDrawerContent {...props} />}>
+    <Drawer.Navigator initialRouteName='Home' drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen name='Home' component={HomeScreen} />
       <Drawer.Screen name='Books' component={BooksStack} />
       <Drawer.Screen name='Add a Review' component={AddReviewScreen} />
@@ -76,7 +77,7 @@ const BooksStack = () => {
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Authed'>
+      <Stack.Navigator initialRouteName='Welcome'>
         <Stack.Screen 
           name='Welcome' 
           component={WelcomeStack} 
@@ -154,7 +155,9 @@ export default () => {
 
   return (
     <Root>
+      <userContext.Provider value={{user: {}}}>
       <App />
+      </userContext.Provider>
     </Root>
   );
 }

@@ -3,6 +3,7 @@ import { StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import { Text, View, Body, Footer } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
+import { userContext } from '../contexts/userContext';
 
 const WelcomeScreen = ({ navigation }) => {
     return (
@@ -25,6 +26,9 @@ const WelcomeScreen = ({ navigation }) => {
                         Discover your favorite books with your favorite people<Text style={styles.highlightStyle}>.</Text>
                     </Text>
                 </Body>
+                <userContext.Consumer>
+                    {(value) => console.log(value)}
+                </userContext.Consumer>
                 <TouchableOpacity onPress={() => navigation.navigate('Get Started')}>
                 <Footer 
                     style={styles.footerStyle}

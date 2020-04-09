@@ -55,7 +55,7 @@ const onFormSubmit = async (bookAddBool, imageUrl, title, author, rating, descri
     // Add a Review!@_#)!)#
 };
 
-const AddReviewScreen = ({ navigation }) => {
+const AddReviewScreen = ({ navigation, route }) => {
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [addBookCheck, setAddBookCheck] = useState(false);
@@ -64,6 +64,8 @@ const AddReviewScreen = ({ navigation }) => {
     const [description, setDescription] = useState(null);
     const [existingTitle, setExistingTitle] = useState(false);
     const [existingBooksList, setExistingBooksList] = useState([]);
+
+    console.log(route.params);
 
     // Pull all existing books into state array on first/only first render
     useEffect(() => {
