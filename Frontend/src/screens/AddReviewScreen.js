@@ -10,7 +10,7 @@ import railsServer from '../api/railsServer';
 
 const onFormSubmit = async (bookAddBool, title, author, rating, description) => {
     if (bookAddBool) {
-        // Create the new Book
+        // Create the new Author and then create the new Book
         
     }
 };

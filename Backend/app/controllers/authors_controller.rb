@@ -8,6 +8,12 @@ class AuthorsController < ApplicationController
     def show 
         @author = Author.find(params[:id])
 
-        render json: @autor 
+        render json: @author 
+    end
+
+    def create
+        @new_author = Author.create(name: params[:name])
+
+        render json: @new_author 
     end
 end
