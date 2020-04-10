@@ -1,17 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Container, Body, Text, Form, Label, Item, Input, Button, Icon } from 'native-base';
 import Colors from '../constants/colors';
-import railsServer from '../api/railsServer';
-
-const onFormSubmit = async (username, age, password, callBack, setUsername, setAge, setPassword, setConfirmPassword) => {
-    await railsServer.post('/users', { user: { username, age, password }});
-    setUsername('');
-    setAge('');
-    setPassword('');
-    setConfirmPassword('');
-    callBack();
-};
+import { Context as UserContext } from '../contexts/userContext';
 
 const SignUpScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
@@ -20,6 +11,18 @@ const SignUpScreen = ({ navigation }) => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [passwordMatchingBool, setPasswordMatchingBool] = useState(false);
     const [validationStatus, setValidationStatus] = useState(false);
+
+    const userContext = useContext(UserContext);
+    const { signUpUser } = userContext;
+
+    const onFormSubmit = async (username, age, password) => {
+        await signUpUser(username, age, password);
+        setUsername('');
+        setAge('');
+        setPassword('');
+        setConfirmPassword('');
+        navigation.navigate('Sign In', { signedUp: true });
+    }; 
 
     useEffect(() => {
         setPasswordMatchingBool(!(password !== confirmPassword || password === '' || confirmPassword === ''));
@@ -103,8 +106,7 @@ const SignUpScreen = ({ navigation }) => {
                     <Button 
                         style={styles.signUpButtonStyle}
                         disabled={!validationStatus}
-                        onPress={() => onFormSubmit(username, age, password, () => navigation.navigate('Sign In'),
-                                                    setUsername, setAge, setPassword, setConfirmPassword)}
+                        onPress={() => onFormSubmit(username, age, password)}
                     >
                         <Text style={styles.buttonTextStyle}>Sign Up</Text>
                         <Icon name={validationStatus ? 'checkmark-circle' : 'close-circle'} />

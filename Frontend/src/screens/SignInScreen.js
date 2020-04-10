@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 import { Context as UserContext } from '../contexts/userContext';
 
-const SignInScreen = ({ navigation }) => {
+const SignInScreen = ({ navigation, route }) => {
     const userContext = useContext(UserContext);
     const { signInUser } = userContext;
 
@@ -24,6 +24,17 @@ const SignInScreen = ({ navigation }) => {
             setInvalidLogin(false);
         }
     }, [invalidLogin]);
+
+    useEffect(() => {
+        if (route.params.signedUp) {
+            Toast.show({
+                text: 'Account Created',
+                buttonText: 'Okay',
+                type: 'success',
+                duration: 3000
+            })
+        }
+    }, [route]);
 
     const onFormSubmit = async () => {
         const loginSuccess = await signInUser(username, password);
