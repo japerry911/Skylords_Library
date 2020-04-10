@@ -8,7 +8,7 @@ const FooterButton = ({ parentNavigation, destination }) => {
             <View 
                 style={styles.footerStyle}
             >
-                <Text style={styles.footerTextStyle}>Get Started</Text>
+                <Text style={styles.footerTextStyle}>{destination}</Text>
             </View>
         </TouchableOpacity>
     );
