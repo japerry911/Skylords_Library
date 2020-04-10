@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons, AntDesign, FontAwesome } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 
-const AuthedFooter = () => {
+const AuthedFooter = ({ parentNavigation }) => {
     return (
         <View style={styles.footerStyle}>
             <FooterIconButton
@@ -13,7 +13,7 @@ const AuthedFooter = () => {
                                     size={35}
                                     style={styles.footerIconStyle}
                                 />}
-                onPress={() => {}}
+                onPress={() => parentNavigation.navigate('Home')}
             />
             <FooterIconButton
                 iconComponent={<AntDesign
@@ -21,7 +21,7 @@ const AuthedFooter = () => {
                                     size={35}
                                     style={styles.footerIconStyle}
                                 />}
-                onPress={() => navigation.navigate('Books')}
+                onPress={() => parentNavigation.navigate('Books')}
             />
             <FooterIconButton
                 iconComponent={<FontAwesome

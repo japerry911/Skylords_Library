@@ -116,7 +116,7 @@ const HomeScreen = ({ navigation }) => {
                         }}
                     />
                 </View>
-                <AuthedFooter />
+                <AuthedFooter parentNavigation={navigation} />
             </View>}
         </>
     );
