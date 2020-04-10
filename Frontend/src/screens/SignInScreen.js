@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, ImageBackground, View } from 'react-native';
-import { Text, Body, Form, Label, Input, Item, Button, Toast } from 'native-base';
+import { Text, StyleSheet, ImageBackground, View } from 'react-native';
+import { Label, Input, Item, Button, Toast } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 import { Context as UserContext } from '../contexts/userContext';
@@ -57,7 +57,7 @@ const SignInScreen = ({ navigation, route }) => {
         resizeMode='stretch'
         >
             <View style={styles.childComponents}>
-                <Body style={styles.bodyStyle}>
+                <View style={styles.bodyViewStyle}>
                     <Text style={styles.titleStyle}>
                         Skylord's{'\n\t\t\t'}Library
                         <MaterialCommunityIcons
@@ -70,39 +70,37 @@ const SignInScreen = ({ navigation, route }) => {
                         A destination for book and pet lovers<Text style={styles.highlightStyle}>.</Text>
                     </Text>
                     <View style={styles.formViewStyle}>
-                        <Form>
-                            <Item
-                                floatingLabel
-                                style={styles.formItemStyle}
-                            >
-                                <Label style={styles.formItemLabelStyle}>Enter your Username</Label>
-                                <Input 
-                                    value={username}
-                                    onChangeText={newUsername => setUsername(newUsername)}
-                                    autoCapitalize='none'
-                                    autoCorrect={false}
-                                />
-                            </Item>
-                            <Item 
-                                floatingLabel
-                                style={styles.formItemStyle}
-                            >
-                                <Label style={styles.formItemLabelStyle}>Enter your Password</Label>
-                                <Input 
-                                    value={password}
-                                    onChangeText={newPassword => setPassword(newPassword)}
-                                    secureTextEntry
-                                    autoCapitalize='none'
-                                    autoCorrect={false}
-                                />
-                            </Item>
-                            <Button
-                                style={styles.loginButtonStyle}
-                                onPress={() => onFormSubmit()}
-                            >
-                                <Text style={styles.buttonText}>Login</Text>    
-                            </Button>
-                        </Form>
+                        <Item
+                            floatingLabel
+                            style={styles.formItemStyle}
+                        >
+                            <Label style={styles.formItemLabelStyle}>Enter your Username</Label>
+                            <Input 
+                                value={username}
+                                onChangeText={newUsername => setUsername(newUsername)}
+                                autoCapitalize='none'
+                                autoCorrect={false}
+                            />
+                        </Item>
+                        <Item 
+                            floatingLabel
+                            style={styles.formItemStyle}
+                        >
+                            <Label style={styles.formItemLabelStyle}>Enter your Password</Label>
+                            <Input 
+                                value={password}
+                                onChangeText={newPassword => setPassword(newPassword)}
+                                secureTextEntry
+                                autoCapitalize='none'
+                                autoCorrect={false}
+                            />
+                        </Item>
+                        <Button
+                            style={styles.loginButtonStyle}
+                            onPress={() => onFormSubmit()}
+                        >
+                            <Text style={styles.buttonText}>Login</Text>    
+                        </Button>
                         <Text style={styles.signUpTextStyle}>
                             Don't have an account?&nbsp;
                             <Text 
@@ -112,7 +110,7 @@ const SignInScreen = ({ navigation, route }) => {
                                 Sign Up.</Text>
                         </Text>
                     </View>
-                </Body>
+                </View>
             </View>
         </ImageBackground>
     );
@@ -137,17 +135,18 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.5)'
     },
-    bodyStyle: {   
-        alignItems: 'center'
+    bodyViewStyle: {   
+        alignItems: 'center',
+        flex: 1
     },
     titleStyle: {
-        marginTop: '10%',
-        color: 'white',
+        color: Colors.accentLightWhite,
         fontFamily: 'Avenir_bold',
-        fontSize: 35
+        fontSize: 35,
+        marginTop: '15%'
     },
     subtitleStyle: {
-        color: 'white',
+        color: Colors.accentLightWhite,
         fontSize: 16,
         fontFamily: 'Avenir_bold',
         textAlign: 'center',
@@ -164,7 +163,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.accentLightWhite,
         marginTop: 30,
         alignItems: 'center',
-        minHeight: '40%'
+        justifyContent: 'space-evenly',
+        minHeight: '50%'
     },
     formItemStyle: {
         width: '80%'
@@ -177,13 +177,13 @@ const styles = StyleSheet.create({
         marginVertical: 15,
         justifyContent: 'center',
         alignItems: 'center',
-        minWidth: '50%',
-        alignSelf: 'center'
+        minWidth: '50%'
     },
     buttonText: {
         fontSize: 24,
         fontFamily: 'Avenir_bold',
-        paddingTop: 5
+        paddingTop: 5,
+        color: Colors.accentLightWhite
     }
 });
 

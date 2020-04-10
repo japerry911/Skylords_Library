@@ -47,7 +47,7 @@ const CustomDrawerContent = props => {
 
 const WelcomeStack = () => {
   return (
-      <Drawer.Navigator initialRouteName='Welcome'>
+      <Drawer.Navigator initialRouteName='Sign In'>
           <Drawer.Screen name='Welcome' component={WelcomeScreen} />
           <Drawer.Screen name='Get Started' component={GetStartedScreen} />
           <Drawer.Screen name='Learn More' component={LearnMoreScreen} />
