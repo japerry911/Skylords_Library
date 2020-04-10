@@ -59,7 +59,7 @@ const WelcomeStack = () => {
 
 const AuthStack = () => {
     return (
-        <Drawer.Navigator initialRouteName='Home' drawerContent={props => <CustomDrawerContent {...props} />}>
+        <Drawer.Navigator initialRouteName='Book' drawerContent={props => <CustomDrawerContent {...props} />}>
             <Drawer.Screen name='Home' component={HomeScreen} />
             <Drawer.Screen name='Books' component={BooksStack} />
             <Drawer.Screen name='Add a Review' component={AddReviewScreen} />
@@ -79,7 +79,7 @@ const BooksStack = () => {
 export const MainNavigator = () => {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='Welcome'>
+        <Stack.Navigator initialRouteName='Authed'>
           <Stack.Screen 
             name='Welcome' 
             component={WelcomeStack} 
