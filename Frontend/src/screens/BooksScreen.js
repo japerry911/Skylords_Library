@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
-import { Container, Text, Footer } from 'native-base';
+import { StyleSheet, View, TouchableOpacity, FlatList, Text } from 'react-native';
 import Colors from '../constants/colors';
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios';
 import railsServer from '../api/railsServer';
 import BookListItem from '../components/BookListItem';
-import FooterIconButton from '../components/FooterIconButton';
+import AuthedFooter from '../components/AuthedFooter';
 
 const BooksScreen = ({ navigation }) => {
     const [booksData, setBooksData] = useState([]);
@@ -28,7 +27,7 @@ const BooksScreen = ({ navigation }) => {
     }, []);
 
     return (
-        <Container style={styles.mainContainerStyle}>
+        <View style={styles.mainViewStyle}>
             <View style={styles.headerViewStyle}>
                 <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                     <MaterialIcons 
@@ -62,51 +61,14 @@ const BooksScreen = ({ navigation }) => {
                     showsVerticalScrollIndicator={false}
                 />
             </View>
-            <Footer style={styles.footerStyle}>
-                <FooterIconButton
-                    iconComponent={<MaterialCommunityIcons
-                                        name='home-outline'
-                                        size={35}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => {}}
-                />
-                <FooterIconButton
-                    iconComponent={<AntDesign
-                                        name='book'
-                                        size={35}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => {}}
-                />
-                <FooterIconButton
-                    iconComponent={<FontAwesome
-                                        name='bookmark-o'
-                                        size={32}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => {}}
-                />
-                <FooterIconButton
-                    iconComponent={<FontAwesome
-                                        name='user-o'
-                                        size={32}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => {}}
-                />
-            </Footer>
-        </Container>
+            <AuthedFooter parentNavigation={navigation} />
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     flatListStyle: {
         flex: 1
-    },
-    footerIconStyle: {
-        marginTop: 5,
-        color: Colors.primaryOrange
     },
     footerStyle: {
         justifyContent: 'space-evenly',
@@ -129,8 +91,9 @@ const styles = StyleSheet.create({
     backIconStyle: {
         color: Colors.primaryOrange
     },
-    mainContainerStyle: {
-        backgroundColor: Colors.accentLightGray
+    mainViewStyle: {
+        backgroundColor: Colors.accentLightGray,
+        flex: 1
     },
     headerViewStyle: {
         marginTop: '5%',
