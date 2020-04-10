@@ -11,7 +11,7 @@ import { Context as UserContext } from '../contexts/userContext';
 import { DrawerActions } from '@react-navigation/native';
 
 const AddReviewScreen = ({ navigation, route }) => {
-     const [title, setTitle] = useState(route.params === undefined ? '' : route.params.params.title);
+    const [title, setTitle] = useState(route.params === undefined ? '' : route.params.params.title);
     const [author, setAuthor] = useState(route.params === undefined ? '' : route.params.params.author);
     const [addBookCheck, setAddBookCheck] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
