@@ -157,6 +157,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.accentLightWhite,
         marginTop: '5%',
         alignItems: 'center',
+        justifyContent: 'space-evenly',
         height: '70%'
     },
     mainHeaderStyle: {
