@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Root } from 'native-base';
 import { MainNavigator } from './navigation';
 import { Provider as UserProvider } from './src/contexts/userContext';
+import { Provider as ReviewProvider } from './src/contexts/reviewContext';
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -60,7 +61,9 @@ export default () => {
   return (
     <Root>
       <UserProvider>
-        <MainNavigator />
+        <ReviewProvider>
+          <MainNavigator />
+        </ReviewProvider>
       </UserProvider>
     </Root>
   );
