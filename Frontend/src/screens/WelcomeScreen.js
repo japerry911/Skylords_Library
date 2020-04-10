@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, ImageBackground, TouchableOpacity, View } from 'react-native';
-import { Text, Body, Footer } from 'native-base';
+import { StyleSheet, ImageBackground, Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 import FooterButton from '../components/FooterButton';
