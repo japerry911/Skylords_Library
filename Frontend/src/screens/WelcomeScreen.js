@@ -1,9 +1,8 @@
 import React from 'react';
-import { StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
-import { Text, View, Body, Footer } from 'native-base';
+import { StyleSheet, ImageBackground, Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
-import { userContext } from '../contexts/userContext';
+import FooterButton from '../components/FooterButton';
 
 const WelcomeScreen = ({ navigation }) => {
     return (
@@ -13,7 +12,7 @@ const WelcomeScreen = ({ navigation }) => {
             resizeMode='stretch'
         >
             <View style={styles.childComponents}>
-                <Body style={styles.bodyStyle}>
+                <View style={styles.bodyViewStyle}>
                     <Text style={styles.titleStyle}>
                         Skylord's{'\n\t\t\t'}Library
                         <MaterialCommunityIcons
@@ -25,31 +24,14 @@ const WelcomeScreen = ({ navigation }) => {
                     <Text style={styles.subtitleStyle}>
                         Discover your favorite books with your favorite people<Text style={styles.highlightStyle}>.</Text>
                     </Text>
-                </Body>
-                <TouchableOpacity onPress={() => navigation.navigate('Get Started')}>
-                <Footer 
-                    style={styles.footerStyle}
-                >
-                    <Text style={styles.footerTextStyle}>Get Started</Text>
-                </Footer>
-                </TouchableOpacity>
+                </View>
+                <FooterButton parentNavigation={navigation} />
             </View>
         </ImageBackground>
     );
 };
 
 const styles = StyleSheet.create({
-    footerTextStyle: {
-        color: 'white',
-        fontSize: 30,
-        fontFamily: 'Avenir_bold',
-        marginTop: 10
-    },
-    footerStyle: {
-        backgroundColor: Colors.primaryOrange,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
     childComponents: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.5)'
@@ -69,9 +51,10 @@ const styles = StyleSheet.create({
         fontFamily: 'Avenir_bold',
         textAlign: 'center'
     },
-    bodyStyle: {   
+    bodyViewStyle: {   
         alignItems: 'center',
         justifyContent: 'center',
+        height: '90%'
     },
     backgroundImageStyle: {
         flex: 1
