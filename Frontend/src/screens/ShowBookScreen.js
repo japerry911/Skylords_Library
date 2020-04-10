@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Text, Body, Footer } from 'native-base';
+import { Container, Text, Body, Footer, Button } from 'native-base';
 import { StyleSheet, TouchableOpacity, View, Image, FlatList } from 'react-native';
 import { MaterialIcons, MaterialCommunityIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
 import Colors from '../constants/colors';
@@ -61,7 +61,7 @@ const ShowBookScreen = ({ route, navigation }) => {
                     <FlatList
                         showsVerticalScrollIndicator={false}
                         ListHeaderComponent={
-                            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                            <View style={styles.flatListHeaderFooterStyle}>
                                 <Text style={styles.descriptionTextStyle}>
                                     {bookDetails.description}
                                 </Text>
@@ -82,6 +82,19 @@ const ShowBookScreen = ({ route, navigation }) => {
                             </View>}
                         data={bookDetails.reviews}
                         renderItem={({ item }) => <ShowReviewItem review={item} />}
+                        ListFooterComponent={
+                            <View style={styles.flatListHeaderFooterStyle}>
+                                <Button 
+                                    style={styles.addReviewButtonStyle}
+                                    onPress={() => navigation.navigate('Add a Review', 
+                                    { params: { title: bookDetails.title, author: bookDetails.author.name, existingBool: true }})}
+                                >
+                                    <Text style={styles.buttonText}>
+                                        Add a Review
+                                    </Text>
+                                </Button>
+                            </View>
+                        }
                     />
                 </View>
             </Body>
@@ -124,6 +137,23 @@ const ShowBookScreen = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    addReviewButtonStyle: {
+        backgroundColor: Colors.primaryOrange,
+        marginVertical: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        minWidth: '40%',
+        alignSelf: 'center'
+    },
+    buttonText: {
+        fontFamily: 'Avenir_bold',
+        fontSize: 16,
+        paddingTop: '3%'
+    },
+    flatListHeaderFooterStyle: {
+        justifyContent: 'center', 
+        alignItems: 'center'
+    },
     footerIconStyle: {
         marginTop: 5,
         color: Colors.primaryOrange
