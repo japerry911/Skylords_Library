@@ -10,13 +10,13 @@ import railsServer from '../api/railsServer';
 import { Context as UserContext } from '../contexts/userContext';
 
 const AddReviewScreen = ({ navigation, route }) => {
-    const [title, setTitle] = useState(route.params.params.title === undefined ? '' : route.params.params.title);
-    const [author, setAuthor] = useState(route.params.params.author === undefined ? '' : route.params.params.author);
+    const [title, setTitle] = useState(route.params === undefined ? '' : route.params.params.title);
+    const [author, setAuthor] = useState(route.params === undefined ? '' : route.params.params.author);
     const [addBookCheck, setAddBookCheck] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
     const [rating, setRating] = useState(0);
     const [description, setDescription] = useState(null);
-    const [existingTitle, setExistingTitle] = useState(route.params.params.existingBool !== undefined);
+    const [existingTitle, setExistingTitle] = useState(route.params === undefined ? false : route.params.params.existingBool );
     const [existingBooksList, setExistingBooksList] = useState([]);
 
     const firstUpdate = useRef(true);
