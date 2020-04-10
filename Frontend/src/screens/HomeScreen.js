@@ -3,39 +3,26 @@ import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
 import { Container, Body, Footer, Text, Spinner, Drawer } from 'native-base';
 import Colors from '../constants/colors';
 import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, MaterialIcons, AntDesign } from '@expo/vector-icons';
-import railsServer from '../api/railsServer';
 import FooterIconButton from '../components/FooterIconButton';
-import axios from 'axios';
 import RecentReviewItem from '../components/RecentReviewItem';
 import { Context as UserContext } from '../contexts/userContext';
+import { Context as ReviewContext } from '../contexts/reviewContext';
 
-const HomeScreen = ({ route, navigation }) => {
-    const [mostRecentObjects, setMostRecentObjects] = useState(undefined);
-
+const HomeScreen = ({ navigation }) => {
     const userContext = useContext(UserContext);
-    const { state } = userContext;
+    const reviewContext = useContext(ReviewContext);
+    const { state: userState } = userContext;
+    const { state: reviewState, pullTwoMostRecentReviews } = reviewContext;
 
-    const user = state.user;
+    const user = userState.user;
 
     useEffect(() => {
-        const CancelToken = axios.CancelToken
-        const source = CancelToken.source()
-
-        try {
-            railsServer.get('/most_recent_two_reviews', { cancelToken: source.token })
-                .then(response => setMostRecentObjects(response.data.reviews));
-        } catch (error) {
-            if (axios.isCancel(error)) {
-                console.log('Canceled');
-            } else {
-                throw error;
-            }
-        }
+        pullTwoMostRecentReviews();
     }, []);
     
     return ( 
         <Container>
-            {mostRecentObjects === undefined ?
+            {reviewState.twoMostRecentReviews === undefined ?
             <Container style={{justifyContent: 'center'}}>
                 <Spinner color='green' />
             </Container> : 
@@ -107,7 +94,7 @@ const HomeScreen = ({ route, navigation }) => {
                         <Text style={styles.mostRecentTitleStyle}>
                             Recent Reviews
                         </Text>
-                        {mostRecentObjects.map(mostRecentObject => {
+                        {reviewState.twoMostRecentReviews.map(mostRecentObject => {
                             return (
                                 <RecentReviewItem
                                     key={mostRecentObject.review.id}

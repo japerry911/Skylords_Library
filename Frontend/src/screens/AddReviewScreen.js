@@ -9,6 +9,7 @@ import axios from 'axios';
 import railsServer from '../api/railsServer';
 import { Context as UserContext } from '../contexts/userContext';
 import { DrawerActions } from '@react-navigation/native';
+import { Context as ReviewContext } from '../contexts/reviewContext';
 
 const AddReviewScreen = ({ navigation, route }) => {
     const [title, setTitle] = useState(route.params === undefined ? '' : route.params.params.title);
@@ -23,7 +24,9 @@ const AddReviewScreen = ({ navigation, route }) => {
     const firstUpdate = useRef(true);
 
     const userContext = useContext(UserContext);
-    const { state } = userContext;
+    const reviewContext = useContext(ReviewContext);
+    const { state: userState } = userContext;
+    const { addReview } = reviewContext;
 
     const onFormSubmit = async () => {
         let bookId;
@@ -67,10 +70,10 @@ const AddReviewScreen = ({ navigation, route }) => {
             bookId = booksList.find(bookObject => bookObject.title === title).id;
         }
     
-        const userId = state.user.id;
+        const userId = userState.user.id;
 
         //Posting of the Review with userId (from UserContext) and previously obtained bookId 
-        await railsServer.post('/reviews', { review: { book_id: bookId, user_id: userId, rating, description }});
+        addReview(bookId, userId, rating, description);
 
         navigation.dispatch(DrawerActions.jumpTo('Home'));
     };

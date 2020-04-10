@@ -14,7 +14,7 @@ class ReviewsController < ApplicationController
     def create 
         @new_review = Review.create(review_params)
 
-        render json: { review: @new_review }
+        render json: { review: @new_review }, include: { book: {}, user: {} }
     end
     
     def most_recent_two_reviews
