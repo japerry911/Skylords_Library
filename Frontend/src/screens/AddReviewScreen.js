@@ -8,6 +8,7 @@ import FooterIconButton from '../components/FooterIconButton';
 import axios from 'axios';
 import railsServer from '../api/railsServer';
 import { Context as UserContext } from '../contexts/userContext';
+import { DrawerActions } from '@react-navigation/native';
 
 const AddReviewScreen = ({ navigation, route }) => {
     const [title, setTitle] = useState(route.params === undefined ? '' : route.params.params.title);
@@ -70,6 +71,8 @@ const AddReviewScreen = ({ navigation, route }) => {
 
         //Posting of the Review with userId (from UserContext) and previously obtained bookId 
         await railsServer.post('/reviews', { review: { book_id: bookId, user_id: userId, rating, description }});
+
+        navigation.dispatch(DrawerActions.jumpTo('Home'));
     };
 
     // Pull all existing books into state array on first/only first render
@@ -196,7 +199,6 @@ const AddReviewScreen = ({ navigation, route }) => {
                             type='custom'
                             ratingColor={Colors.primaryOrange}
                             onFinishRating={newRating => setRating(newRating)}
-                            fractions={1}
                         />
                     </View>
                     <View style={styles.descriptionViewStyle}>

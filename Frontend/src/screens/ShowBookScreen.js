@@ -8,6 +8,8 @@ import railsServer from '../api/railsServer';
 import { Rating } from 'react-native-ratings';
 import ShowReviewItem from '../components/ShowReviewItem';
 import FooterIconButton from '../components/FooterIconButton';
+import { StackActions } from '@react-navigation/native';
+import { NavigationActions } from 'react-navigation';
 
 const calcAverageRating = reviews => {
     const total = reviews.reduce((total, review) => total + review.rating, 0);
@@ -86,8 +88,11 @@ const ShowBookScreen = ({ route, navigation }) => {
                             <View style={styles.flatListHeaderFooterStyle}>
                                 <Button 
                                     style={styles.addReviewButtonStyle}
-                                    onPress={() => navigation.navigate('Add a Review', 
-                                    { params: { title: bookDetails.title, author: bookDetails.author.name, existingBool: true }})}
+                                    onPress={() => {
+                                        navigation.dispatch(StackActions.replace('Books'));
+                                        navigation.navigate('Add a Review', 
+                                        { params: { title: bookDetails.title, author: bookDetails.author.name, existingBool: true }})
+                                    }}
                                 >
                                     <Text style={styles.buttonText}>
                                         Add a Review
