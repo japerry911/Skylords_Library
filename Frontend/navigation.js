@@ -47,7 +47,7 @@ const CustomDrawerContent = props => {
 
 const WelcomeStack = () => {
   return (
-      <Drawer.Navigator>
+      <Drawer.Navigator initialRouteName='Welcome'>
           <Drawer.Screen name='Welcome' component={WelcomeScreen} />
           <Drawer.Screen name='Get Started' component={GetStartedScreen} />
           <Drawer.Screen name='Learn More' component={LearnMoreScreen} />
@@ -79,7 +79,7 @@ const BooksStack = () => {
 export const MainNavigator = () => {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='Authed'>
+        <Stack.Navigator initialRouteName='Welcome'>
           <Stack.Screen 
             name='Welcome' 
             component={WelcomeStack} 
