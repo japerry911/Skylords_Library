@@ -1,17 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Container, Body, Text, Form, Label, Item, Input, Button, Icon } from 'native-base';
+import React, { useState, useEffect, useContext } from 'react';
+import { Text, StyleSheet, View } from 'react-native';
+import { Label, Item, Input, Button, Icon } from 'native-base';
 import Colors from '../constants/colors';
-import railsServer from '../api/railsServer';
-
-const onFormSubmit = async (username, age, password, callBack, setUsername, setAge, setPassword, setConfirmPassword) => {
-    await railsServer.post('/users', { user: { username, age, password }});
-    setUsername('');
-    setAge('');
-    setPassword('');
-    setConfirmPassword('');
-    callBack();
-};
+import { Context as UserContext } from '../contexts/userContext';
 
 const SignUpScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
@@ -20,6 +11,18 @@ const SignUpScreen = ({ navigation }) => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [passwordMatchingBool, setPasswordMatchingBool] = useState(false);
     const [validationStatus, setValidationStatus] = useState(false);
+
+    const userContext = useContext(UserContext);
+    const { signUpUser } = userContext;
+
+    const onFormSubmit = async (username, age, password) => {
+        await signUpUser(username, age, password);
+        setUsername('');
+        setAge('');
+        setPassword('');
+        setConfirmPassword('');
+        navigation.navigate('Sign In', { signedUp: true });
+    }; 
 
     useEffect(() => {
         setPasswordMatchingBool(!(password !== confirmPassword || password === '' || confirmPassword === ''));
@@ -31,8 +34,8 @@ const SignUpScreen = ({ navigation }) => {
     }, [password, confirmPassword, username, age]);
 
     return (
-        <Container style={styles.mainContainerStyle}>
-            <Body>
+        <View style={styles.mainViewStyle}>
+            <View style={styles.bodyViewStyle}>
                 <Text 
                     style={styles.mainHeaderStyle}
                 >
@@ -44,67 +47,64 @@ const SignUpScreen = ({ navigation }) => {
                     Please Sign Up to continue
                 </Text>
                 <View style={styles.formViewStyle}>
-                    <Form>
-                        <Item 
-                            floatingLabel
-                            style={styles.formItemStyle}
-                        >
-                            <Label style={styles.formItemLabelStyle}>Enter your Username</Label>
-                            <Input
-                                value={username}
-                                onChangeText={newUsername => setUsername(newUsername)}
-                            />
-                        </Item>
-                        <Item 
-                            floatingLabel
-                            style={styles.formItemStyle}
-                        >
-                            <Label style={styles.formItemLabelStyle}>Enter your Age</Label>
-                            <Input
-                                value={age}
-                                onChangeText={newAge => setAge(newAge.replace(/[^0-9]/g, ''))}
-                                keyboardType='numeric'
-                                maxLength={3}
-                            />
-                        </Item>
-                        <Item 
-                            floatingLabel
-                            style={styles.formItemStyle}
-                            success={passwordMatchingBool}
-                            error={!passwordMatchingBool}
-                        >
-                            <Label style={styles.formItemLabelStyle}>Enter your Password</Label>
-                            <Input
-                                value={password}
-                                onChangeText={newPassword => setPassword(newPassword)}
-                                secureTextEntry
-                                autoCapitalize='none'
-                                autoCorrect={false}
-                            />
-                            <Icon name={passwordMatchingBool ? 'checkmark-circle' : 'close-circle'} />
-                        </Item>
-                        <Item 
-                            floatingLabel                            
-                            style={styles.formItemStyle}
-                            success={passwordMatchingBool}
-                            error={!passwordMatchingBool}
-                        >
-                            <Label style={styles.formItemLabelStyle}>Confirm your Password</Label>
-                            <Input 
-                                value={confirmPassword}
-                                onChangeText={newConfirmPassword => setConfirmPassword(newConfirmPassword)}
-                                secureTextEntry
-                                autoCapitalize='none'
-                                autoCorrect={false}
-                            />
-                            <Icon name={passwordMatchingBool ? 'checkmark-circle' : 'close-circle'} />
-                        </Item>
-                    </Form>
+                    <Item 
+                        floatingLabel
+                        style={styles.formItemStyle}
+                    >
+                        <Label style={styles.formItemLabelStyle}>Enter your Username</Label>
+                        <Input
+                            value={username}
+                            onChangeText={newUsername => setUsername(newUsername)}
+                        />
+                    </Item>
+                    <Item 
+                        floatingLabel
+                        style={styles.formItemStyle}
+                    >
+                        <Label style={styles.formItemLabelStyle}>Enter your Age</Label>
+                        <Input
+                            value={age}
+                            onChangeText={newAge => setAge(newAge.replace(/[^0-9]/g, ''))}
+                            keyboardType='numeric'
+                            maxLength={3}
+                        />
+                    </Item>
+                    <Item 
+                        floatingLabel
+                        style={styles.formItemStyle}
+                        success={passwordMatchingBool}
+                        error={!passwordMatchingBool}
+                    >
+                        <Label style={styles.formItemLabelStyle}>Enter your Password</Label>
+                        <Input
+                            value={password}
+                            onChangeText={newPassword => setPassword(newPassword)}
+                            secureTextEntry
+                            autoCapitalize='none'
+                            autoCorrect={false}
+                        />
+                        <Icon name={passwordMatchingBool ? 'checkmark-circle' : 'close-circle'} />
+                    </Item>
+                    <Item 
+                        floatingLabel                            
+                        style={styles.formItemStyle}
+                        success={passwordMatchingBool}
+                        error={!passwordMatchingBool}
+                    >
+                        <Label style={styles.formItemLabelStyle}>Confirm your Password</Label>
+                        <Input 
+                            value={confirmPassword}
+                            onChangeText={newConfirmPassword => setConfirmPassword(newConfirmPassword)}
+                            secureTextEntry
+                            autoCapitalize='none'
+                            autoCorrect={false}
+                        />
+                        <Icon name={passwordMatchingBool ? 'checkmark-circle' : 'close-circle'} />
+                    </Item>
                     <Button 
                         style={styles.signUpButtonStyle}
                         disabled={!validationStatus}
-                        onPress={() => onFormSubmit(username, age, password, () => navigation.navigate('Sign In'),
-                                                    setUsername, setAge, setPassword, setConfirmPassword)}
+                        onPress={() => onFormSubmit(username, age, password)}
                     >
                         <Text style={styles.buttonTextStyle}>Sign Up</Text>
                         <Icon name={validationStatus ? 'checkmark-circle' : 'close-circle'} />
@@ -116,22 +116,30 @@ const SignUpScreen = ({ navigation }) => {
                         <Text style={styles.buttonTextStyle}>Go Back</Text>
                     </Button>
                 </View>
-            </Body>
-        </Container>
+            </View>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
+    bodyViewStyle: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1
+    },
     formItemLabelStyle: {
         color: Colors.accentLightGrayText
     },
     buttonTextStyle: {
         fontSize: 24,
         fontFamily: 'Avenir_bold',
-        paddingTop: 5
+        paddingTop: 5,
+        color: Colors.accentLightWhite,
+        paddingHorizontal: '3%'
     },
     formItemStyle: {
-        width: '80%'
+        width: '80%',
+        marginVertical: '2%'
     },
     signUpButtonStyle: {
         backgroundColor: Colors.primaryOrange,
@@ -144,26 +152,27 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5
     },
     formViewStyle: {
-        borderRadius: 15,
+        borderRadius: 10,
         minWidth: '90%',
         backgroundColor: Colors.accentLightWhite,
-        marginTop: 30,
-        alignItems: 'center'
+        marginTop: '5%',
+        alignItems: 'center',
+        height: '70%'
     },
     mainHeaderStyle: {
         fontSize: 20,
         fontFamily: 'Avenir_bold',
-        marginTop: 40,
         color: Colors.accentLightGrayText   
     },
     subtitleHeaderStyle: {
-        marginTop: 10,
+        marginTop: '2%',
         color: Colors.accentLightGrayText,
         fontSize: 18,
         fontFamily: 'Avenir_next'
     },
-    mainContainerStyle: {
-        backgroundColor: Colors.accentLightGray
+    mainViewStyle: {
+        backgroundColor: Colors.accentLightGray,
+        flex: 1
     }
 });
 
