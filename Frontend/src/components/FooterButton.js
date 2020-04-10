@@ -1,23 +1,22 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { Footer } from 'native-base';
+import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import Colors from '../constants/colors';
 
-const FooterButton = ({ parentNavigation }) => {
+const FooterButton = ({ parentNavigation, destination }) => {
     return (
-        <TouchableOpacity onPress={() => parentNavigation.navigate('Get Started')}>
-            <Footer 
+        <TouchableOpacity onPress={() => parentNavigation.navigate(destination)}>
+            <View 
                 style={styles.footerStyle}
             >
                 <Text style={styles.footerTextStyle}>Get Started</Text>
-            </Footer>
+            </View>
         </TouchableOpacity>
     );
 };
 
 const styles = StyleSheet.create({
     footerTextStyle: {
-        color: 'white',
+        color: Colors.accentLightWhite,
         fontSize: 30,
         fontFamily: 'Avenir_bold',
         marginTop: 10
@@ -25,7 +24,8 @@ const styles = StyleSheet.create({
     footerStyle: {
         backgroundColor: Colors.primaryOrange,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        width: '100%'
     }
 });
 
