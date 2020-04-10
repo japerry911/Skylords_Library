@@ -26,6 +26,8 @@ const SignInScreen = ({ navigation, route }) => {
     }, [invalidLogin]);
 
     useEffect(() => {
+        if (route.params === undefined) return;
+        
         if (route.params.signedUp) {
             Toast.show({
                 text: 'Account Created',
