@@ -9,11 +9,12 @@ import AuthedFooter from '../components/AuthedFooter';
 import Spinner from '../components/Spinner';
 
 const HomeScreen = ({ navigation }) => {
+    const [isLoading, setIsLoading] = useState(true);
+
     const userContext = useContext(UserContext);
     const reviewContext = useContext(ReviewContext);
     const { state: userState } = userContext;
     const { state: reviewState, pullTwoMostRecentReviews } = reviewContext;
-    const [isLoading, setIsLoading] = useState(true);
 
     const user = userState.user;
 
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         flexDirection: 'row',
         alignItems: 'center',
-        width: '70%' ,
+        width: '90%' ,
         justifyContent: 'space-evenly',
         marginBottom: '3%'
     },
