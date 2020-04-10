@@ -1,14 +1,16 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
-import { Container, Body, Footer, Text, Spinner, Drawer } from 'native-base';
+import React, { useEffect, useContext, useState } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, FlatList } from 'react-native';
 import Colors from '../constants/colors';
-import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, MaterialIcons, AntDesign } from '@expo/vector-icons';
-import FooterIconButton from '../components/FooterIconButton';
+import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import RecentReviewItem from '../components/RecentReviewItem';
 import { Context as UserContext } from '../contexts/userContext';
 import { Context as ReviewContext } from '../contexts/reviewContext';
+import AuthedFooter from '../components/AuthedFooter';
+import Spinner from '../components/Spinner';
 
 const HomeScreen = ({ navigation }) => {
+    const [isLoading, setIsLoading] = useState(true);
+
     const userContext = useContext(UserContext);
     const reviewContext = useContext(ReviewContext);
     const { state: userState } = userContext;
@@ -19,15 +21,18 @@ const HomeScreen = ({ navigation }) => {
     useEffect(() => {
         pullTwoMostRecentReviews();
     }, []);
+
+    useEffect(() => {
+        if (reviewState.twoMostRecentReviews.length > 0) {
+            setIsLoading(false);
+        }
+    }, [reviewState.twoMostRecentReviews]);
     
     return ( 
-        <Container>
-            {reviewState.twoMostRecentReviews === undefined ?
-            <Container style={{justifyContent: 'center'}}>
-                <Spinner color='green' />
-            </Container> : 
-            <Container style={styles.mainContainerStyle}>
-                <Body style={styles.bodyStyle}>
+        <>
+            {isLoading ? <Spinner /> : 
+            <View style={styles.screenViewStyle}>
+                <View style={styles.bodyViewStyle}>
                     <Text style={styles.greetingMessageStyle}>
                         Hello, {user.username}!
                     </Text>
@@ -90,77 +95,40 @@ const HomeScreen = ({ navigation }) => {
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <ScrollView>
-                        <Text style={styles.mostRecentTitleStyle}>
-                            Recent Reviews
-                        </Text>
-                        {reviewState.twoMostRecentReviews.map(mostRecentObject => {
+                    <FlatList
+                        ListHeaderComponent={
+                            <Text style={styles.mostRecentTitleStyle}>
+                                Recent Reviews
+                            </Text>
+                        }
+                        data={reviewState.twoMostRecentReviews}
+                        keyExtractor={review => review.review.id}
+                        renderItem={({ item }) => {
                             return (
                                 <RecentReviewItem
-                                    key={mostRecentObject.review.id}
-                                    imageUrl={mostRecentObject.book.image_url}
-                                    description={mostRecentObject.review.description === undefined ? '' : mostRecentObject.review.description}
-                                    username={mostRecentObject.user.username}
-                                    rating={mostRecentObject.review.rating}
+                                    key={item.review.id}
+                                    imageUrl={item.book.image_url}
+                                    description={item.review.description === undefined ? '' : item.review.description}
+                                    username={item.user.username}
+                                    rating={item.review.rating}
                                 />
                             );
-                        })}
-                    </ScrollView>
-                </Body>
-                <Footer style={styles.footerStyle}>
-                    <FooterIconButton
-                        iconComponent={<MaterialCommunityIcons
-                                            name='home-outline'
-                                            size={35}
-                                            style={styles.footerIconStyle}
-                                        />}
-                        onPress={() => {}}
+                        }}
                     />
-                    <FooterIconButton
-                        iconComponent={<AntDesign
-                                            name='book'
-                                            size={35}
-                                            style={styles.footerIconStyle}
-                                        />}
-                        onPress={() => navigation.navigate('Books')}
-                    />
-                    <FooterIconButton
-                        iconComponent={<FontAwesome
-                                            name='bookmark-o'
-                                            size={32}
-                                            style={styles.footerIconStyle}
-                                        />}
-                        onPress={() => {}}
-                    />
-                    <FooterIconButton
-                        iconComponent={<FontAwesome
-                                            name='user-o'
-                                            size={32}
-                                            style={styles.footerIconStyle}
-                                        />}
-                        onPress={() => {}}
-                    />
-                </Footer>
-            </Container>}
-        </Container>
+                </View>
+                <AuthedFooter />
+            </View>}
+        </>
     );
 };
 
 const styles = StyleSheet.create({
-    footerStyle: {
-        justifyContent: 'space-evenly',
-        backgroundColor: Colors.accentLightGray
-    },
     mostRecentTitleStyle: {
         fontSize: 20,
         fontFamily: 'Avenir_medium',
         marginVertical: '5%',
         color: Colors.accentLightGrayText,
         textAlign: 'center'
-    },
-    footerIconStyle: {
-        marginTop: 5,
-        color: Colors.primaryOrange
     },
     iconTextStyle: {
         fontSize: 11,
@@ -188,7 +156,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         flexDirection: 'row',
         alignItems: 'center',
-        width: '70%' ,
+        width: '90%' ,
         justifyContent: 'space-evenly',
         marginBottom: '3%'
     },
@@ -204,15 +172,19 @@ const styles = StyleSheet.create({
         fontSize : 16,
         marginTop: '3%'
     },
-    mainContainerStyle: {
-        backgroundColor: Colors.accentLightGray
+    screenViewStyle:  {
+        backgroundColor: Colors.accentLightGray,
+        flex: 1,
+        alignItems: 'center'
     },
-    bodyStyle: {
+    bodyViewStyle: {
         backgroundColor: Colors.accentLightWhite,
         width: '90%',
-        height: '100%',
-        borderRadius: 10,
-        marginVertical: '5%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        marginTop: '5%',
+        borderRadius: 10
     }
 });
 
