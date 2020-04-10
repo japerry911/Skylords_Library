@@ -20,6 +20,7 @@ const AddReviewScreen = ({ navigation, route }) => {
     const [description, setDescription] = useState(null);
     const [existingTitle, setExistingTitle] = useState(route.params === undefined ? false : route.params.params.existingBool );
     const [existingBooksList, setExistingBooksList] = useState([]);
+    const [validUpload, setValidUpload] = useState(false);
 
     const firstUpdate = useRef(true);
 
@@ -125,6 +126,17 @@ const AddReviewScreen = ({ navigation, route }) => {
         }
     }, [existingTitle]);
 
+    // Check for Valid submission
+    useEffect(() => {
+        if (existingTitle && !addBookCheck && rating > 0) {
+            setValidUpload(true);
+        } else if (existingTitle && addBookCheck && author !== '' && imageUrl !== '' && rating > 0) {
+            setValidUpload(true);
+        } else {
+            setValidUpload(false);
+        }
+    }, [existingTitle, addBookCheck, rating, author, imageUrl]);
+    
     return (
         <Container style={styles.mainContainerStyle}>
             <View style={styles.headerViewStyle}>
@@ -223,10 +235,12 @@ const AddReviewScreen = ({ navigation, route }) => {
                     <Button 
                         style={styles.postButtonStyle}
                         onPress={() => onFormSubmit()}
+                        disabled={!validUpload}
                     >
                         <Text style={styles.buttonText}>
                             Post
                         </Text>
+                        <Icon name={validUpload ? 'checkmark-circle' : 'close-circle'} />
                     </Button>
             </View>
             <Footer style={styles.footerStyle}>
