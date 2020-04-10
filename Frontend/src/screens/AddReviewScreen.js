@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext, useRef, useCallback } from 'react';
 import { Container, Text, Input, Label, Item, CheckBox, Textarea, Button, Footer, Icon } from 'native-base';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import Colors from '../constants/colors';
@@ -11,7 +11,7 @@ import { Context as UserContext } from '../contexts/userContext';
 import { DrawerActions } from '@react-navigation/native';
 
 const AddReviewScreen = ({ navigation, route }) => {
-    const [title, setTitle] = useState(route.params === undefined ? '' : route.params.params.title);
+     const [title, setTitle] = useState(route.params === undefined ? '' : route.params.params.title);
     const [author, setAuthor] = useState(route.params === undefined ? '' : route.params.params.author);
     const [addBookCheck, setAddBookCheck] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
@@ -95,6 +95,8 @@ const AddReviewScreen = ({ navigation, route }) => {
                 throw error;
             }
         }
+
+        
     }, []);
 
     // Check if the book is in the title list, if it is change existingTitle to true
