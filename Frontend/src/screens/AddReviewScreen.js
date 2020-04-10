@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Container, Text, Input, Label, Item, CheckBox, Textarea, Button, Footer, Icon } from 'native-base';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import Colors from '../constants/colors';
@@ -9,15 +9,17 @@ import axios from 'axios';
 import railsServer from '../api/railsServer';
 import { Context as UserContext } from '../contexts/userContext';
 
-const AddReviewScreen = ({ navigation }) => {
-    const [title, setTitle] = useState('');
-    const [author, setAuthor] = useState('');
+const AddReviewScreen = ({ navigation, route }) => {
+    const [title, setTitle] = useState(route.params.params.title === undefined ? '' : route.params.params.title);
+    const [author, setAuthor] = useState(route.params.params.author === undefined ? '' : route.params.params.author);
     const [addBookCheck, setAddBookCheck] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
     const [rating, setRating] = useState(0);
     const [description, setDescription] = useState(null);
-    const [existingTitle, setExistingTitle] = useState(false);
+    const [existingTitle, setExistingTitle] = useState(route.params.params.existingBool !== undefined);
     const [existingBooksList, setExistingBooksList] = useState([]);
+
+    const firstUpdate = useRef(true);
 
     const userContext = useContext(UserContext);
     const { state } = userContext;
@@ -83,7 +85,6 @@ const AddReviewScreen = ({ navigation }) => {
                         { title: book.title, author: book.author.name }
                     );
                 })));
-
         } catch (error) {
             if (axios.isCancel(error)) {
                 console.log('Canceled');
@@ -95,10 +96,14 @@ const AddReviewScreen = ({ navigation }) => {
 
     // Check if the book is in the title list, if it is change existingTitle to true
     useEffect(() => {
-        if (addBookCheck) {
-            setExistingTitle(true);
+        if (!firstUpdate.current) {
+            if (addBookCheck) {
+                setExistingTitle(true);
+            } else {
+                setExistingTitle(existingBooksList.find(book => book.title === title) === undefined ? false : true);
+            }
         } else {
-            setExistingTitle(existingBooksList.find(book => book.title === title) === undefined ? false : true);
+            firstUpdate.current = false;
         }
     }, [title, addBookCheck]);
 

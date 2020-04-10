@@ -84,7 +84,11 @@ const ShowBookScreen = ({ route, navigation }) => {
                         renderItem={({ item }) => <ShowReviewItem review={item} />}
                         ListFooterComponent={
                             <View style={styles.flatListHeaderFooterStyle}>
-                                <Button style={styles.addReviewButtonStyle}>
+                                <Button 
+                                    style={styles.addReviewButtonStyle}
+                                    onPress={() => navigation.navigate('Add a Review', 
+                                    { params: { title: bookDetails.title, author: bookDetails.author.name, existingBool: true }})}
+                                >
                                     <Text style={styles.buttonText}>
                                         Add a Review
                                     </Text>
