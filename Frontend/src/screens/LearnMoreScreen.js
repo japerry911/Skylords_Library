@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, Image, View } from 'react-native';
-import { Container, Text, Button } from 'native-base';
+import { StyleSheet, Image, View, Text } from 'react-native';
+import { Button } from 'native-base';
 import Colors from '../constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const LearnMoreScreen = ({ navigation }) => {
     return (
-        <Container style={styles.mainContainerStyle}>
+        <View style={styles.mainViewStyle}>
             <View style={styles.imageViewStyle}>
                 <Image
                     style={styles.imageStyle}
@@ -21,7 +21,7 @@ const LearnMoreScreen = ({ navigation }) => {
                     />
                 </Text>
             </View>
-            <Container style={styles.subContainerStyle}>
+            <View style={styles.subViewStyle}>
                 <View style={styles.contentViewStyle}>
                     <Text style={styles.headerTextStyle}>
                         Who We Are
@@ -55,8 +55,8 @@ const LearnMoreScreen = ({ navigation }) => {
                         Sign Up
                     </Text>
                 </Button>
-            </Container>
-        </Container>
+            </View>
+        </View>
     );
 };
 
@@ -80,14 +80,15 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         backgroundColor: Colors.primaryOrange,
-        marginTop: '3%',
+        marginVertical: '2%',
         width: '50%',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     buttonText: {
         fontFamily: 'Avenir_bold',
         fontSize: 20,
-        marginTop: '3%'
+        marginTop: '3%',
+        color: Colors.accentLightWhite
     },
     contentTextStyle: {
         color: Colors.accentLightGrayText,
@@ -107,14 +108,16 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10
     },
-    subContainerStyle: {
+    subViewStyle: {
         backgroundColor: Colors.accentLightGray,
         width: '100%',
-        alignItems: 'center'
+        alignItems: 'center',
+        flex: 1
     },
-    mainContainerStyle: {
+    mainViewStyle: {
         backgroundColor: 'black',
-        alignItems: 'center'
+        alignItems: 'center',
+        flex: 1
     },
     imageStyle: {
         height: '100%',
