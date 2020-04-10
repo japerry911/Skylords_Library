@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
-import { Container, Text, Button, Footer, Body } from 'native-base';
+import { StyleSheet, Image, View, Text } from 'react-native';
+import { Button } from 'native-base';
 import Colors from '../constants/colors';
+import FooterButton from '../components/FooterButton';
 
-const GetStartedScreen = ({ navigation}) => {
+const GetStartedScreen = ({ navigation }) => {
     return (
-        <Container style={styles.containerScreenStyle}>
-            <Body style={styles.bodyStyle}>
+        <View style={styles.viewScreenStyle}>
+            <View style={styles.bodyViewStyle}>
                 <View style={styles.imageViewStyle}>
                     <Image 
                         source={require('../../assets/GetStartedImage.jpeg')}
@@ -26,9 +27,7 @@ const GetStartedScreen = ({ navigation}) => {
                     style={styles.signUpButtonStyle}
                     onPress={() => navigation.navigate('Sign Up')}
                 >
-                    <View style={styles.test}>
                     <Text style={styles.buttonTextStyle}>Sign Up</Text>
-                    </View>
                 </Button>
                 <Button 
                     style={styles.signInButtonStyle}
@@ -36,38 +35,20 @@ const GetStartedScreen = ({ navigation}) => {
                 >
                     <Text style={styles.buttonTextStyle}>Sign In</Text>
                 </Button>
-            </Body>
-            <TouchableOpacity 
-                style={styles.footerStyle}
-                onPress={() => navigation.navigate('Learn More')}
-            >
-                <Footer
-                    style={styles.footerStyle}
-                >
-                    <Text style={styles.footerTextStyle}>
-                        Learn More
-                    </Text>
-                </Footer>
-            </TouchableOpacity>
-        </Container>
+            </View>
+            <FooterButton 
+                destination='Learn More'
+                parentNavigation={navigation}
+            />
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    bodyStyle: {
-        width: '100%'
-    },
-    footerTextStyle: {
-        color: 'white',
-        fontSize: 30,
-        fontFamily: 'Avenir_bold',
-        marginTop: 15
-    },
-    footerStyle: {
-        backgroundColor: Colors.primaryOrange,
-        width: '100%',
+    bodyViewStyle: {   
+        alignItems: 'center',
         justifyContent: 'center',
-        alignItems: 'center'
+        flex: 1
     },
     signInButtonStyle: {
         backgroundColor: Colors.accentLightOrange,
@@ -86,7 +67,8 @@ const styles = StyleSheet.create({
         fontFamily: 'Avenir_bold',
         fontSize: 24,
         paddingTop: 5,
-        textAlign: 'center'
+        textAlign: 'center',
+        color: Colors.accentLightWhite
     },
     textBoldStyle: {
         fontFamily: 'Avenir_bold', 
@@ -114,10 +96,9 @@ const styles = StyleSheet.create({
         color: Colors.primaryOrange,
         fontSize: 20
     },
-    containerScreenStyle: {
+    viewScreenStyle: {
         backgroundColor: Colors.accentLightGray,
-        flex: 1,
-        alignItems: 'center'
+        flex: 1
     }
 });
 

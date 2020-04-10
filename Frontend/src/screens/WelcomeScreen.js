@@ -25,7 +25,10 @@ const WelcomeScreen = ({ navigation }) => {
                         Discover your favorite books with your favorite people<Text style={styles.highlightStyle}>.</Text>
                     </Text>
                 </View>
-                <FooterButton parentNavigation={navigation} />
+                <FooterButton 
+                    destination='Get Started'
+                    parentNavigation={navigation} 
+                />
             </View>
         </ImageBackground>
     );
@@ -54,7 +57,7 @@ const styles = StyleSheet.create({
     bodyViewStyle: {   
         alignItems: 'center',
         justifyContent: 'center',
-        height: '90%'
+        flex: 1
     },
     backgroundImageStyle: {
         flex: 1
