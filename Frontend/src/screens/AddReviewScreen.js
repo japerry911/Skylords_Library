@@ -7,9 +7,10 @@ import { Rating } from 'react-native-ratings';
 import FooterIconButton from '../components/FooterIconButton';
 import axios from 'axios';
 import railsServer from '../api/railsServer';
-import { Context as UserContext } from '../contexts/userContext';
 import { DrawerActions } from '@react-navigation/native';
+import { Context as UserContext } from '../contexts/userContext';
 import { Context as ReviewContext } from '../contexts/reviewContext';
+import { Context as AuthorContext } from '../contexts/authorContext';
 
 const AddReviewScreen = ({ navigation, route }) => {
     const [title, setTitle] = useState(route.params === undefined ? '' : route.params.params.title);
@@ -26,8 +27,11 @@ const AddReviewScreen = ({ navigation, route }) => {
 
     const userContext = useContext(UserContext);
     const reviewContext = useContext(ReviewContext);
+    const authorContext = useContext(AuthorContext);
+
     const { state: userState } = userContext;
     const { addReview } = reviewContext;
+    const { state: authorState, getAuthors, addAuthor } = authorContext;
 
     const onFormSubmit = async () => {
         let bookId;
@@ -36,8 +40,8 @@ const AddReviewScreen = ({ navigation, route }) => {
             // Create the new Author if doesn't exist and then create the new Book
     
             // Pull all authors
-            const authorsResponse = await railsServer.get('/authors');
-            const authorsList = authorsResponse.data.authors.map(authorObject => {
+            await getAuthors();
+            const authorsList = authorState.authors.map(authorObject => {
                 return(
                     { name: authorObject.name, id: authorObject.id }
                 );
@@ -49,8 +53,7 @@ const AddReviewScreen = ({ navigation, route }) => {
             
             if (!authorExists) {
                 // Author Creation: 
-                const authorResponse = await railsServer.post('/authors', { author: { name: author }});
-                authorId = authorResponse.data.id;
+                authorId = await addAuthor(author);
             } else {
                 authorId = authorsList.find(authorObject => authorObject.name === author).id; 
             }
