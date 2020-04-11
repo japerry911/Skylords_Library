@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.accentLightGray,
         borderRadius: 10,
         marginVertical: '6%',
-        width: 300
+        width: 300,
+        alignSelf: 'center'
     },
     reviewTextStyle: {
         fontSize: 14,
