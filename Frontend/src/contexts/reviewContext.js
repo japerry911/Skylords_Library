@@ -1,17 +1,15 @@
 import railsServer from '../api/railsServer';
 import createDataContext from './createDataContext';
 
-const INITIAL_STATE = { twoMostRecentReviews: [] };
+const INITIAL_STATE = { reviews: [], twoMostRecentReviews: [] };
 
 const reviewReducer = (state, action) => {
     switch (action.type) {
+        case 'GET_REVIEWS':
+            return { ...state, reviews: action.payload };
+        
         case 'ADD_REVIEW':
-            console.log('here');
-            console.log(state);
-            const newTwoMostRecentReviews = state.twoMostRecentReviews;
-            newTwoMostRecentReviews.pop();
-            newTwoMostRecentReviews.push(action.payload);
-            return { ...state, twoMostRecentReviews: newTwoMostRecentReviews };
+            return { ...state,  };
 
         case 'PULL_TWO_MOST_RECENT_REVIEWS':
             return { ...state, twoMostRecentReviews: action.payload };
@@ -19,6 +17,13 @@ const reviewReducer = (state, action) => {
         default:
             return state;
     }
+};
+
+const getReviews = dispatch => {
+    return async () => {
+        const getReviewsResponse = await railsServer.get('/reviews');
+        dispatch({ type: 'GET_REVIEWS', payload: getReviewsResponse.data.reviews });
+    };
 };
 
 const addReview = dispatch => {

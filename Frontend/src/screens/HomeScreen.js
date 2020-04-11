@@ -5,6 +5,7 @@ import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, MaterialIcons } f
 import RecentReviewItem from '../components/RecentReviewItem';
 import { Context as UserContext } from '../contexts/userContext';
 import { Context as ReviewContext } from '../contexts/reviewContext';
+import { Context as BookContext } from '../contexts/bookContext';
 import AuthedFooter from '../components/AuthedFooter';
 import Spinner from '../components/Spinner';
 
@@ -13,14 +14,17 @@ const HomeScreen = ({ navigation }) => {
 
     const userContext = useContext(UserContext);
     const reviewContext = useContext(ReviewContext);
+    const bookContext = useContext(BookContext);
+
     const { state: userState } = userContext;
     const { state: reviewState, pullTwoMostRecentReviews } = reviewContext;
+    const { state: bookState } = bookContext;
 
     const user = userState.user;
 
     useEffect(() => {
         pullTwoMostRecentReviews();
-    }, []);
+    }, [bookState.books]);
 
     useEffect(() => {
         if (reviewState.twoMostRecentReviews.length > 0) {
