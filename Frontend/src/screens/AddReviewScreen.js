@@ -59,7 +59,7 @@ const AddReviewScreen = ({ navigation, route }) => {
             } else {
                 authorId = authorsList.find(authorObject => authorObject.name === author).id; 
             }
-    
+
             // Create the Book
             bookId = await addBook(title, authorId, null, imageUrl);
         } else {

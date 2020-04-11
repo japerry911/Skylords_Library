@@ -50,14 +50,15 @@ const BooksScreen = ({ navigation }) => {
                         style={styles.flatListStyle}
                         data={bookState.books}
                         keyExtractor={book => book.id}
-                        renderItem={({ item }) => <BookListItem 
+                        renderItem={({ item }) =><BookListItem 
                                                     bookId={item.id}
                                                     title={item.title} 
                                                     author={item.author.name}
                                                     imageUrl={item.image_url}
                                                     description={item.description}
                                                     navigation={navigation}
-                                                />}
+                                                 />
+                        }
                         showsVerticalScrollIndicator={false}
                     />
                 </View>
