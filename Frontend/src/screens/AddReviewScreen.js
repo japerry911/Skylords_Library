@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext, useRef, useCallback } from 'react';
 import { Input, Label, Item, CheckBox, Textarea, Button, Icon } from 'native-base';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Keyboard } from 'react-native';
 import Colors from '../constants/colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
-import { DrawerActions } from '@react-navigation/native';
+import { DrawerActions, useFocusEffect } from '@react-navigation/native';
 import { Context as UserContext } from '../contexts/userContext';
 import { Context as ReviewContext } from '../contexts/reviewContext';
 import { Context as AuthorContext } from '../contexts/authorContext';
@@ -79,9 +79,21 @@ const AddReviewScreen = ({ navigation, route }) => {
         navigation.dispatch(DrawerActions.jumpTo('Home'));
     };
 
+    useFocusEffect(useCallback(() => {
+        const blurListener = navigation.addListener('blur', () => {
+            setTitle('');
+            setAuthor('');
+            setRating(0);
+            setDescription(null);
+            setImageUrl('');
+            setAddBookCheck(false);
+        });
+        return () => blurListener();
+    }), []);
+
     // Pull all existing books into state array on first/only first render
     useEffect(() => {
-        getBooks();        
+        getBooks();       
     }, []);
 
     // Check if the book is in the title list, if it is change existingTitle to true
@@ -121,7 +133,9 @@ const AddReviewScreen = ({ navigation, route }) => {
     return (
         <View style={styles.mainViewStyle}>
             <View style={styles.headerViewStyle}>
-                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate('Home');
+                }}>
                     <MaterialIcons 
                         name='chevron-left'
                         size={40}
@@ -145,6 +159,7 @@ const AddReviewScreen = ({ navigation, route }) => {
                             onChangeText={newTitle => setTitle(newTitle)}
                             autoCapitalize='none'
                             autoCorrect={false}
+                            id='test'
                         />
                         <Icon name={existingTitle ? 'checkmark-circle' : 'close-circle'} />
                     </Item>
