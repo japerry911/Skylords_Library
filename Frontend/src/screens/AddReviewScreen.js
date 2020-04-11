@@ -1,17 +1,15 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { Container, Text, Input, Label, Item, CheckBox, Textarea, Button, Footer, Icon } from 'native-base';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Input, Label, Item, CheckBox, Textarea, Button, Icon } from 'native-base';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import Colors from '../constants/colors';
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
-import FooterIconButton from '../components/FooterIconButton';
-import axios from 'axios';
-import railsServer from '../api/railsServer';
 import { DrawerActions } from '@react-navigation/native';
 import { Context as UserContext } from '../contexts/userContext';
 import { Context as ReviewContext } from '../contexts/reviewContext';
 import { Context as AuthorContext } from '../contexts/authorContext';
 import { Context as BookContext } from '../contexts/bookContext';
+import AuthedFooter from '../components/AuthedFooter';
 
 const AddReviewScreen = ({ navigation, route }) => {
     const [title, setTitle] = useState(route.params === undefined ? '' : route.params.params.title);
@@ -121,7 +119,7 @@ const AddReviewScreen = ({ navigation, route }) => {
     }, [existingTitle, addBookCheck, rating, author, imageUrl]);
     
     return (
-        <Container style={styles.mainContainerStyle}>
+        <View style={styles.mainViewStyle}>
             <View style={styles.headerViewStyle}>
                 <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                     <MaterialIcons 
@@ -199,6 +197,7 @@ const AddReviewScreen = ({ navigation, route }) => {
                             type='custom'
                             ratingColor={Colors.primaryOrange}
                             onFinishRating={newRating => setRating(newRating)}
+                            minValue={1}
                         />
                     </View>
                     <View style={styles.descriptionViewStyle}>
@@ -226,41 +225,8 @@ const AddReviewScreen = ({ navigation, route }) => {
                         <Icon name={validUpload ? 'checkmark-circle' : 'close-circle'} />
                     </Button>
             </View>
-            <Footer style={styles.footerStyle}>
-                <FooterIconButton
-                    iconComponent={<MaterialCommunityIcons
-                                        name='home-outline'
-                                        size={35}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => navigation.navigate('Home')}
-                />
-                <FooterIconButton
-                    iconComponent={<AntDesign
-                                        name='book'
-                                        size={35}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => navigation.navigate('Books')}
-                />
-                <FooterIconButton
-                    iconComponent={<FontAwesome
-                                        name='bookmark-o'
-                                        size={32}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => {}}
-                />
-                <FooterIconButton
-                    iconComponent={<FontAwesome
-                                        name='user-o'
-                                        size={32}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => {}}
-                />
-            </Footer>
-        </Container>
+            <AuthedFooter parentNavigation={navigation} />
+        </View>
     );
 };
 
@@ -279,7 +245,8 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 24,
         fontFamily: 'Avenir_bold',
-        paddingTop: 5
+        paddingTop: 5,
+        color: Colors.accentLightWhite
     },
     postButtonStyle: {
         backgroundColor: Colors.primaryOrange,
@@ -331,7 +298,7 @@ const styles = StyleSheet.create({
     }, 
     bodyViewStyle: {
         backgroundColor: Colors.accentLightWhite,
-        height: '80%',
+        flex: 1,
         marginHorizontal: '4%',
         paddingHorizontal: '4%',
         borderRadius: 10,
@@ -342,8 +309,9 @@ const styles = StyleSheet.create({
         height: 50,
         color: Colors.primaryOrange
     },
-    mainContainerStyle: {
+    mainViewStyle: {
         backgroundColor: Colors.accentLightGray,
+        flex: 1
     },
     headerViewStyle: {
         marginTop: '5%',
