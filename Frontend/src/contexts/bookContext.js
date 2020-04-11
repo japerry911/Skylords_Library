@@ -46,6 +46,7 @@ const addBook = dispatch => {
     return async (title, authorId, description, imageUrl) => {
         const addBookResponse = await railsServer.post('/books', { book: { title, author_id: authorId, description, image_url: imageUrl }});
         dispatch({ type: 'ADD_BOOK', payload: addBookResponse.data.book });
+        return addBookResponse.data.book.id;
     };
 };
 

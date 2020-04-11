@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Container, Text, Input, Label, Item, CheckBox, Textarea, Button, Footer, Icon } from 'native-base';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import Colors from '../constants/colors';
@@ -11,6 +11,7 @@ import { DrawerActions } from '@react-navigation/native';
 import { Context as UserContext } from '../contexts/userContext';
 import { Context as ReviewContext } from '../contexts/reviewContext';
 import { Context as AuthorContext } from '../contexts/authorContext';
+import { Context as BookContext } from '../contexts/bookContext';
 
 const AddReviewScreen = ({ navigation, route }) => {
     const [title, setTitle] = useState(route.params === undefined ? '' : route.params.params.title);
@@ -20,7 +21,6 @@ const AddReviewScreen = ({ navigation, route }) => {
     const [rating, setRating] = useState(0);
     const [description, setDescription] = useState(null);
     const [existingTitle, setExistingTitle] = useState(route.params === undefined ? false : route.params.params.existingBool );
-    const [existingBooksList, setExistingBooksList] = useState([]);
     const [validUpload, setValidUpload] = useState(false);
 
     const firstUpdate = useRef(true);
@@ -28,10 +28,12 @@ const AddReviewScreen = ({ navigation, route }) => {
     const userContext = useContext(UserContext);
     const reviewContext = useContext(ReviewContext);
     const authorContext = useContext(AuthorContext);
+    const bookContext = useContext(BookContext);
 
     const { state: userState } = userContext;
     const { addReview } = reviewContext;
     const { state: authorState, getAuthors, addAuthor } = authorContext;
+    const { state: bookState, getBooks, addBook } = bookContext;
 
     const onFormSubmit = async () => {
         let bookId;
@@ -59,13 +61,10 @@ const AddReviewScreen = ({ navigation, route }) => {
             }
     
             // Create the Book
-            const bookResponse = await railsServer.post('/books', 
-            { book: { title, author_id: authorId, description: null, image_url: imageUrl }});
-            bookId = bookResponse.data.book.id;
+            bookId = await addBook(title, authorId, null, imageUrl);
         } else {
             // Look Up Book Id by comparing to array of all books & ids
-            const bookResponse = await railsServer.get('/books');
-            const booksList = bookResponse.data.books.map(bookObject => {
+            const booksList = bookState.books.map(bookObject => {
                 return (
                     { id: bookObject.id, title: bookObject.title }
                 );
@@ -84,26 +83,7 @@ const AddReviewScreen = ({ navigation, route }) => {
 
     // Pull all existing books into state array on first/only first render
     useEffect(() => {
-        const CancelToken = axios.CancelToken;
-        const source = CancelToken.source()
-
-        try {
-            railsServer.get('/books', { cancelToken: source.token })
-                .then(response => response.data.books)
-                .then(books => setExistingBooksList(books.map(book => {
-                    return (
-                        { title: book.title, author: book.author.name }
-                    );
-                })));
-        } catch (error) {
-            if (axios.isCancel(error)) {
-                console.log('Canceled');
-            } else {
-                throw error;
-            }
-        }
-
-        
+        getBooks();        
     }, []);
 
     // Check if the book is in the title list, if it is change existingTitle to true
@@ -112,7 +92,7 @@ const AddReviewScreen = ({ navigation, route }) => {
             if (addBookCheck) {
                 setExistingTitle(true);
             } else {
-                setExistingTitle(existingBooksList.find(book => book.title === title) === undefined ? false : true);
+                setExistingTitle(bookState.books.find(book => book.title === title) === undefined ? false : true);
             }
         } else {
             firstUpdate.current = false;
@@ -123,7 +103,7 @@ const AddReviewScreen = ({ navigation, route }) => {
     useEffect(() => {
         if (!existingTitle) return;
 
-        const bookDetails = existingBooksList.find(book => book.title === title);
+        const bookDetails = bookState.books.find(book => book.title === title);
         if (bookDetails) {
             setAuthor(bookDetails.author);
         }
