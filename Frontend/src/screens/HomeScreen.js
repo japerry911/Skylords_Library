@@ -13,6 +13,7 @@ const HomeScreen = ({ navigation }) => {
 
     const userContext = useContext(UserContext);
     const reviewContext = useContext(ReviewContext);
+
     const { state: userState } = userContext;
     const { state: reviewState, pullTwoMostRecentReviews } = reviewContext;
 
@@ -20,7 +21,7 @@ const HomeScreen = ({ navigation }) => {
 
     useEffect(() => {
         pullTwoMostRecentReviews();
-    }, []);
+    }, [reviewState.reviews.length]);
 
     useEffect(() => {
         if (reviewState.twoMostRecentReviews.length > 0) {
