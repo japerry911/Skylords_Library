@@ -5,6 +5,9 @@ INITIAL_STATE = { books: [] };
 
 const bookReducer = (state, action) => {
     switch (action.type) {
+        case 'GET_BOOKS':
+            return { ...state, books: action.payload };
+            
         default:
             return state;
     }
@@ -13,6 +16,7 @@ const bookReducer = (state, action) => {
 const getBooks = dispatch => {
     return async () => {
         const getBooksResponse = await railsServer.get('/books');
+        dispatch({ type: 'GET_BOOKS', payload: getBooksResponse.data.books })
     };
 };
 

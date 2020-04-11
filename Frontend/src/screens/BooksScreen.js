@@ -1,68 +1,69 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, FlatList, Text } from 'react-native';
 import Colors from '../constants/colors';
 import { MaterialIcons } from '@expo/vector-icons';
-import axios from 'axios';
-import railsServer from '../api/railsServer';
 import BookListItem from '../components/BookListItem';
 import AuthedFooter from '../components/AuthedFooter';
+import { Context as BookContext } from '../contexts/bookContext';
+import Spinner from '../components/Spinner';
 
 const BooksScreen = ({ navigation }) => {
-    const [booksData, setBooksData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const bookContext = useContext(BookContext);
+    const { state: bookState, getBooks } = bookContext;    
 
     useEffect(() => {
-        const CancelToken = axios.CancelToken;
-        const source = CancelToken.source();
-
-        try {
-            railsServer.get('/books', { cancelToken: source.token })
-                .then(response => setBooksData(response.data.books));
-        } catch (error) {
-            if (axios.isCancel(error)) {
-                console.log('Canceled');
-            } else {
-                throw error;
-            }
-        }
+        getBooks();
     }, []);
 
+    useEffect(() => {
+        if (bookState.books.length > 0) {
+            setIsLoading(false);
+        }
+    }, [bookState.books])
+
     return (
-        <View style={styles.mainViewStyle}>
-            <View style={styles.headerViewStyle}>
-                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-                    <MaterialIcons 
-                        name='chevron-left'
-                        size={40}
-                        style={styles.backIconStyle}
-                    />
-                </TouchableOpacity>
-                <View style={styles.headerTextViewStyle}>
-                    <Text style={styles.headerTitleStyle}>
-                        All Books
-                    </Text>
-                    <Text style={styles.subtitleTitleStyle}>
-                        Let's find your new favorite book.
-                    </Text>
+        <>
+            {isLoading ? <Spinner />
+            :
+            <View style={styles.mainViewStyle}>
+                <View style={styles.headerViewStyle}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                        <MaterialIcons 
+                            name='chevron-left'
+                            size={40}
+                            style={styles.backIconStyle}
+                        />
+                    </TouchableOpacity>
+                    <View style={styles.headerTextViewStyle}>
+                        <Text style={styles.headerTitleStyle}>
+                            All Books
+                        </Text>
+                        <Text style={styles.subtitleTitleStyle}>
+                            Let's find your new favorite book.
+                        </Text>
+                    </View>
                 </View>
-            </View>
-            <View style={styles.flatListViewStyle}>
-                <FlatList
-                    style={styles.flatListStyle}
-                    data={booksData}
-                    keyExtractor={book => book.id}
-                    renderItem={({ item }) => <BookListItem 
-                                                bookId={item.id}
-                                                title={item.title} 
-                                                author={item.author.name}
-                                                imageUrl={item.image_url}
-                                                description={item.description}
-                                                navigation={navigation}
-                                            />}
-                    showsVerticalScrollIndicator={false}
-                />
-            </View>
-            <AuthedFooter parentNavigation={navigation} />
-        </View>
+                <View style={styles.flatListViewStyle}>
+                    <FlatList
+                        style={styles.flatListStyle}
+                        data={bookState.books}
+                        keyExtractor={book => book.id}
+                        renderItem={({ item }) => <BookListItem 
+                                                    bookId={item.id}
+                                                    title={item.title} 
+                                                    author={item.author.name}
+                                                    imageUrl={item.image_url}
+                                                    description={item.description}
+                                                    navigation={navigation}
+                                                />}
+                        showsVerticalScrollIndicator={false}
+                    />
+                </View>
+                <AuthedFooter parentNavigation={navigation} />
+            </View>}
+        </>
     );
 };
 
