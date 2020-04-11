@@ -14,6 +14,11 @@ const bookReducer = (state, action) => {
         case 'CLEAR_SHOW_BOOK':
             return { ...state, showBook: {} };
 
+        case 'ADD_BOOK':
+            const newBooks = state.books;
+            newBooks.push(action.payload);
+            return { ...state, books: newBooks };
+
         default:
             return state;
     }
@@ -37,4 +42,11 @@ const getShowBook = dispatch => {
     };
 };
 
-export const { Context, Provider } = createDataContext(bookReducer, { getBooks, getShowBook, clearShowBook }, INITIAL_STATE);
+const addBook = dispatch => {
+    return async (title, authorId, description, imageUrl) => {
+        const addBookResponse = await railsServer.post('/books', { book: { title, author_id: authorId, description, image_url: imageUrl }});
+        dispatch({ type: 'ADD_BOOK', payload: addBookResponse.data.book });
+    };
+};
+
+export const { Context, Provider } = createDataContext(bookReducer, { getBooks, getShowBook, clearShowBook, addBook }, INITIAL_STATE);
