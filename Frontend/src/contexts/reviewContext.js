@@ -9,7 +9,9 @@ const reviewReducer = (state, action) => {
             return { ...state, reviews: action.payload };
         
         case 'ADD_REVIEW':
-            return { ...state,  };
+            const newReviewsList = state.reviews;
+            newReviewsList.push(action.payload);
+            return { ...state, reviews: newReviewsList };
 
         case 'PULL_TWO_MOST_RECENT_REVIEWS':
             return { ...state, twoMostRecentReviews: action.payload };
@@ -41,4 +43,4 @@ const pullTwoMostRecentReviews = dispatch => {
     };
 };
 
-export const { Context, Provider } = createDataContext(reviewReducer, { addReview, pullTwoMostRecentReviews }, INITIAL_STATE);
+export const { Context, Provider } = createDataContext(reviewReducer, { addReview, pullTwoMostRecentReviews, getReviews }, INITIAL_STATE);
