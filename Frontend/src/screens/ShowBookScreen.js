@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Text, Body, Footer, Button } from 'native-base';
-import { StyleSheet, TouchableOpacity, View, Image, FlatList } from 'react-native';
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
+import React, { useEffect, useState, useContext } from 'react';
+import { Button } from 'native-base';
+import { Text, StyleSheet, TouchableOpacity, View, Image, FlatList } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 import axios from 'axios';
 import railsServer from '../api/railsServer';
 import { Rating } from 'react-native-ratings';
 import ShowReviewItem from '../components/ShowReviewItem';
-import FooterIconButton from '../components/FooterIconButton';
 import { StackActions } from '@react-navigation/native';
-import { NavigationActions } from 'react-navigation';
+import AuthedFooter from '../components/AuthedFooter';
+import { Context as BookContext } from '../contexts/bookContext';
 
 const calcAverageRating = reviews => {
     const total = reviews.reduce((total, review) => total + review.rating, 0);
@@ -21,6 +21,9 @@ const ShowBookScreen = ({ route, navigation }) => {
     const [averageRating, setAverageRating] = useState(0);
 
     const bookId = route.params.bookId;
+
+    const bookContext = useContext(BookContext);
+    const { getShowBook } = bookContext;
 
     useEffect(() => {
         const CancelToken = axios.CancelToken
@@ -45,7 +48,7 @@ const ShowBookScreen = ({ route, navigation }) => {
     }, [bookDetails]);
 
     return (
-        <Container style={styles.mainContainerStyle}>
+        <View style={styles.mainViewStyle}>
             <View style={styles.headerViewStyle}>
                 <TouchableOpacity onPress={() => navigation.pop()}>
                     <MaterialIcons 
@@ -58,7 +61,6 @@ const ShowBookScreen = ({ route, navigation }) => {
                     {bookDetails.title}
                 </Text>
             </View>
-            <Body>
                 <View style={styles.flatListViewStyle}>
                     <FlatList
                         showsVerticalScrollIndicator={false}
@@ -102,42 +104,8 @@ const ShowBookScreen = ({ route, navigation }) => {
                         }
                     />
                 </View>
-            </Body>
-            <Footer style={styles.footerStyle}>
-                <FooterIconButton
-                    iconComponent={<MaterialCommunityIcons
-                                        name='home-outline'
-                                        size={35}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => {}}
-                />
-                <FooterIconButton
-                    iconComponent={<AntDesign
-                                        name='book'
-                                        size={35}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => navigation.navigate('Books')}
-                />
-                <FooterIconButton
-                    iconComponent={<FontAwesome
-                                        name='bookmark-o'
-                                        size={32}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => {}}
-                />
-                <FooterIconButton
-                    iconComponent={<FontAwesome
-                                        name='user-o'
-                                        size={32}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => {}}
-                />
-            </Footer>
-        </Container>
+            <AuthedFooter />
+        </View>
     );
 };
 
@@ -153,7 +121,8 @@ const styles = StyleSheet.create({
     buttonText: {
         fontFamily: 'Avenir_bold',
         fontSize: 16,
-        paddingTop: '3%'
+        paddingTop: '3%',
+        color: Colors.accentLightWhite
     },
     flatListHeaderFooterStyle: {
         justifyContent: 'center', 
@@ -194,8 +163,10 @@ const styles = StyleSheet.create({
         height: 50,
         color: Colors.primaryOrange
     },
-    mainContainerStyle: {
+    mainViewStyle: {
+        flex: 1,
         backgroundColor: Colors.accentLightGray,
+        alignItems: 'center'
     },
     headerViewStyle: {
         marginTop: '5%',
