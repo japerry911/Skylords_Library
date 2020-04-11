@@ -27,13 +27,16 @@ const ShowBookScreen = ({ route, navigation }) => {
     useEffect(() => {
         getShowBook(bookId);
 
-        const test = navigation.addListener('blur', () => clearShowBook());
+        const test = navigation.addListener('blur', () => {
+            clearShowBook();
+            setIsLoading(true);
+        });
 
         return test;
     }, []);
 
     useEffect(() => {
-        if (bookState.showBook !== {}) {
+        if (Object.keys(bookState.showBook).length > 0) {
             setIsLoading(false);
         }
 
