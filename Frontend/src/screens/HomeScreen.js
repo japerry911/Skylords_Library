@@ -184,7 +184,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flex: 1,
         marginTop: '5%',
-        borderRadius: 10
+        borderRadius: 10,
+        height: '90%'
     }
 });
 

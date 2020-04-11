@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.accentLightGray,
         flexDirection: 'row',
         width: '100%',
-        paddingTop: '3%'
+        paddingTop: '3%',
+        height: '10%'
     },
     footerIconStyle: {
         marginTop: 5,
