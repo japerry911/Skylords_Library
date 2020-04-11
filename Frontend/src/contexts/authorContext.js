@@ -5,6 +5,9 @@ const INITIAL_STATE = { authors: [] };
 
 const authorReducer = (state, action) => {
     switch (action.type) {
+        case 'GET_AUTHORS':
+            return { ...state, authors: action.payload };
+
         default: 
             return state;
     }
@@ -12,7 +15,8 @@ const authorReducer = (state, action) => {
 
 const getAuthors = dispatch => {
     return async () => {
-        dispatch({ type: 'GET_AUTHORS' });
+        const getAuthorsResponse = await railsServer.get('/authors');
+        dispatch({ type: 'GET_AUTHORS', payload: getAuthorsResponse.data.authors });
     };
 };
 
