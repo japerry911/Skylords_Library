@@ -11,9 +11,16 @@ const bookReducer = (state, action) => {
         case 'GET_SHOW_BOOK':
             return { ...state, showBook: action.payload };
 
+        case 'CLEAR_SHOW_BOOK':
+            return { ...state, showBook: {} };
+
         default:
             return state;
     }
+};
+
+const clearShowBook = dispatch => {
+    return async () => dispatch({ type: 'CLEAR_SHOW_BOOK' });
 };
 
 const getBooks = dispatch => {
@@ -30,4 +37,4 @@ const getShowBook = dispatch => {
     };
 };
 
-export const { Context, Provider } = createDataContext(bookReducer, { getBooks, getShowBook }, INITIAL_STATE);
+export const { Context, Provider } = createDataContext(bookReducer, { getBooks, getShowBook, clearShowBook }, INITIAL_STATE);

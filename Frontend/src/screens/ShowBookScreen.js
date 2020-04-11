@@ -3,13 +3,12 @@ import { Button } from 'native-base';
 import { Text, StyleSheet, TouchableOpacity, View, Image, FlatList } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
-import axios from 'axios';
-import railsServer from '../api/railsServer';
 import { Rating } from 'react-native-ratings';
 import ShowReviewItem from '../components/ShowReviewItem';
 import { StackActions } from '@react-navigation/native';
 import AuthedFooter from '../components/AuthedFooter';
 import { Context as BookContext } from '../contexts/bookContext';
+import Spinner from '../components/Spinner';
 
 const calcAverageRating = reviews => {
     const total = reviews.reduce((total, review) => total + review.rating, 0);
@@ -17,95 +16,95 @@ const calcAverageRating = reviews => {
 };
 
 const ShowBookScreen = ({ route, navigation }) => {
-    const [bookDetails, setBookDetails] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
     const [averageRating, setAverageRating] = useState(0);
 
     const bookId = route.params.bookId;
 
     const bookContext = useContext(BookContext);
-    const { getShowBook } = bookContext;
+    const { state: bookState, getShowBook, clearShowBook } = bookContext;
 
     useEffect(() => {
-        const CancelToken = axios.CancelToken
-        const source = CancelToken.source()
+        getShowBook(bookId);
 
-        try {
-            railsServer.get(`/books/${bookId}`, { cancelToken: source.token })
-                .then(response => setBookDetails(response.data));
-        } catch (error) {
-            if (axios.isCancel(error)) {
-                console.log('Canceled');
-            } else {
-                throw error;
-            }
-        }
+        const test = navigation.addListener('blur', () => clearShowBook());
+
+        return test;
     }, []);
 
     useEffect(() => {
-        if (bookDetails.reviews !== undefined) {
-            setAverageRating(calcAverageRating(bookDetails.reviews));
+        if (bookState.showBook !== {}) {
+            setIsLoading(false);
         }
-    }, [bookDetails]);
+
+        if (bookState.showBook.reviews !== undefined) {
+            setAverageRating(calcAverageRating(bookState.showBook.reviews));
+        }
+    }, [bookState.showBook]);
 
     return (
-        <View style={styles.mainViewStyle}>
-            <View style={styles.headerViewStyle}>
-                <TouchableOpacity onPress={() => navigation.pop()}>
-                    <MaterialIcons 
-                        name='chevron-left'
-                        size={40}
-                        style={styles.backIconStyle}
-                    />
-                </TouchableOpacity>
-                <Text style={styles.headerTitleStyle}>
-                    {bookDetails.title}
-                </Text>
-            </View>
-                <View style={styles.flatListViewStyle}>
-                    <FlatList
-                        showsVerticalScrollIndicator={false}
-                        ListHeaderComponent={
-                            <View style={styles.flatListHeaderFooterStyle}>
-                                <Text style={styles.descriptionTextStyle}>
-                                    {bookDetails.description}
-                                </Text>
-                                <Rating 
-                                    type='star'
-                                    startingValue={averageRating}
-                                    imageSize={20}
-                                    tintColor={Colors.accentLightWhite}
-                                    selectedColor={Colors.primaryOrange}
-                                    type='custom'
-                                    ratingColor={Colors.primaryOrange}
-                                    readonly
-                                />
-                                <Image
-                                    source={{ uri: bookDetails.image_url }}
-                                    style={styles.imageStyle}
-                                />
-                            </View>}
-                        data={bookDetails.reviews}
-                        renderItem={({ item }) => <ShowReviewItem review={item} />}
-                        ListFooterComponent={
-                            <View style={styles.flatListHeaderFooterStyle}>
-                                <Button 
-                                    style={styles.addReviewButtonStyle}
-                                    onPress={() => {
-                                        navigation.dispatch(StackActions.replace('Books'));
-                                        navigation.navigate('Add a Review', 
-                                        { params: { title: bookDetails.title, author: bookDetails.author.name, existingBool: true }})
-                                    }}
-                                >
-                                    <Text style={styles.buttonText}>
-                                        Add a Review
-                                    </Text>
-                                </Button>
-                            </View>
-                        }
-                    />
+        <> 
+            {isLoading ? <Spinner />
+            :
+            <View style={styles.mainViewStyle}>
+                <View style={styles.headerViewStyle}>
+                    <TouchableOpacity onPress={() => navigation.pop()}>
+                        <MaterialIcons 
+                            name='chevron-left'
+                            size={40}
+                            style={styles.backIconStyle}
+                        />
+                    </TouchableOpacity>
+                    <Text style={styles.headerTitleStyle}>
+                        {bookState.showBook.title}
+                    </Text>
                 </View>
-            <AuthedFooter />
-        </View>
+                    <View style={styles.flatListViewStyle}>
+                        <FlatList
+                            showsVerticalScrollIndicator={false}
+                            ListHeaderComponent={
+                                <View style={styles.flatListHeaderFooterStyle}>
+                                    <Text style={styles.descriptionTextStyle}>
+                                        {bookState.showBook.description}
+                                    </Text>
+                                    <Rating 
+                                        type='star'
+                                        startingValue={averageRating}
+                                        imageSize={20}
+                                        tintColor={Colors.accentLightWhite}
+                                        selectedColor={Colors.primaryOrange}
+                                        type='custom'
+                                        ratingColor={Colors.primaryOrange}
+                                        readonly
+                                    />
+                                    <Image
+                                        source={{ uri: bookState.showBook.image_url }}
+                                        style={styles.imageStyle}
+                                    />
+                                </View>}
+                            data={bookState.showBook.reviews}
+                            renderItem={({ item }) => <ShowReviewItem review={item} />}
+                            ListFooterComponent={
+                                <View style={styles.flatListHeaderFooterStyle}>
+                                    <Button 
+                                        style={styles.addReviewButtonStyle}
+                                        onPress={() => {
+                                            navigation.dispatch(StackActions.replace('Books'));
+                                            navigation.navigate('Add a Review', 
+                                            { params: { title: bookState.showBook.title, author: bookState.showBook.author.name, existingBool: true }})
+                                        }}
+                                    >
+                                        <Text style={styles.buttonText}>
+                                            Add a Review
+                                        </Text>
+                                    </Button>
+                                </View>
+                            }
+                        />
+                    </View>
+                <AuthedFooter />
+            </View>}
+        </>
     );
 };
 
