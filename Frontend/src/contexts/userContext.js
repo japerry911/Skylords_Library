@@ -6,12 +6,7 @@ const INITIAL_STATE = {user: {}};
 const userReducer = ((state, action) => {
     switch (action.type) {
         case 'MODIFY_USER':
-            return (
-                { 
-                    ...state,
-                    user: action.payload
-                }
-            );
+            return { ...state, user: action.payload }
 
         case 'CLEAR_USER':
             return INITIAL_STATE;

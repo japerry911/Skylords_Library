@@ -7,11 +7,10 @@ import { Root } from 'native-base';
 import { MainNavigator } from './navigation';
 import { Provider as UserProvider } from './src/contexts/userContext';
 import { Provider as ReviewProvider } from './src/contexts/reviewContext';
+import { Provider as BookProvider } from './src/contexts/bookContext';
 
 const fetchFonts = () => {
   return Font.loadAsync({
-    Roboto: require('native-base/Fonts/Roboto.ttf'),
-    Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
     Avenir_next: require('./assets/fonts/AvenirNextLTPro-Regular.otf'),
     Avenir_italicize: require('./assets/fonts/AvenirNextLTPro-It.otf'),
     Avenir_bold: require('./assets/fonts/AvenirNextLTPro-Bold.otf'),
@@ -32,10 +31,6 @@ const fetchImages = async() => {
   });
 
   return Promise.all(cacheImages);
-};
-
-const initialState = {
-  user: {}
 };
 
 export default () => {
@@ -62,7 +57,9 @@ export default () => {
     <Root>
       <UserProvider>
         <ReviewProvider>
-          <MainNavigator />
+          <BookProvider>
+            <MainNavigator />
+          </BookProvider>
         </ReviewProvider>
       </UserProvider>
     </Root>
