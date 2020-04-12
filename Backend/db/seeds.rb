@@ -1,4 +1,5 @@
 Review.destroy_all
+Favorite.destroy_all
 Book.destroy_all
 User.destroy_all
 Author.destroy_all
@@ -53,3 +54,6 @@ Review.create(rating: 2, user: Troy, book: Ulysses)
 Review.create(rating: 1, user: Cassidy, book: LoRFellowship)
 Review.create(rating: 1, user: Skylord, book: TheKiteRunner, description: 'This book was dumb.')
 Review.create(rating: 1, user: Skylord, book: WarAndPeace, description: 'Too complicated to read, dumb.')
+
+Favorite.create(user: Skylord, book: WarAndPeace)
+Favorite.create(user: Skylord, book: TheKiteRunner)
