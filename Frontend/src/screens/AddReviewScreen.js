@@ -12,13 +12,13 @@ import { Context as BookContext } from '../contexts/bookContext';
 import AuthedFooter from '../components/AuthedFooter';
 
 const AddReviewScreen = ({ navigation, route }) => {
-    const [title, setTitle] = useState(route.params === undefined ? '' : route.params.params.title);
-    const [author, setAuthor] = useState(route.params === undefined ? '' : route.params.params.author);
+    const [title, setTitle] = useState('');
+    const [author, setAuthor] = useState('');
     const [addBookCheck, setAddBookCheck] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
     const [rating, setRating] = useState(0);
     const [description, setDescription] = useState(null);
-    const [existingTitle, setExistingTitle] = useState(route.params === undefined ? false : route.params.params.existingBool );
+    const [existingTitle, setExistingTitle] = useState(false);
     const [validUpload, setValidUpload] = useState(false);
 
     const firstUpdate = useRef(true);
@@ -80,16 +80,19 @@ const AddReviewScreen = ({ navigation, route }) => {
     };
 
     useFocusEffect(useCallback(() => {
-        const blurListener = navigation.addListener('blur', () => {
+        setTitle(route.params === undefined ? '' : route.params.params.title);
+        setExistingTitle(route.params === undefined ? false : route.params.params.existingBool);
+
+        return () => {
+            route.params = undefined;
             setTitle('');
             setAuthor('');
             setRating(0);
             setDescription(null);
             setImageUrl('');
             setAddBookCheck(false);
-        });
-        return () => blurListener();
-    }), []);
+        };
+    }, [route.params]));
 
     // Pull all existing books into state array on first/only first render
     useEffect(() => {
@@ -115,7 +118,7 @@ const AddReviewScreen = ({ navigation, route }) => {
 
         const bookDetails = bookState.books.find(book => book.title === title);
         if (bookDetails) {
-            setAuthor(bookDetails.author);
+            setAuthor(bookDetails.author.name);
         }
     }, [existingTitle]);
 
