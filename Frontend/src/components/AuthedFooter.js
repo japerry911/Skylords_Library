@@ -33,7 +33,7 @@ const AuthedFooter = ({ parentNavigation }) => {
                                     size={32}
                                     style={styles.footerIconStyle}
                                 />}
-                onPress={() => {}}
+                onPress={() => parentNavigation.navigate('Favorites')}
             />
             <FooterIconButton
                 iconComponent={<FontAwesome

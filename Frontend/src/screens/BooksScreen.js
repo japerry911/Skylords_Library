@@ -45,7 +45,7 @@ const BooksScreen = ({ navigation }) => {
                         </Text>
                     </View>
                 </View>
-                <View style={styles.flatListViewStyle}>
+                <View style={styles.bodyViewStyle}>
                     <FlatList
                         style={styles.flatListStyle}
                         data={bookState.books}
@@ -72,11 +72,7 @@ const styles = StyleSheet.create({
     flatListStyle: {
         flex: 1
     },
-    footerStyle: {
-        justifyContent: 'space-evenly',
-        backgroundColor: Colors.accentLightGray
-    },
-    flatListViewStyle: {
+    bodyViewStyle: {
         backgroundColor: Colors.accentLightWhite,
         flex: 1, 
         marginTop: '5%',
