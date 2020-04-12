@@ -79,7 +79,9 @@ const AddReviewScreen = ({ navigation, route }) => {
         navigation.dispatch(DrawerActions.jumpTo('Home'));
     };
 
+    // Resets the screen on blur & sets screen/gets all books on focus
     useFocusEffect(useCallback(() => {
+        getBooks();
         setTitle(route.params === undefined ? '' : route.params.params.title);
         setExistingTitle(route.params === undefined ? false : route.params.params.existingBool);
 
@@ -93,11 +95,6 @@ const AddReviewScreen = ({ navigation, route }) => {
             setAddBookCheck(false);
         };
     }, [route.params]));
-
-    // Pull all existing books into state array on first/only first render
-    useEffect(() => {
-        getBooks();       
-    }, []);
 
     // Check if the book is in the title list, if it is change existingTitle to true
     useEffect(() => {
@@ -150,98 +147,98 @@ const AddReviewScreen = ({ navigation, route }) => {
                 </Text>
             </View>
             <View style={styles.bodyViewStyle}>
-                    <Item 
+                <Item 
+                    floatingLabel
+                    style={styles.formItemStyle}
+                    success={existingTitle}
+                    error={!existingTitle}
+                >
+                    <Label style={styles.formItemLabelStyle}>Enter Book Title</Label>
+                    <Input 
+                        value={title}
+                        onChangeText={newTitle => setTitle(newTitle)}
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        id='test'
+                    />
+                    <Icon name={existingTitle ? 'checkmark-circle' : 'close-circle'} />
+                </Item>
+                <View style={styles.checkBoxViewStyle}>
+                    <CheckBox 
+                        checked={addBookCheck} 
+                        onPress={() => setAddBookCheck(!addBookCheck)}
+                        color={Colors.primaryOrange}
+                    />
+                    <Text style={styles.checkBoxTextStyle}>
+                        Add Book
+                    </Text>
+                    <Item
                         floatingLabel
-                        style={styles.formItemStyle}
-                        success={existingTitle}
-                        error={!existingTitle}
+                        style={styles.formImageItemStyle}
                     >
-                        <Label style={styles.formItemLabelStyle}>Enter Book Title</Label>
-                        <Input 
-                            value={title}
-                            onChangeText={newTitle => setTitle(newTitle)}
-                            autoCapitalize='none'
-                            autoCorrect={false}
-                            id='test'
-                        />
-                        <Icon name={existingTitle ? 'checkmark-circle' : 'close-circle'} />
-                    </Item>
-                    <View style={styles.checkBoxViewStyle}>
-                        <CheckBox 
-                            checked={addBookCheck} 
-                            onPress={() => setAddBookCheck(!addBookCheck)}
-                            color={Colors.primaryOrange}
-                        />
-                        <Text style={styles.checkBoxTextStyle}>
-                            Add Book
-                        </Text>
-                        <Item
-                            floatingLabel
-                            style={styles.formImageItemStyle}
-                        >
-                        <Label style={styles.formImageLabelStyle}>Enter Book Image URL</Label>
-                        <Input
-                            autoCapitalize='none'
-                            autoCorrect={false}
-                            disabled={!addBookCheck}
-                            value={imageUrl}
-                            onChangeText={newImageUrl => setImageUrl(newImageUrl)}
-                        />          
-                        </Item>                  
-                    </View>
-                    <Item 
-                        floatingLabel
-                        style={styles.formItemStyle}
-                    >
-                        <Label style={styles.formItemLabelStyle}>Enter Book Author</Label>
-                        <Input 
-                            value={author}
-                            onChangeText={newAuthor => setAuthor(newAuthor)}
-                            autoCapitalize='none'
-                            autoCorrect={false}
-                            disabled={!addBookCheck}
-                        />
-                    </Item>
-                    <View style={styles.ratingViewStyle}>
-                        <Text style={styles.formElementTitleStyle}>
-                            My Rating: {rating}
-                        </Text>
-                        <Rating 
-                            type='star'
-                            startingValue={rating}
-                            imageSize={25}
-                            tintColor={Colors.accentLightGray}
-                            selectedColor={Colors.primaryOrange}
-                            type='custom'
-                            ratingColor={Colors.primaryOrange}
-                            onFinishRating={newRating => setRating(newRating)}
-                            minValue={1}
-                        />
-                    </View>
-                    <View style={styles.descriptionViewStyle}>
-                        <Text style={styles.formElementTitleStyle}>
-                            What did you think?
-                        </Text>
-                        <Textarea 
-                            style={styles.textAreaStyle} 
-                            rowSpan={5}
-                            bordered
-                            placeholder='Enter your review (optional)'
-                            placeholderTextColor={Colors.accentLightGrayText}
-                            value={description}
-                            onChangeText={newDescription => setDescription(newDescription)}
-                        />
-                    </View>
-                    <Button 
-                        style={styles.postButtonStyle}
-                        onPress={() => onFormSubmit()}
-                        disabled={!validUpload}
-                    >
-                        <Text style={styles.buttonText}>
-                            Post
-                        </Text>
-                        <Icon name={validUpload ? 'checkmark-circle' : 'close-circle'} />
-                    </Button>
+                    <Label style={styles.formImageLabelStyle}>Enter Book Image URL</Label>
+                    <Input
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        disabled={!addBookCheck}
+                        value={imageUrl}
+                        onChangeText={newImageUrl => setImageUrl(newImageUrl)}
+                    />          
+                    </Item>                  
+                </View>
+                <Item 
+                    floatingLabel
+                    style={styles.formItemStyle}
+                >
+                    <Label style={styles.formItemLabelStyle}>Enter Book Author</Label>
+                    <Input 
+                        value={author}
+                        onChangeText={newAuthor => setAuthor(newAuthor)}
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        disabled={!addBookCheck}
+                    />
+                </Item>
+                <View style={styles.ratingViewStyle}>
+                    <Text style={styles.formElementTitleStyle}>
+                        My Rating: {rating}
+                    </Text>
+                    <Rating 
+                        type='star'
+                        startingValue={rating}
+                        imageSize={25}
+                        tintColor={Colors.accentLightGray}
+                        selectedColor={Colors.primaryOrange}
+                        type='custom'
+                        ratingColor={Colors.primaryOrange}
+                        onFinishRating={newRating => setRating(newRating)}
+                        minValue={1}
+                    />
+                </View>
+                <View style={styles.descriptionViewStyle}>
+                    <Text style={styles.formElementTitleStyle}>
+                        What did you think?
+                    </Text>
+                    <Textarea 
+                        style={styles.textAreaStyle} 
+                        rowSpan={5}
+                        bordered
+                        placeholder='Enter your review (optional)'
+                        placeholderTextColor={Colors.accentLightGrayText}
+                        value={description}
+                        onChangeText={newDescription => setDescription(newDescription)}
+                    />
+                </View>
+                <Button 
+                    style={styles.postButtonStyle}
+                    onPress={() => onFormSubmit()}
+                    disabled={!validUpload}
+                >
+                    <Text style={styles.buttonText}>
+                        Post
+                    </Text>
+                    <Icon name={validUpload ? 'checkmark-circle' : 'close-circle'} />
+                </Button>
             </View>
             <AuthedFooter parentNavigation={navigation} />
         </View>
