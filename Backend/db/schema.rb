@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_09_185544) do
+ActiveRecord::Schema.define(version: 2020_04_12_184410) do
 
   create_table "authors", id: :string, force: :cascade do |t|
     t.string "name"
@@ -22,6 +22,13 @@ ActiveRecord::Schema.define(version: 2020_04_09_185544) do
     t.string "image_url"
     t.text "description"
     t.index ["author_id"], name: "index_books_on_author_id"
+  end
+
+  create_table "favorites", id: :string, force: :cascade do |t|
+    t.string "user_id", null: false
+    t.string "book_id", null: false
+    t.index ["book_id"], name: "index_favorites_on_book_id"
+    t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
   create_table "reviews", id: :string, force: :cascade do |t|
@@ -42,6 +49,8 @@ ActiveRecord::Schema.define(version: 2020_04_09_185544) do
   end
 
   add_foreign_key "books", "authors"
+  add_foreign_key "favorites", "books"
+  add_foreign_key "favorites", "users"
   add_foreign_key "reviews", "books"
   add_foreign_key "reviews", "users"
 end
