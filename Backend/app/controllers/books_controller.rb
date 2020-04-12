@@ -14,7 +14,7 @@ class BooksController < ApplicationController
     def create
         @new_book = Book.create(book_params)
 
-        render json: { book: @new_book }
+        render json: { book: @new_book }, include: :author
     end
 
     private

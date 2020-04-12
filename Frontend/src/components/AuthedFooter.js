@@ -13,7 +13,9 @@ const AuthedFooter = ({ parentNavigation }) => {
                                     size={35}
                                     style={styles.footerIconStyle}
                                 />}
-                onPress={() => parentNavigation.navigate('Home')}
+                onPress={() => {
+                    parentNavigation.navigate('Home');
+                }}
             />
             <FooterIconButton
                 iconComponent={<AntDesign
@@ -21,7 +23,9 @@ const AuthedFooter = ({ parentNavigation }) => {
                                     size={35}
                                     style={styles.footerIconStyle}
                                 />}
-                onPress={() => parentNavigation.navigate('Books')}
+                onPress={() => {
+                    parentNavigation.navigate('Books');
+                }}
             />
             <FooterIconButton
                 iconComponent={<FontAwesome

@@ -1,26 +1,24 @@
 import React, { useState, useEffect, useContext, useRef, useCallback } from 'react';
-import { Container, Text, Input, Label, Item, CheckBox, Textarea, Button, Footer, Icon } from 'native-base';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Input, Label, Item, CheckBox, Textarea, Button, Icon } from 'native-base';
+import { StyleSheet, View, TouchableOpacity, Text, Keyboard } from 'react-native';
 import Colors from '../constants/colors';
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
-import FooterIconButton from '../components/FooterIconButton';
-import axios from 'axios';
-import railsServer from '../api/railsServer';
-import { DrawerActions } from '@react-navigation/native';
+import { DrawerActions, useFocusEffect } from '@react-navigation/native';
 import { Context as UserContext } from '../contexts/userContext';
 import { Context as ReviewContext } from '../contexts/reviewContext';
 import { Context as AuthorContext } from '../contexts/authorContext';
+import { Context as BookContext } from '../contexts/bookContext';
+import AuthedFooter from '../components/AuthedFooter';
 
 const AddReviewScreen = ({ navigation, route }) => {
-    const [title, setTitle] = useState(route.params === undefined ? '' : route.params.params.title);
-    const [author, setAuthor] = useState(route.params === undefined ? '' : route.params.params.author);
+    const [title, setTitle] = useState('');
+    const [author, setAuthor] = useState('');
     const [addBookCheck, setAddBookCheck] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
     const [rating, setRating] = useState(0);
     const [description, setDescription] = useState(null);
-    const [existingTitle, setExistingTitle] = useState(route.params === undefined ? false : route.params.params.existingBool );
-    const [existingBooksList, setExistingBooksList] = useState([]);
+    const [existingTitle, setExistingTitle] = useState(false);
     const [validUpload, setValidUpload] = useState(false);
 
     const firstUpdate = useRef(true);
@@ -28,10 +26,12 @@ const AddReviewScreen = ({ navigation, route }) => {
     const userContext = useContext(UserContext);
     const reviewContext = useContext(ReviewContext);
     const authorContext = useContext(AuthorContext);
+    const bookContext = useContext(BookContext);
 
     const { state: userState } = userContext;
     const { addReview } = reviewContext;
     const { state: authorState, getAuthors, addAuthor } = authorContext;
+    const { state: bookState, getBooks, addBook } = bookContext;
 
     const onFormSubmit = async () => {
         let bookId;
@@ -57,15 +57,12 @@ const AddReviewScreen = ({ navigation, route }) => {
             } else {
                 authorId = authorsList.find(authorObject => authorObject.name === author).id; 
             }
-    
+
             // Create the Book
-            const bookResponse = await railsServer.post('/books', 
-            { book: { title, author_id: authorId, description: null, image_url: imageUrl }});
-            bookId = bookResponse.data.book.id;
+            bookId = await addBook(title, authorId, null, imageUrl);
         } else {
             // Look Up Book Id by comparing to array of all books & ids
-            const bookResponse = await railsServer.get('/books');
-            const booksList = bookResponse.data.books.map(bookObject => {
+            const booksList = bookState.books.map(bookObject => {
                 return (
                     { id: bookObject.id, title: bookObject.title }
                 );
@@ -82,29 +79,22 @@ const AddReviewScreen = ({ navigation, route }) => {
         navigation.dispatch(DrawerActions.jumpTo('Home'));
     };
 
-    // Pull all existing books into state array on first/only first render
-    useEffect(() => {
-        const CancelToken = axios.CancelToken;
-        const source = CancelToken.source()
+    // Resets the screen on blur & sets screen/gets all books on focus
+    useFocusEffect(useCallback(() => {
+        getBooks();
+        setTitle(route.params === undefined ? '' : route.params.params.title);
+        setExistingTitle(route.params === undefined ? false : route.params.params.existingBool);
 
-        try {
-            railsServer.get('/books', { cancelToken: source.token })
-                .then(response => response.data.books)
-                .then(books => setExistingBooksList(books.map(book => {
-                    return (
-                        { title: book.title, author: book.author.name }
-                    );
-                })));
-        } catch (error) {
-            if (axios.isCancel(error)) {
-                console.log('Canceled');
-            } else {
-                throw error;
-            }
-        }
-
-        
-    }, []);
+        return () => {
+            route.params = undefined;
+            setTitle('');
+            setAuthor('');
+            setRating(0);
+            setDescription(null);
+            setImageUrl('');
+            setAddBookCheck(false);
+        };
+    }, [route.params]));
 
     // Check if the book is in the title list, if it is change existingTitle to true
     useEffect(() => {
@@ -112,7 +102,7 @@ const AddReviewScreen = ({ navigation, route }) => {
             if (addBookCheck) {
                 setExistingTitle(true);
             } else {
-                setExistingTitle(existingBooksList.find(book => book.title === title) === undefined ? false : true);
+                setExistingTitle(bookState.books.find(book => book.title === title) === undefined ? false : true);
             }
         } else {
             firstUpdate.current = false;
@@ -123,9 +113,9 @@ const AddReviewScreen = ({ navigation, route }) => {
     useEffect(() => {
         if (!existingTitle) return;
 
-        const bookDetails = existingBooksList.find(book => book.title === title);
+        const bookDetails = bookState.books.find(book => book.title === title);
         if (bookDetails) {
-            setAuthor(bookDetails.author);
+            setAuthor(bookDetails.author.name);
         }
     }, [existingTitle]);
 
@@ -141,9 +131,11 @@ const AddReviewScreen = ({ navigation, route }) => {
     }, [existingTitle, addBookCheck, rating, author, imageUrl]);
     
     return (
-        <Container style={styles.mainContainerStyle}>
+        <View style={styles.mainViewStyle}>
             <View style={styles.headerViewStyle}>
-                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate('Home');
+                }}>
                     <MaterialIcons 
                         name='chevron-left'
                         size={40}
@@ -155,132 +147,101 @@ const AddReviewScreen = ({ navigation, route }) => {
                 </Text>
             </View>
             <View style={styles.bodyViewStyle}>
-                    <Item 
+                <Item 
+                    floatingLabel
+                    style={styles.formItemStyle}
+                    success={existingTitle}
+                    error={!existingTitle}
+                >
+                    <Label style={styles.formItemLabelStyle}>Enter Book Title</Label>
+                    <Input 
+                        value={title}
+                        onChangeText={newTitle => setTitle(newTitle)}
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        id='test'
+                    />
+                    <Icon name={existingTitle ? 'checkmark-circle' : 'close-circle'} />
+                </Item>
+                <View style={styles.checkBoxViewStyle}>
+                    <CheckBox 
+                        checked={addBookCheck} 
+                        onPress={() => setAddBookCheck(!addBookCheck)}
+                        color={Colors.primaryOrange}
+                    />
+                    <Text style={styles.checkBoxTextStyle}>
+                        Add Book
+                    </Text>
+                    <Item
                         floatingLabel
-                        style={styles.formItemStyle}
-                        success={existingTitle}
-                        error={!existingTitle}
+                        style={styles.formImageItemStyle}
                     >
-                        <Label style={styles.formItemLabelStyle}>Enter Book Title</Label>
-                        <Input 
-                            value={title}
-                            onChangeText={newTitle => setTitle(newTitle)}
-                            autoCapitalize='none'
-                            autoCorrect={false}
-                        />
-                        <Icon name={existingTitle ? 'checkmark-circle' : 'close-circle'} />
-                    </Item>
-                    <View style={styles.checkBoxViewStyle}>
-                        <CheckBox 
-                            checked={addBookCheck} 
-                            onPress={() => setAddBookCheck(!addBookCheck)}
-                            color={Colors.primaryOrange}
-                        />
-                        <Text style={styles.checkBoxTextStyle}>
-                            Add Book
-                        </Text>
-                        <Item
-                            floatingLabel
-                            style={styles.formImageItemStyle}
-                        >
-                        <Label style={styles.formImageLabelStyle}>Enter Book Image URL</Label>
-                        <Input
-                            autoCapitalize='none'
-                            autoCorrect={false}
-                            disabled={!addBookCheck}
-                            value={imageUrl}
-                            onChangeText={newImageUrl => setImageUrl(newImageUrl)}
-                        />          
-                        </Item>                  
-                    </View>
-                    <Item 
-                        floatingLabel
-                        style={styles.formItemStyle}
-                    >
-                        <Label style={styles.formItemLabelStyle}>Enter Book Author</Label>
-                        <Input 
-                            value={author}
-                            onChangeText={newAuthor => setAuthor(newAuthor)}
-                            autoCapitalize='none'
-                            autoCorrect={false}
-                            disabled={!addBookCheck}
-                        />
-                    </Item>
-                    <View style={styles.ratingViewStyle}>
-                        <Text style={styles.formElementTitleStyle}>
-                            My Rating: {rating}
-                        </Text>
-                        <Rating 
-                            type='star'
-                            startingValue={rating}
-                            imageSize={25}
-                            tintColor={Colors.accentLightGray}
-                            selectedColor={Colors.primaryOrange}
-                            type='custom'
-                            ratingColor={Colors.primaryOrange}
-                            onFinishRating={newRating => setRating(newRating)}
-                        />
-                    </View>
-                    <View style={styles.descriptionViewStyle}>
-                        <Text style={styles.formElementTitleStyle}>
-                            What did you think?
-                        </Text>
-                        <Textarea 
-                            style={styles.textAreaStyle} 
-                            rowSpan={5}
-                            bordered
-                            placeholder='Enter your review (optional)'
-                            placeholderTextColor={Colors.accentLightGrayText}
-                            value={description}
-                            onChangeText={newDescription => setDescription(newDescription)}
-                        />
-                    </View>
-                    <Button 
-                        style={styles.postButtonStyle}
-                        onPress={() => onFormSubmit()}
-                        disabled={!validUpload}
-                    >
-                        <Text style={styles.buttonText}>
-                            Post
-                        </Text>
-                        <Icon name={validUpload ? 'checkmark-circle' : 'close-circle'} />
-                    </Button>
+                    <Label style={styles.formImageLabelStyle}>Enter Book Image URL</Label>
+                    <Input
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        disabled={!addBookCheck}
+                        value={imageUrl}
+                        onChangeText={newImageUrl => setImageUrl(newImageUrl)}
+                    />          
+                    </Item>                  
+                </View>
+                <Item 
+                    floatingLabel
+                    style={styles.formItemStyle}
+                >
+                    <Label style={styles.formItemLabelStyle}>Enter Book Author</Label>
+                    <Input 
+                        value={author}
+                        onChangeText={newAuthor => setAuthor(newAuthor)}
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                        disabled={!addBookCheck}
+                    />
+                </Item>
+                <View style={styles.ratingViewStyle}>
+                    <Text style={styles.formElementTitleStyle}>
+                        My Rating: {rating}
+                    </Text>
+                    <Rating 
+                        type='star'
+                        startingValue={rating}
+                        imageSize={25}
+                        tintColor={Colors.accentLightGray}
+                        selectedColor={Colors.primaryOrange}
+                        type='custom'
+                        ratingColor={Colors.primaryOrange}
+                        onFinishRating={newRating => setRating(newRating)}
+                        minValue={1}
+                    />
+                </View>
+                <View style={styles.descriptionViewStyle}>
+                    <Text style={styles.formElementTitleStyle}>
+                        What did you think?
+                    </Text>
+                    <Textarea 
+                        style={styles.textAreaStyle} 
+                        rowSpan={5}
+                        bordered
+                        placeholder='Enter your review (optional)'
+                        placeholderTextColor={Colors.accentLightGrayText}
+                        value={description}
+                        onChangeText={newDescription => setDescription(newDescription)}
+                    />
+                </View>
+                <Button 
+                    style={styles.postButtonStyle}
+                    onPress={() => onFormSubmit()}
+                    disabled={!validUpload}
+                >
+                    <Text style={styles.buttonText}>
+                        Post
+                    </Text>
+                    <Icon name={validUpload ? 'checkmark-circle' : 'close-circle'} />
+                </Button>
             </View>
-            <Footer style={styles.footerStyle}>
-                <FooterIconButton
-                    iconComponent={<MaterialCommunityIcons
-                                        name='home-outline'
-                                        size={35}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => navigation.navigate('Home')}
-                />
-                <FooterIconButton
-                    iconComponent={<AntDesign
-                                        name='book'
-                                        size={35}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => navigation.navigate('Books')}
-                />
-                <FooterIconButton
-                    iconComponent={<FontAwesome
-                                        name='bookmark-o'
-                                        size={32}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => {}}
-                />
-                <FooterIconButton
-                    iconComponent={<FontAwesome
-                                        name='user-o'
-                                        size={32}
-                                        style={styles.footerIconStyle}
-                                    />}
-                    onPress={() => {}}
-                />
-            </Footer>
-        </Container>
+            <AuthedFooter parentNavigation={navigation} />
+        </View>
     );
 };
 
@@ -299,7 +260,8 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 24,
         fontFamily: 'Avenir_bold',
-        paddingTop: 5
+        paddingTop: 5,
+        color: Colors.accentLightWhite
     },
     postButtonStyle: {
         backgroundColor: Colors.primaryOrange,
@@ -351,7 +313,7 @@ const styles = StyleSheet.create({
     }, 
     bodyViewStyle: {
         backgroundColor: Colors.accentLightWhite,
-        height: '80%',
+        flex: 1,
         marginHorizontal: '4%',
         paddingHorizontal: '4%',
         borderRadius: 10,
@@ -362,8 +324,9 @@ const styles = StyleSheet.create({
         height: 50,
         color: Colors.primaryOrange
     },
-    mainContainerStyle: {
+    mainViewStyle: {
         backgroundColor: Colors.accentLightGray,
+        flex: 1
     },
     headerViewStyle: {
         marginTop: '5%',

@@ -2,7 +2,7 @@ class ReviewsController < ApplicationController
     def index
         @reviews = Review.all 
 
-        render json: { reviews: @reviews }
+        render json: { reviews: @reviews }, include: { book: {}, user: {} }
     end
 
     def show 
