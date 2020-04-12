@@ -9,6 +9,7 @@ import { Provider as UserProvider } from './src/contexts/userContext';
 import { Provider as ReviewProvider } from './src/contexts/reviewContext';
 import { Provider as BookProvider } from './src/contexts/bookContext';
 import { Provider as AuthorProvider } from './src/contexts/authorContext';
+import { Provider as FavoriteProvider } from './src/contexts/favoriteContext';
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -60,7 +61,9 @@ export default () => {
         <ReviewProvider>
           <BookProvider>
             <AuthorProvider>
-              <MainNavigator />
+              <FavoriteProvider>
+                <MainNavigator />
+              </FavoriteProvider>
             </AuthorProvider>
           </BookProvider>
         </ReviewProvider>
