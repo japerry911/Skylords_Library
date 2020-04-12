@@ -29,7 +29,6 @@ const addAuthor = dispatch => {
     return async name => {
         const addAuthorResponse = await railsServer.post('/authors', { author: { name }});
         dispatch({ type: 'ADD_AUTHOR', payload: addAuthorResponse.data.author });
-        console.log(addAuthorResponse.data.author.id);
         return addAuthorResponse.data.author.id;
     };
 };
