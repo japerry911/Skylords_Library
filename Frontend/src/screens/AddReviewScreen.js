@@ -227,6 +227,8 @@ const AddReviewScreen = ({ navigation, route }) => {
                         placeholderTextColor={Colors.accentLightGrayText}
                         value={description}
                         onChangeText={newDescription => setDescription(newDescription)}
+                        autoCapitalize='none'
+                        autoCorrect={false}
                     />
                 </View>
                 <Button 
