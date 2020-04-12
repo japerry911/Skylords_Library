@@ -10,6 +10,7 @@ import { Context as ReviewContext } from '../contexts/reviewContext';
 import { Context as AuthorContext } from '../contexts/authorContext';
 import { Context as BookContext } from '../contexts/bookContext';
 import AuthedFooter from '../components/AuthedFooter';
+import Spinner from '../components/Spinner';
 
 const AddReviewScreen = ({ navigation, route }) => {
     const [title, setTitle] = useState('');
@@ -20,6 +21,7 @@ const AddReviewScreen = ({ navigation, route }) => {
     const [description, setDescription] = useState(null);
     const [existingTitle, setExistingTitle] = useState(false);
     const [validUpload, setValidUpload] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const firstUpdate = useRef(true);
 
@@ -84,9 +86,11 @@ const AddReviewScreen = ({ navigation, route }) => {
         getBooks();
         setTitle(route.params === undefined ? '' : route.params.params.title);
         setExistingTitle(route.params === undefined ? false : route.params.params.existingBool);
+        setIsLoading(false);
 
         return () => {
             route.params = undefined;
+            setIsLoading(true);
             setTitle('');
             setAuthor('');
             setRating(0);
@@ -131,6 +135,8 @@ const AddReviewScreen = ({ navigation, route }) => {
     }, [existingTitle, addBookCheck, rating, author, imageUrl]);
     
     return (
+        <>
+        {isLoading ? <Spinner /> :
         <View style={styles.mainViewStyle}>
             <View style={styles.headerViewStyle}>
                 <TouchableOpacity onPress={() => {
@@ -243,7 +249,8 @@ const AddReviewScreen = ({ navigation, route }) => {
                 </Button>
             </View>
             <AuthedFooter parentNavigation={navigation} />
-        </View>
+        </View>}
+        </>
     );
 };
 
