@@ -16,6 +16,10 @@ const reviewReducer = (state, action) => {
         case 'PULL_TWO_MOST_RECENT_REVIEWS':
             return { ...state, twoMostRecentReviews: action.payload };
 
+        case 'DELETE_REVIEW':
+            const updatedReviewsList = state.reviews.filter(review => review.id !== action.payload);
+            return { ...state, reviews: updatedReviewsList };
+
         default:
             return state;
     }
@@ -36,6 +40,13 @@ const addReview = dispatch => {
     };
 };
 
+const deleteReview = dispatch => {
+    return async id => {
+        await railsServer.delete(`/reviews/${id}`);
+        dispatch({ type: 'DELETE_REVIEW', payload: id });
+    };
+};
+
 const pullTwoMostRecentReviews = dispatch => {
     return async () => {
         const twoMostRecentReviewsResponse = await railsServer.get('/most_recent_two_reviews');
@@ -43,4 +54,5 @@ const pullTwoMostRecentReviews = dispatch => {
     };
 };
 
-export const { Context, Provider } = createDataContext(reviewReducer, { addReview, pullTwoMostRecentReviews, getReviews }, INITIAL_STATE);
+export const { Context, Provider } = createDataContext(reviewReducer, { addReview, pullTwoMostRecentReviews, getReviews, deleteReview }, 
+    INITIAL_STATE);

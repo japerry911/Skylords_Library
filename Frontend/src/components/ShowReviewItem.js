@@ -47,7 +47,7 @@ const ShowReviewItem = ({ review, deleteButton, showBook }) => {
 const styles = StyleSheet.create({
     bookTitleStyle: {
         fontSize: 16,
-        fontFamily: 'Avenir_medium',
+        fontFamily: 'Avenir_bold',
         textAlign: 'center',
         paddingTop: '4%',
         color: Colors.accentLightGrayText

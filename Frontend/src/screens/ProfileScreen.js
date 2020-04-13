@@ -81,6 +81,9 @@ const ProfileScreen = ({ navigation }) => {
                                     </Text>
                                 </View>
                             </View>
+                            <Text style={styles.reviewsTitleStyle}>
+                                Your Reviews
+                            </Text>
                         </>                        
                     }
                     data={userReviews}
@@ -98,15 +101,23 @@ const ProfileScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    reviewsTitleStyle: {
+        color: Colors.accentLightGrayText,
+        fontSize: 18,
+        fontFamily: 'Avenir_bold',
+        paddingTop: '6%'
+    },
     textViewStyle: {
         backgroundColor: Colors.primaryOrange,
         width: '80%',
-        padding: '2%',
+        paddingHorizontal: '2%',
+        paddingTop: '2%',
         borderRadius: 10
     },
     mobileEmailValueStyle: {
         color: Colors.accentLightWhite,
-        fontSize: 18
+        fontSize: 18,
+        fontFamily: 'Avenir_next'
     },
     emailIconStyle: {
         marginHorizontal: '3%',
