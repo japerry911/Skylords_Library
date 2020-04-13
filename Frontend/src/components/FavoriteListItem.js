@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import Colors from '../constants/colors';
 
-const BookListItem = ({ bookId, title, author, imageUrl, description, navigation }) => {
+const FavoriteListItem = ({ title, author, imageUrl, handleDeleteFavorite, id }) => {
     return (
         <View style={styles.itemViewStyle}>
             <Image
@@ -16,16 +16,16 @@ const BookListItem = ({ bookId, title, author, imageUrl, description, navigation
                 <Text style={styles.authorTextStyle}>
                     by {author}
                 </Text>
-                <Text style={styles.descriptionTextStyle}>
-                    {description}
-                </Text>
             </View>
             <TouchableOpacity 
                 style={styles.viewButtonStyle}
-                onPress={() => navigation.navigate('ShowBook', { bookId })}
+                onPress={() => {}}
             >
-                <Text style={styles.highlightStyle}>
-                    View
+                <Text
+                    style={styles.highlightStyle}
+                    onPress={() => handleDeleteFavorite(id)}
+                >
+                    Delete
                 </Text>
             </TouchableOpacity>
         </View>
@@ -42,38 +42,33 @@ const styles = StyleSheet.create({
     },
     imageStyle: {
         height: '100%',
-        width: '20%',
-        resizeMode: 'stretch'
+        width: '30%',
+        resizeMode: 'contain'
     },
     itemViewStyle: {
+        paddingVertical: '3%',
         flexDirection: 'row',
         marginVertical: '3%',
         overflow: 'hidden',
         flexDirection: 'row',
+        minHeight: '100%'
     },
     titleTextStyle: {
         fontSize: 13,
         fontFamily: 'Avenir_bold',
-        color: Colors.accentLightGrayText
+        color: Colors.accentLightGrayText,
     },
     authorTextStyle: {
         fontSize: 13, 
         fontFamily: 'Avenir_medium',
         color: Colors.accentLightGrayText,
-        marginBottom: '3%'
+        marginBottom: '3%',
     },
     textViewStyle: {
         marginLeft: '10%',
         marginRight: '3%',
-        width: '55%'
-    },
-    descriptionTextStyle: {
-        fontSize: 13,
-        fontFamily: 'Avenir_next',
-        fontSize: 13,
-        color: Colors.accentLightGrayText
+        width: '40%'
     }
-    
 });
 
-export default BookListItem;
+export default FavoriteListItem;

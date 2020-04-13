@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList } from 'react-native';
 import Colors from '../constants/colors';
-import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import RecentReviewItem from '../components/RecentReviewItem';
 import { Context as UserContext } from '../contexts/userContext';
 import { Context as ReviewContext } from '../contexts/reviewContext';
@@ -52,7 +52,7 @@ const HomeScreen = ({ navigation }) => {
                                     size={25}
                                 />
                                 <Text style={styles.iconTextStyle}>
-                                    All
+                                    Books
                                 </Text>
                             </View>
                         </TouchableOpacity>
@@ -71,27 +71,30 @@ const HomeScreen = ({ navigation }) => {
                                 </Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.iconTOStyle}>
+                        <TouchableOpacity 
+                            style={styles.iconTOStyle}
+                            onPress={() => navigation.navigate('Favorites')}
+                        >
                             <View style={styles.iconViewStyle}>
                                 <MaterialCommunityIcons
-                                    name='fire'
+                                    name='bookmark-outline'
                                     style={styles.iconStyle}
                                     size={27}
                                 />
                                 <Text style={styles.iconTextStyle}>
-                                    Trending
+                                    Favorites
                                 </Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.iconTOStyle}>
                             <View style={styles.iconViewStyle}>
-                                <MaterialIcons 
-                                    name='message'
+                                <AntDesign 
+                                    name='user'
                                     style={styles.iconStyle}
                                     size={28}
                                 />
                                 <Text style={styles.iconTextStyle}>
-                                    Reviews
+                                    Profile
                                 </Text>
                             </View>
                         </TouchableOpacity>
