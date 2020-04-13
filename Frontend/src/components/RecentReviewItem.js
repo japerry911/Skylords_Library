@@ -15,7 +15,8 @@ const RecentReviewItem = ({ imageUrl, description, username, rating }) => {
         </View>
         <View style={styles.mostRecentReviewStyle}>
             <Text style={styles.mostRecentReviewItalStyle}>
-                "{description}" {'\n\t'}- <Text style={styles.mostRecentReviewMedStyle}>
+                {description === null || description === '' ? "No Content" : `"${description}"`}
+                {'\n\t'}- <Text style={styles.mostRecentReviewMedStyle}>
                 {username}</Text>
             </Text>
             <View style={{alignItems: 'center', justifyContent: 'center'}}>

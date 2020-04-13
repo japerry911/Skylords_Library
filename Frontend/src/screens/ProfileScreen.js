@@ -15,7 +15,7 @@ const ProfileScreen = ({ navigation }) => {
     const reviewContext = useContext(ReviewContext);
 
     const { state: userState } = userContext
-    const { state: reviewState, getReviews } = reviewContext;
+    const { state: reviewState, getReviews, deleteReview } = reviewContext;
 
     useFocusEffect(useCallback(() => {
         setUserReviews(reviewState.reviews.filter(review => review.user.id === userState.user.id));
@@ -92,6 +92,7 @@ const ProfileScreen = ({ navigation }) => {
                                                 review={item} 
                                                 deleteButton={true} 
                                                 showBook={true}
+                                                deleteAction={deleteReview}
                                               />}
                 />
             </View>

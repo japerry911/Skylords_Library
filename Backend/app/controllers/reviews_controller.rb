@@ -16,6 +16,12 @@ class ReviewsController < ApplicationController
 
         render json: { review: @new_review }, include: { book: {}, user: {} }
     end
+
+    def destroy
+        @to_destroy_review = Review.find(params[:id])
+
+        @to_destroy_review.destroy
+    end
     
     def most_recent_two_reviews
         @most_recent_2_reviews = Review.order(created_at: :desc).limit(2)
