@@ -86,7 +86,10 @@ const HomeScreen = ({ navigation }) => {
                                 </Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.iconTOStyle}>
+                        <TouchableOpacity 
+                            style={styles.iconTOStyle}
+                            onPress={() => navigation.navigate('My Profile')}
+                        >
                             <View style={styles.iconViewStyle}>
                                 <AntDesign 
                                     name='user'
@@ -94,7 +97,7 @@ const HomeScreen = ({ navigation }) => {
                                     size={28}
                                 />
                                 <Text style={styles.iconTextStyle}>
-                                    Profile
+                                    My Profile
                                 </Text>
                             </View>
                         </TouchableOpacity>

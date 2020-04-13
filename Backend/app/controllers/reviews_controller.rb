@@ -2,7 +2,7 @@ class ReviewsController < ApplicationController
     def index
         @reviews = Review.all 
 
-        render json: { reviews: @reviews }, include: { book: {}, user: {} }
+        render json: { reviews: @reviews }, include: { user: { only: [:username, :id]}, book: { include: { author: { only: [:name] }}}}
     end
 
     def show 
@@ -15,6 +15,12 @@ class ReviewsController < ApplicationController
         @new_review = Review.create(review_params)
 
         render json: { review: @new_review }, include: { book: {}, user: {} }
+    end
+
+    def destroy
+        @to_destroy_review = Review.find(params[:id])
+
+        @to_destroy_review.destroy
     end
     
     def most_recent_two_reviews

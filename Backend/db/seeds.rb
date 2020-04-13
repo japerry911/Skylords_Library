@@ -4,14 +4,14 @@ Book.destroy_all
 User.destroy_all
 Author.destroy_all
 
-Skylord = User.create(username: 'SkylordPerry', age: 49, password: 'TEST')
-Cassidy = User.create(username: 'CassidyHumphrey', age: 24, password: 'TEST')
-Jack = User.create(username: 'JackPerry', age: 25, password: 'TEST')
-Troy = User.create(username: 'TroyPerry', age: 56, password: 'TEST')
-Cathy = User.create(username: 'CathyPerry', age: 56, password: 'TEST')
-Bret = User.create(username: 'BretPerry', age: 27, password: 'TEST')
-Grant = User.create(username: 'GrantPerry', age: 31, password: 'TEST')
-Sarah = User.create(username: 'SarahPerry', age: 30, password: 'TEST')
+Skylord = User.create(username: 'SkylordPerry', age: 49, password: 'TEST', phone: '402.123.4014', email: 'Skylord@dogmail.com')
+Cassidy = User.create(username: 'CassidyHumphrey', age: 24, password: 'TEST', phone: '941.323.9543', email: 'Cassidy@gmail.com')
+Jack = User.create(username: 'JackPerry', age: 25, password: 'TEST', phone: '123.343.2331', email: 'Jack@gmail.com')
+Troy = User.create(username: 'TroyPerry', age: 56, password: 'TEST', phone: '534.324.5234', email: 'Troy@gmail.com')
+Cathy = User.create(username: 'CathyPerry', age: 56, password: 'TEST', phone: '134.234.1235', email: 'Cathy@gmail.com')
+Bret = User.create(username: 'BretPerry', age: 27, password: 'TEST', phone: '345.797.5456', email: 'Bret@gmail.com')
+Grant = User.create(username: 'GrantPerry', age: 31, password: 'TEST', phone: '654.343.4323', email: 'Grant@gmail.com')
+Sarah = User.create(username: 'SarahPerry', age: 30, password: 'TEST', phone: '130.434.1235', email: 'Sarah@gmail.com')
 
 LeoTolstoy = Author.create(name: 'Leo Tolstoy')
 ToniMorrison = Author.create(name: 'Toni Morrison')
