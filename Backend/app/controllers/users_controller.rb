@@ -2,19 +2,19 @@ class UsersController < ApplicationController
     def index 
         @users = User.all 
 
-        render json: @users 
+        render json: { users: @users } 
     end
 
     def show 
         @user = Reader.find(params[:id])
 
-        render json: @user 
+        render json: { user: @user } 
     end
 
     def create
         @new_user = User.create(user_params)
 
-        render json: @new_user
+        render json: { user: @new_user }
     end
 
     private
