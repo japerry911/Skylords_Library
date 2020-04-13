@@ -32,7 +32,7 @@ const ShowBookScreen = ({ route, navigation }) => {
     const { state: userState } = userContext;
 
     useEffect(() => {
-        getShowBook(bookId);
+        getShowBook(userState.user.token, bookId);
 
         const listener = navigation.addListener('blur', () => {
             clearShowBook();
@@ -69,66 +69,67 @@ const ShowBookScreen = ({ route, navigation }) => {
                         {bookState.showBook.title}
                     </Text>
                 </View>
-                    <View style={styles.flatListViewStyle}>
-                        <FlatList
-                            showsVerticalScrollIndicator={false}
-                            ListHeaderComponent={
-                                <View style={styles.flatListHeaderFooterStyle}>
-                                    <Text style={styles.descriptionTextStyle}>
-                                        {bookState.showBook.description}
+                <View style={styles.flatListViewStyle}>
+                    <FlatList
+                        showsVerticalScrollIndicator={false}
+                        ListHeaderComponent={
+                            <View style={styles.flatListHeaderFooterStyle}>
+                                <Text style={styles.descriptionTextStyle}>
+                                    {bookState.showBook.description}
+                                </Text>
+                                <Rating 
+                                    type='star'
+                                    startingValue={averageRating}
+                                    imageSize={20}
+                                    tintColor={Colors.accentLightWhite}
+                                    selectedColor={Colors.primaryOrange}
+                                    type='custom'
+                                    ratingColor={Colors.primaryOrange}
+                                    readonly
+                                />
+                                <Image
+                                    source={{ uri: bookState.showBook.image_url }}
+                                    style={styles.imageStyle}
+                                />
+                            </View>}
+                        data={bookState.showBook.reviews}
+                        renderItem={({ item }) => <ShowReviewItem review={item} />}
+                        ListFooterComponent={
+                            <View style={styles.flatListHeaderFooterStyle}>
+                                <Button 
+                                    style={styles.buttonStyle}
+                                    onPress={() => {
+                                        navigation.dispatch(StackActions.replace('Books'));
+                                        navigation.navigate('Add a Review', 
+                                        { params: { title: bookState.showBook.title, author: bookState.showBook.author.name, 
+                                            existingBool: true }})
+                                    }}
+                                >
+                                    <Text style={styles.buttonText}>
+                                        Add a Review
                                     </Text>
-                                    <Rating 
-                                        type='star'
-                                        startingValue={averageRating}
-                                        imageSize={20}
-                                        tintColor={Colors.accentLightWhite}
-                                        selectedColor={Colors.primaryOrange}
-                                        type='custom'
-                                        ratingColor={Colors.primaryOrange}
-                                        readonly
-                                    />
-                                    <Image
-                                        source={{ uri: bookState.showBook.image_url }}
-                                        style={styles.imageStyle}
-                                    />
-                                </View>}
-                            data={bookState.showBook.reviews}
-                            renderItem={({ item }) => <ShowReviewItem review={item} />}
-                            ListFooterComponent={
-                                <View style={styles.flatListHeaderFooterStyle}>
-                                    <Button 
-                                        style={styles.buttonStyle}
-                                        onPress={() => {
-                                            navigation.dispatch(StackActions.replace('Books'));
-                                            navigation.navigate('Add a Review', 
-                                            { params: { title: bookState.showBook.title, author: bookState.showBook.author.name, 
-                                                existingBool: true }})
-                                        }}
-                                    >
-                                        <Text style={styles.buttonText}>
-                                            Add a Review
-                                        </Text>
-                                    </Button>
-                                    <Button
-                                        style={styles.buttonStyle}
-                                        onPress={() => {
-                                            addFavorite(bookId, userState.user.id)
-                                            Toast.show({
-                                                text: 'Added to Favorites',
-                                                buttonText: 'Okay',
-                                                type: 'success',
-                                                duration: 3000
-                                            });
-                                        }}
-                                    >
-                                        <Text style={styles.buttonText}>
-                                            Add to Favorites
-                                        </Text>
-                                    </Button>
-                                </View>
-                            }
-                        />
-                    </View>
+                                </Button>
+                                <Button
+                                    style={styles.buttonStyle}
+                                    onPress={() => {
+                                        navigation.dispatch(StackActions.replace('Books'));
+                                        addFavorite(userState.user.token, bookId, userState.user.id);
+                                        Toast.show({
+                                            text: 'Added to Favorites',
+                                            buttonText: 'Okay',
+                                            type: 'success',
+                                            duration: 3000
+                                        });
+                                    }}
+                                >
+                                    <Text style={styles.buttonText}>
+                                        Add to Favorites
+                                    </Text>
+                                </Button>
+                            </View>
+                        }
+                    />
+                </View>
                 <AuthedFooter parentNavigation={navigation} />
             </View>}
         </>

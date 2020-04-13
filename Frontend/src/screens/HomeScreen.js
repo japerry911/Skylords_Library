@@ -20,7 +20,7 @@ const HomeScreen = ({ navigation }) => {
     const user = userState.user;
 
     useEffect(() => {
-        pullTwoMostRecentReviews();
+        pullTwoMostRecentReviews(user.token);
     }, [reviewState.reviews.length]);
 
     useEffect(() => {

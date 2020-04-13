@@ -19,15 +19,15 @@ const authorReducer = (state, action) => {
 };
 
 const getAuthors = dispatch => {
-    return async () => {
-        const getAuthorsResponse = await railsServer.get('/authors');
+    return async token => {
+        const getAuthorsResponse = await railsServer.get('/authors', { headers: { Authorization: `Bearer ${token}` }});
         dispatch({ type: 'GET_AUTHORS', payload: getAuthorsResponse.data.authors });
     };
 };
 
 const addAuthor = dispatch => {
-    return async name => {
-        const addAuthorResponse = await railsServer.post('/authors', { author: { name }});
+    return async (token, name) => {
+        const addAuthorResponse = await railsServer.post('/authors', { author: { name }}, { headers: { Authorization: `Bearer ${token}` }});
         dispatch({ type: 'ADD_AUTHOR', payload: addAuthorResponse.data.author });
         return addAuthorResponse.data.author.id;
     };

@@ -7,8 +7,10 @@ import { Context as FavoriteContext } from '../contexts/favoriteContext';
 import { Context as UserContext } from '../contexts/userContext';
 import { useFocusEffect } from '@react-navigation/native';
 import FavoriteListItem from '../components/FavoriteListItem';
+import Spinner from '../components/Spinner';
 
 const FavoritesScreen = ({ navigation }) => {
+    const [isLoading, setIsLoading] = useState(true);
     const [currentFavorites, setCurrentFavorites] = useState([]);
 
     const favoriteContext = useContext(FavoriteContext);
@@ -17,15 +19,20 @@ const FavoritesScreen = ({ navigation }) => {
     const { state: favoriteState, getFavorites, deleteFavorite } = favoriteContext;
     const { state: userState } = userContext;
 
-    useEffect(() => {
-        getFavorites();
-    }, []);
+    const fetchFavorites = async token => await getFavorites(token);
 
     useFocusEffect(useCallback(() => {
+        fetchFavorites(userState.user.token);
         setCurrentFavorites(favoriteState.favorites.filter(favorite => favorite.user.id === userState.user.id));
-    }, [favoriteState.favorites]));
+        setIsLoading(false);
+
+        return () => setIsLoading(true);
+    }, []));
 
     return (
+        <>
+        {isLoading ? <Spinner /> 
+        :
         <View style={styles.mainViewStyle}>
             <View style={styles.headerViewStyle}>
                 <TouchableOpacity onPress={() => navigation.navigate('Home')}>
@@ -46,7 +53,6 @@ const FavoritesScreen = ({ navigation }) => {
             </View>
             <View style={styles.bodyViewStyle}>
                 <FlatList 
-                    style={styles.flatListStyle}
                     data={currentFavorites}
                     keyExtractor={favorite => favorite.id}
                     renderItem={({ item }) => <FavoriteListItem
@@ -54,20 +60,20 @@ const FavoritesScreen = ({ navigation }) => {
                                                 author={item.book.author.name}
                                                 imageUrl={item.book.image_url}
                                                 handleDeleteFavorite={deleteFavorite}
+                                                token={userState.user.token}
                                                 id={item.id}
                                               />
                     }
+                    showsVerticalScrollIndicator={false}
                 />
             </View>
             <AuthedFooter parentNavigation={navigation} />
-        </View>
+        </View>}
+        </>
     );
 };
 
 const styles = StyleSheet.create({
-    flatListStyle: {
-        flex: 1
-    },
     mainViewStyle: {
         backgroundColor: Colors.accentLightGray,
         flex: 1
@@ -93,7 +99,6 @@ const styles = StyleSheet.create({
     bodyViewStyle: {
         backgroundColor: Colors.accentLightWhite,
         flex: 1, 
-        marginTop: '5%',
         marginBottom: '2%',
         marginHorizontal: '5%',
         paddingHorizontal: '5%',
