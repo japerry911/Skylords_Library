@@ -4,19 +4,19 @@ class FavoritesController < ApplicationController
     def index
         @favorites = Favorite.all 
 
-        render json: { favorites: @favorites }, include: { user: {}, book: { include: { author: { only: [:name] }}}}
+        render json: { favorites: @favorites }, include: { user: { only: [:username, :id] }, book: { include: { author: { only: [:name] }}}}
     end
 
     def show
         @favorite = Favorite.find(params[:id])
 
-        render json: { favorite: @favorite }, include: { book: {}, user: {} }
+        render json: { favorite: @favorite }, include: { book: {}, user: { only: [:username, :id] }}
     end
 
     def create
         @new_favorite = Favorite.create(favorite_params)
 
-        render json: { favorite: @new_favorite }, include: { user: {}, book: { include: { author: { only: [:name] }}}}
+        render json: { favorite: @new_favorite }, include: { user: { only: [:username, :id] }, book: { include: { author: { only: [:name] }}}}
     end
 
     def destroy

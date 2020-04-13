@@ -38,8 +38,8 @@ const deleteFavorite = dispatch => {
 
 const addFavorite = dispatch => {
     return async (token, bookId, userId) => {
-        const addFavoriteResponse = await railsServer.post('/favorites', { headers: { Authorization: `Bearer ${token}` },
-            favorite: { book_id: bookId, user_id: userId }});
+        const addFavoriteResponse = await railsServer.post('/favorites', { favorite: { book_id: bookId, user_id: userId }},
+            { headers: { Authorization: `Bearer ${token}` }});
         dispatch({ type: 'ADD_FAVORITE', payload: addFavoriteResponse.data.favorite });
     };
 };

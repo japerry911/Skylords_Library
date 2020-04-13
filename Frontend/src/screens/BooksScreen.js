@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, useCallback } from 'react';
 import { StyleSheet, View, TouchableOpacity, FlatList, Text } from 'react-native';
 import Colors from '../constants/colors';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -7,6 +7,7 @@ import AuthedFooter from '../components/AuthedFooter';
 import { Context as BookContext } from '../contexts/bookContext';
 import { Context as UserContext } from '../contexts/userContext';
 import Spinner from '../components/Spinner';
+import { useFocusEffect } from '@react-navigation/native';
 
 const BooksScreen = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -17,15 +18,12 @@ const BooksScreen = ({ navigation }) => {
     const { state: bookState, getBooks } = bookContext;    
     const { state: userState } = userContext;
 
-    useEffect(() => {
+    useFocusEffect(useCallback(() => {
         getBooks(userState.user.token);
-    }, []);
+        setIsLoading(false);
 
-    useEffect(() => {
-        if (bookState.books.length > 0) {
-            setIsLoading(false);
-        }
-    }, [bookState.books])
+        return () => setIsLoading(true);
+    }, [isLoading]))
 
     return (
         <>

@@ -44,8 +44,8 @@ const getShowBook = dispatch => {
 
 const addBook = dispatch => {
     return async (token, title, authorId, description, imageUrl) => {
-        const addBookResponse = await railsServer.post('/books', { headers: { Authorization: `Bearer ${token}` },
-            book: { title, author_id: authorId, description, image_url: imageUrl }});
+        const addBookResponse = await railsServer.post('/books', {book: { title, author_id: authorId, description, image_url: imageUrl }},
+            { headers: { Authorization: `Bearer ${token}` }});
         dispatch({ type: 'ADD_BOOK', payload: addBookResponse.data.book });
         return addBookResponse.data.book.id;
     };

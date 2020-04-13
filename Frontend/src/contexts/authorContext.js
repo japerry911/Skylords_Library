@@ -27,7 +27,7 @@ const getAuthors = dispatch => {
 
 const addAuthor = dispatch => {
     return async (token, name) => {
-        const addAuthorResponse = await railsServer.post('/authors', { author: { name }, headers: { Authorization: `Bearer ${token}` }});
+        const addAuthorResponse = await railsServer.post('/authors', { author: { name }}, { headers: { Authorization: `Bearer ${token}` }});
         dispatch({ type: 'ADD_AUTHOR', payload: addAuthorResponse.data.author });
         return addAuthorResponse.data.author.id;
     };
