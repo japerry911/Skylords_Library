@@ -41,7 +41,7 @@ const AuthedFooter = ({ parentNavigation }) => {
                                     size={32}
                                     style={styles.footerIconStyle}
                                 />}
-                onPress={() => {}}
+                onPress={() => parentNavigation.navigate('My Profile')}
             />
         </View>
     );

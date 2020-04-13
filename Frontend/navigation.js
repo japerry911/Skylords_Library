@@ -12,6 +12,7 @@ import BooksScreen from './src/screens/BooksScreen';
 import ShowBookScreen from './src/screens/ShowBookScreen';
 import AddReviewScreen from './src/screens/AddReviewScreen';
 import FavoritesScreen from './src/screens/FavoritesScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
 import React from 'react';
 import Colors from './src/constants/colors';
 import { StyleSheet, TouchableOpacity } from 'react-native';
@@ -65,6 +66,7 @@ const AuthStack = () => {
             <Drawer.Screen name='Books' component={BooksStack} />
             <Drawer.Screen name='Add a Review' component={AddReviewScreen} />
             <Drawer.Screen name='Favorites' component={FavoritesScreen} />
+            <Drawer.Screen name='My Profile' component={ProfileScreen} />
         </Drawer.Navigator>
     );
 };
