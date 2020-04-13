@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Button } from 'native-base';
+import { Button, Toast } from 'native-base';
 import { Text, StyleSheet, TouchableOpacity, View, Image, FlatList } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
@@ -8,6 +8,8 @@ import ShowReviewItem from '../components/ShowReviewItem';
 import { StackActions } from '@react-navigation/native';
 import AuthedFooter from '../components/AuthedFooter';
 import { Context as BookContext } from '../contexts/bookContext';
+import { Context as FavoritesContext } from '../contexts/favoriteContext';
+import { Context as UserContext } from '../contexts/userContext';
 import Spinner from '../components/Spinner';
 
 const calcAverageRating = reviews => {
@@ -22,7 +24,12 @@ const ShowBookScreen = ({ route, navigation }) => {
     const bookId = route.params.bookId;
 
     const bookContext = useContext(BookContext);
+    const favoriteContext = useContext(FavoritesContext);
+    const userContext = useContext(UserContext);
+
+    const { addFavorite } = favoriteContext;
     const { state: bookState, getShowBook, clearShowBook } = bookContext;
+    const { state: userState } = userContext;
 
     useEffect(() => {
         getShowBook(bookId);
@@ -90,34 +97,51 @@ const ShowBookScreen = ({ route, navigation }) => {
                             ListFooterComponent={
                                 <View style={styles.flatListHeaderFooterStyle}>
                                     <Button 
-                                        style={styles.addReviewButtonStyle}
+                                        style={styles.buttonStyle}
                                         onPress={() => {
                                             navigation.dispatch(StackActions.replace('Books'));
                                             navigation.navigate('Add a Review', 
-                                            { params: { title: bookState.showBook.title, author: bookState.showBook.author.name, existingBool: true }})
+                                            { params: { title: bookState.showBook.title, author: bookState.showBook.author.name, 
+                                                existingBool: true }})
                                         }}
                                     >
                                         <Text style={styles.buttonText}>
                                             Add a Review
                                         </Text>
                                     </Button>
+                                    <Button
+                                        style={styles.buttonStyle}
+                                        onPress={() => {
+                                            addFavorite(bookId, userState.user.id)
+                                            Toast.show({
+                                                text: 'Added to Favorites',
+                                                buttonText: 'Okay',
+                                                type: 'success',
+                                                duration: 3000
+                                            });
+                                        }}
+                                    >
+                                        <Text style={styles.buttonText}>
+                                            Add to Favorites
+                                        </Text>
+                                    </Button>
                                 </View>
                             }
                         />
                     </View>
-                <AuthedFooter />
+                <AuthedFooter parentNavigation={navigation} />
             </View>}
         </>
     );
 };
 
 const styles = StyleSheet.create({
-    addReviewButtonStyle: {
+    buttonStyle: {
         backgroundColor: Colors.primaryOrange,
         marginVertical: 15,
         justifyContent: 'center',
         alignItems: 'center',
-        minWidth: '40%',
+        minWidth: '50%',
         alignSelf: 'center'
     },
     buttonText: {

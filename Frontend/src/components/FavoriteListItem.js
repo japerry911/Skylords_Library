@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     imageStyle: {
         height: '100%',
         width: '30%',
-        resizeMode: 'stretch'
+        resizeMode: 'contain'
     },
     itemViewStyle: {
         paddingVertical: '3%',

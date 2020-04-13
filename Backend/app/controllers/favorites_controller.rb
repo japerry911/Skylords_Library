@@ -14,7 +14,7 @@ class FavoritesController < ApplicationController
     def create
         @new_favorite = Favorite.create(favorite_params)
 
-        render json: { favorite: @favorite }, include: { book: {}, user: {} }
+        render json: { favorite: @new_favorite }, include: { user: {}, book: { include: { author: { only: [:name] }}}}
     end
 
     def destroy

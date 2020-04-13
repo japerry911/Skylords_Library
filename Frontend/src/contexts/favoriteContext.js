@@ -12,6 +12,11 @@ const favoriteReducer = (state, action) => {
             const newFavorites = state.favorites.filter(favorite => favorite.id !== action.payload);
             return { ...state, favorites: newFavorites };
 
+        case 'ADD_FAVORITE':
+            const addFavorites = state.favorites;
+            addFavorites.push(action.payload);
+            return { ...state, favorites: addFavorites };
+
         default:
             return state;
     }
@@ -31,4 +36,11 @@ const deleteFavorite = dispatch => {
     };
 };
 
-export const { Context, Provider } = createDataContext(favoriteReducer, { getFavorites, deleteFavorite }, INITIAL_STATE);
+const addFavorite = dispatch => {
+    return async (bookId, userId) => {
+        const addFavoriteResponse = await railsServer.post('/favorites', { favorite: { book_id: bookId, user_id: userId }});
+        dispatch({ type: 'ADD_FAVORITE', payload: addFavoriteResponse.data.favorite });
+    };
+};
+
+export const { Context, Provider } = createDataContext(favoriteReducer, { getFavorites, deleteFavorite, addFavorite }, INITIAL_STATE);

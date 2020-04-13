@@ -25,7 +25,7 @@ const FavoritesScreen = ({ navigation }) => {
         const currentUser = userState.user;
         setCurrentFavorites(favoriteState.favorites.filter(favorite => favorite.user.id === currentUser.id));
     }, [favoriteState.favorites]));
-
+    console.log(favoriteState.favorites);
     return (
         <View style={styles.mainViewStyle}>
             <View style={styles.headerViewStyle}>
