@@ -31,4 +31,4 @@ const deleteFavorite = dispatch => {
     };
 };
 
-export const { Context, Provider } = createDataContext(favoriteReducer, { getFavorites }, INITIAL_STATE);
+export const { Context, Provider } = createDataContext(favoriteReducer, { getFavorites, deleteFavorite }, INITIAL_STATE);

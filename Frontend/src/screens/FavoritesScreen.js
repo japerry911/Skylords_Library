@@ -14,7 +14,7 @@ const FavoritesScreen = ({ navigation }) => {
     const favoriteContext = useContext(FavoriteContext);
     const userContext = useContext(UserContext);
 
-    const { state: favoriteState, getFavorites } = favoriteContext;
+    const { state: favoriteState, getFavorites, deleteFavorite } = favoriteContext;
     const { state: userState } = userContext;
 
     useEffect(() => {
@@ -54,11 +54,13 @@ const FavoritesScreen = ({ navigation }) => {
                                                 title={item.book.title}
                                                 author={item.book.author.name}
                                                 imageUrl={item.book.image_url}
+                                                handleDeleteFavorite={deleteFavorite}
+                                                id={item.id}
                                               />
                     }
                 />
             </View>
-            <AuthedFooter />
+            <AuthedFooter parentNavigation={navigation} />
         </View>
     );
 };
