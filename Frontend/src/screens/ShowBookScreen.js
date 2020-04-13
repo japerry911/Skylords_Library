@@ -34,12 +34,12 @@ const ShowBookScreen = ({ route, navigation }) => {
     useEffect(() => {
         getShowBook(bookId);
 
-        const test = navigation.addListener('blur', () => {
+        const listener = navigation.addListener('blur', () => {
             clearShowBook();
             setIsLoading(true);
         });
 
-        return test;
+        return listener;
     }, []);
 
     useEffect(() => {

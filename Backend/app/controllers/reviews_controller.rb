@@ -14,7 +14,7 @@ class ReviewsController < ApplicationController
     def create 
         @new_review = Review.create(review_params)
 
-        render json: { review: @new_review }, include: { book: {}, user: {} }
+        render json: { review: @new_review }, include: { user: { only: [:username, :id]}, book: { include: { author: { only: [:name] }}}}
     end
 
     def destroy

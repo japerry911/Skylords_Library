@@ -13,7 +13,7 @@ const ShowReviewItem = ({ review, deleteButton, showBook, deleteAction }) => {
             </Text>
             :
             null}
-            {review.description === null || review.description === '' 
+            {review.description === null || review.description === '' || review.description === undefined
             ? 
             <Text style={styles.reviewTextStyle}>No Content</Text>
             : 

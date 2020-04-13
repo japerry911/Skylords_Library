@@ -7,9 +7,11 @@ import { Context as UserContext } from '../contexts/userContext';
 import { Context as ReviewContext } from '../contexts/reviewContext';
 import { useFocusEffect } from '@react-navigation/native';
 import ShowReviewItem from '../components/ShowReviewItem';
+import Spinner from '../components/Spinner';
 
 const ProfileScreen = ({ navigation }) => {
     const [userReviews, setUserReviews] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const userContext = useContext(UserContext);
     const reviewContext = useContext(ReviewContext);
@@ -17,15 +19,20 @@ const ProfileScreen = ({ navigation }) => {
     const { state: userState } = userContext
     const { state: reviewState, getReviews, deleteReview } = reviewContext;
 
-    useFocusEffect(useCallback(() => {
+    useFocusEffect(useCallback(() => { 
         setUserReviews(reviewState.reviews.filter(review => review.user.id === userState.user.id));
-    }, [reviewState.reviews]))
+        setIsLoading(false);
+
+        return () => setIsLoading(true);
+    }, [reviewState.reviews.length]))
 
     useEffect(() => {
         getReviews();
     }, []);
 
     return (
+        <>
+        {isLoading ? <Spinner /> :
         <View style={styles.mainViewStyle}>
             <View style={styles.headerViewStyle}>
                 <TouchableOpacity onPress={() => {
@@ -97,7 +104,8 @@ const ProfileScreen = ({ navigation }) => {
                 />
             </View>
             <AuthedFooter parentNavigation={navigation} />
-        </View>
+        </View>}
+        </>
     );
 };
 

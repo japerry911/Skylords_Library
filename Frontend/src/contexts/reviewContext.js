@@ -35,8 +35,7 @@ const getReviews = dispatch => {
 const addReview = dispatch => {
     return async (bookId, userId, rating, description) => {
         const addReviewResponse = await railsServer.post('/reviews', { review: { book_id: bookId, user_id: userId, rating, description }});
-        const data = addReviewResponse.data;
-        dispatch({ type: 'ADD_REVIEW', payload: { user: data.review.user, book: data.review.book, review: data.review }});
+        dispatch({ type: 'ADD_REVIEW', payload: addReviewResponse.data.review });
     };
 };
 
