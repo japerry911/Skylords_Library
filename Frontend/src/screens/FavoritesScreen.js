@@ -6,6 +6,7 @@ import AuthedFooter from '../components/AuthedFooter';
 import { Context as FavoriteContext } from '../contexts/favoriteContext';
 import { Context as UserContext } from '../contexts/userContext';
 import { useFocusEffect } from '@react-navigation/native';
+import FavoriteListItem from '../components/FavoriteListItem';
 
 const FavoritesScreen = ({ navigation }) => {
     const [currentFavorites, setCurrentFavorites] = useState([]);
@@ -49,7 +50,12 @@ const FavoritesScreen = ({ navigation }) => {
                     style={styles.flatListStyle}
                     data={currentFavorites}
                     keyExtractor={favorite => favorite.id}
-                    renderItem={({ item }) => <Text>{item.book.title} - {item.user.username}</Text>}
+                    renderItem={({ item }) => <FavoriteListItem
+                                                title={item.book.title}
+                                                author={item.book.author.name}
+                                                imageUrl={item.book.image_url}
+                                              />
+                    }
                 />
             </View>
             <AuthedFooter />

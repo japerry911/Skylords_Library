@@ -2,7 +2,7 @@ class FavoritesController < ApplicationController
     def index
         @favorites = Favorite.all 
 
-        render json: { favorites: @favorites }, include: { book: {}, user: {} }
+        render json: { favorites: @favorites }, include: { user: {}, book: { include: { author: { only: [:name] }}}}
     end
 
     def show

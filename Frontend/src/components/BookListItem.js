@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text } from 'native-base';
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, Text } from 'react-native';
 import Colors from '../constants/colors';
 
 const BookListItem = ({ bookId, title, author, imageUrl, description, navigation }) => {
@@ -63,17 +62,18 @@ const styles = StyleSheet.create({
         color: Colors.accentLightGrayText,
         marginBottom: '3%'
     },
+    textViewStyle: {
+        marginLeft: '10%',
+        marginRight: '3%',
+        width: '55%'
+    },
     descriptionTextStyle: {
         fontSize: 13,
         fontFamily: 'Avenir_next',
         fontSize: 13,
         color: Colors.accentLightGrayText
-    },
-    textViewStyle: {
-        marginLeft: '10%',
-        marginRight: '3%',
-        width: '55%'
     }
+    
 });
 
 export default BookListItem;
