@@ -17,6 +17,12 @@ class FavoritesController < ApplicationController
         render json: { favorite: @favorite }, include: { book: {}, user: {} }
     end
 
+    def destroy
+        @destroy_favorite = Favorite.find(params[:id])
+
+        @destroy_favorite.destroy
+    end
+
     private
 
         def favorite_params
