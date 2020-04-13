@@ -5,16 +5,20 @@ import { MaterialIcons } from '@expo/vector-icons';
 import BookListItem from '../components/BookListItem';
 import AuthedFooter from '../components/AuthedFooter';
 import { Context as BookContext } from '../contexts/bookContext';
+import { Context as UserContext } from '../contexts/userContext';
 import Spinner from '../components/Spinner';
 
 const BooksScreen = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const bookContext = useContext(BookContext);
+    const userContext = useContext(UserContext);
+
     const { state: bookState, getBooks } = bookContext;    
+    const { state: userState } = userContext;
 
     useEffect(() => {
-        getBooks();
+        getBooks(userState.user.token);
     }, []);
 
     useEffect(() => {

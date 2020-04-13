@@ -18,7 +18,7 @@ const FavoritesScreen = ({ navigation }) => {
     const { state: userState } = userContext;
 
     useEffect(() => {
-        getFavorites();
+        getFavorites(userState.user.token);
     }, []);
 
     useFocusEffect(useCallback(() => {
@@ -54,6 +54,7 @@ const FavoritesScreen = ({ navigation }) => {
                                                 author={item.book.author.name}
                                                 imageUrl={item.book.image_url}
                                                 handleDeleteFavorite={deleteFavorite}
+                                                token={userState.user.token}
                                                 id={item.id}
                                               />
                     }

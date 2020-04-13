@@ -26,29 +26,32 @@ const reviewReducer = (state, action) => {
 };
 
 const getReviews = dispatch => {
-    return async () => {
-        const getReviewsResponse = await railsServer.get('/reviews');
+    return async token => {
+        const getReviewsResponse = await railsServer.get('/reviews', { headers: { Authorization: `Bearer ${token}` }});
         dispatch({ type: 'GET_REVIEWS', payload: getReviewsResponse.data.reviews });
     };
 };
 
 const addReview = dispatch => {
-    return async (bookId, userId, rating, description) => {
-        const addReviewResponse = await railsServer.post('/reviews', { review: { book_id: bookId, user_id: userId, rating, description }});
+    return async (token, bookId, userId, rating, description) => {
+        const addReviewResponse = await railsServer.post('/reviews', { review: { book_id: bookId, user_id: userId, rating, description }},
+            { headers: { Authorization: `Bearer ${token}` }},);
         dispatch({ type: 'ADD_REVIEW', payload: addReviewResponse.data.review });
     };
 };
 
 const deleteReview = dispatch => {
-    return async id => {
-        await railsServer.delete(`/reviews/${id}`);
+    return async (token, id) => {
+        await railsServer.delete(`/reviews/${id}`, { headers: { Authorization: `Bearer ${token}` }});
         dispatch({ type: 'DELETE_REVIEW', payload: id });
     };
 };
 
 const pullTwoMostRecentReviews = dispatch => {
-    return async () => {
-        const twoMostRecentReviewsResponse = await railsServer.get('/most_recent_two_reviews');
+    return async token => {
+        const twoMostRecentReviewsResponse = await railsServer.get('/most_recent_two_reviews', {
+            headers: { Authorization: `Bearer ${token}`}
+        });
         dispatch({ type: 'PULL_TWO_MOST_RECENT_REVIEWS', payload: twoMostRecentReviewsResponse.data.reviews });
     };
 };

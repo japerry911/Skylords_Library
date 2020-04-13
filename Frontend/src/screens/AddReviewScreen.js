@@ -42,7 +42,7 @@ const AddReviewScreen = ({ navigation, route }) => {
             // Create the new Author if doesn't exist and then create the new Book
     
             // Pull all authors
-            await getAuthors();
+            await getAuthors(userState.user.token);
             const authorsList = authorState.authors.map(authorObject => {
                 return(
                     { name: authorObject.name, id: authorObject.id }
@@ -55,13 +55,13 @@ const AddReviewScreen = ({ navigation, route }) => {
             
             if (!authorExists) {
                 // Author Creation: 
-                authorId = await addAuthor(author);
+                authorId = await addAuthor(userState.user.token, author);
             } else {
                 authorId = authorsList.find(authorObject => authorObject.name === author).id; 
             }
 
             // Create the Book
-            bookId = await addBook(title, authorId, null, imageUrl);
+            bookId = await addBook(userState.user.token, title, authorId, null, imageUrl);
         } else {
             // Look Up Book Id by comparing to array of all books & ids
             const booksList = bookState.books.map(bookObject => {
@@ -76,14 +76,14 @@ const AddReviewScreen = ({ navigation, route }) => {
         const userId = userState.user.id;
 
         //Posting of the Review with userId (from UserContext) and previously obtained bookId 
-        addReview(bookId, userId, rating, description);
+        addReview(userState.user.token, bookId, userId, rating, description);
 
         navigation.dispatch(DrawerActions.jumpTo('Home'));
     };
 
     // Resets the screen on blur & sets screen/gets all books on focus
     useFocusEffect(useCallback(() => {
-        getBooks();
+        getBooks(userState.user.token);
         setTitle(route.params === undefined ? '' : route.params.params.title);
         setExistingTitle(route.params === undefined ? false : route.params.params.existingBool);
         setIsLoading(false);

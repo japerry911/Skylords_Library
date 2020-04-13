@@ -23,22 +23,23 @@ const favoriteReducer = (state, action) => {
 };
 
 const getFavorites = dispatch => {
-    return async () => {
-        const getFavoritesResponse = await railsServer.get('/favorites');
+    return async token => {
+        const getFavoritesResponse = await railsServer.get('/favorites', { headers: { Authorization: `Bearer ${token}` }});
         dispatch({ type: 'GET_FAVORITES', payload: getFavoritesResponse.data.favorites });
     };
 };
 
 const deleteFavorite = dispatch => {
-    return async id => {
-        await railsServer.delete(`/favorites/${id}`);
+    return async (token, id) => {
+        await railsServer.delete(`/favorites/${id}`, { headers: { Authorization: `Bearer ${token}` }});
         dispatch({ type: 'DELETE_FAVORITE', payload: id });
     };
 };
 
 const addFavorite = dispatch => {
-    return async (bookId, userId) => {
-        const addFavoriteResponse = await railsServer.post('/favorites', { favorite: { book_id: bookId, user_id: userId }});
+    return async (token, bookId, userId) => {
+        const addFavoriteResponse = await railsServer.post('/favorites', { headers: { Authorization: `Bearer ${token}` },
+            favorite: { book_id: bookId, user_id: userId }});
         dispatch({ type: 'ADD_FAVORITE', payload: addFavoriteResponse.data.favorite });
     };
 };

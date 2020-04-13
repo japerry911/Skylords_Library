@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
     def authenticate
         auth_header = request.headers['Authorization']
+
         token = auth_header.split(" ")[1]
         secret = Rails.application.secret_key_base
 

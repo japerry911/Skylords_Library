@@ -27,7 +27,7 @@ const ProfileScreen = ({ navigation }) => {
     }, [reviewState.reviews.length]))
 
     useEffect(() => {
-        getReviews();
+        getReviews(userState.user.token);
     }, []);
 
     return (
@@ -100,6 +100,7 @@ const ProfileScreen = ({ navigation }) => {
                                                 deleteButton={true} 
                                                 showBook={true}
                                                 deleteAction={deleteReview}
+                                                token={userState.user.token}
                                               />}
                 />
             </View>

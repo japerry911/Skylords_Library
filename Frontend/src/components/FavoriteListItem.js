@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import Colors from '../constants/colors';
 
-const FavoriteListItem = ({ title, author, imageUrl, handleDeleteFavorite, id }) => {
+const FavoriteListItem = ({ title, author, imageUrl, handleDeleteFavorite, id, token }) => {
     return (
         <View style={styles.itemViewStyle}>
             <Image
@@ -23,7 +23,7 @@ const FavoriteListItem = ({ title, author, imageUrl, handleDeleteFavorite, id })
             >
                 <Text
                     style={styles.highlightStyle}
-                    onPress={() => handleDeleteFavorite(id)}
+                    onPress={() => handleDeleteFavorite(token, id)}
                 >
                     Delete
                 </Text>

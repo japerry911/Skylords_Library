@@ -29,22 +29,23 @@ const clearShowBook = dispatch => {
 };
 
 const getBooks = dispatch => {
-    return async () => {
-        const getBooksResponse = await railsServer.get('/books');
+    return async token => {
+        const getBooksResponse = await railsServer.get('/books', { headers: { Authorization: `Bearer ${token}` }});
         dispatch({ type: 'GET_BOOKS', payload: getBooksResponse.data.books })
     };
 };
 
 const getShowBook = dispatch => {
-    return async (bookId) => {
-        const showBookResponse = await railsServer.get(`/books/${bookId}`);
+    return async (token, bookId) => {
+        const showBookResponse = await railsServer.get(`/books/${bookId}`, { headers: { Authorization: `Bearer ${token}` }});
         dispatch({ type: 'GET_SHOW_BOOK', payload: showBookResponse.data });
     };
 };
 
 const addBook = dispatch => {
-    return async (title, authorId, description, imageUrl) => {
-        const addBookResponse = await railsServer.post('/books', { book: { title, author_id: authorId, description, image_url: imageUrl }});
+    return async (token, title, authorId, description, imageUrl) => {
+        const addBookResponse = await railsServer.post('/books', { headers: { Authorization: `Bearer ${token}` },
+            book: { title, author_id: authorId, description, image_url: imageUrl }});
         dispatch({ type: 'ADD_BOOK', payload: addBookResponse.data.book });
         return addBookResponse.data.book.id;
     };

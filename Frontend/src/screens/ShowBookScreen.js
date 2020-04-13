@@ -32,7 +32,7 @@ const ShowBookScreen = ({ route, navigation }) => {
     const { state: userState } = userContext;
 
     useEffect(() => {
-        getShowBook(bookId);
+        getShowBook(userState.user.token, bookId);
 
         const listener = navigation.addListener('blur', () => {
             clearShowBook();
@@ -112,7 +112,7 @@ const ShowBookScreen = ({ route, navigation }) => {
                                     <Button
                                         style={styles.buttonStyle}
                                         onPress={() => {
-                                            addFavorite(bookId, userState.user.id)
+                                            addFavorite(userState.user.token, bookId, userState.user.id);
                                             Toast.show({
                                                 text: 'Added to Favorites',
                                                 buttonText: 'Okay',

@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import Colors from '../constants/colors';
 import { Rating } from 'react-native-ratings';
 
-const ShowReviewItem = ({ review, deleteButton, showBook, deleteAction }) => {
+const ShowReviewItem = ({ review, deleteButton, showBook, deleteAction, token }) => {
     return (
         <View style={styles.mainViewStyle}>
             {showBook !== undefined 
@@ -35,7 +35,7 @@ const ShowReviewItem = ({ review, deleteButton, showBook, deleteAction }) => {
             ?
             <TouchableOpacity
                 style={styles.deleteButtonStyle}
-                onPress={() => deleteAction(review.id)}
+                onPress={() => deleteAction(token, review.id)}
             >
                 <Text style={styles.deleteButtonTextStyle}>
                     Delete
