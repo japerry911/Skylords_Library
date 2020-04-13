@@ -71,7 +71,10 @@ const HomeScreen = ({ navigation }) => {
                                 </Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.iconTOStyle}>
+                        <TouchableOpacity 
+                            style={styles.iconTOStyle}
+                            onPress={() => navigation.navigate('Favorites')}
+                        >
                             <View style={styles.iconViewStyle}>
                                 <MaterialCommunityIcons
                                     name='bookmark-outline'

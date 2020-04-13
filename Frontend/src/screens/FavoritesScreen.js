@@ -1,10 +1,30 @@
-import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import Colors from '../constants/colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import AuthedFooter from '../components/AuthedFooter';
+import { Context as FavoriteContext } from '../contexts/favoriteContext';
+import { Context as UserContext } from '../contexts/userContext';
+import { useFocusEffect } from '@react-navigation/native';
 
-const FavoritesScreen = () => {
+const FavoritesScreen = ({ navigation }) => {
+    const [currentFavorites, setCurrentFavorites] = useState([]);
+
+    const favoriteContext = useContext(FavoriteContext);
+    const userContext = useContext(UserContext);
+
+    const { state: favoriteState, getFavorites } = favoriteContext;
+    const { state: userState } = userContext;
+
+    useEffect(() => {
+        getFavorites();
+    }, []);
+
+    useFocusEffect(useCallback(() => {
+        const currentUser = userState.user;
+        setCurrentFavorites(favoriteState.favorites.filter(favorite => favorite.user.id === currentUser.id));
+    }, [favoriteState.favorites]));
+
     return (
         <View style={styles.mainViewStyle}>
             <View style={styles.headerViewStyle}>
@@ -25,6 +45,12 @@ const FavoritesScreen = () => {
                 </View>
             </View>
             <View style={styles.bodyViewStyle}>
+                <FlatList 
+                    style={styles.flatListStyle}
+                    data={currentFavorites}
+                    keyExtractor={favorite => favorite.id}
+                    renderItem={({ item }) => <Text>{item.book.title} - {item.user.username}</Text>}
+                />
             </View>
             <AuthedFooter />
         </View>
@@ -32,6 +58,9 @@ const FavoritesScreen = () => {
 };
 
 const styles = StyleSheet.create({
+    flatListStyle: {
+        flex: 1
+    },
     mainViewStyle: {
         backgroundColor: Colors.accentLightGray,
         flex: 1
