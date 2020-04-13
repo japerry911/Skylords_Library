@@ -121,6 +121,7 @@ const HomeScreen = ({ navigation }) => {
                                 />
                             );
                         }}
+                        showsVerticalScrollIndicator={false}
                     />
                 </View>
                 <AuthedFooter parentNavigation={navigation} />
