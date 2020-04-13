@@ -1,15 +1,30 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useCallback, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import Colors from '../constants/colors';
 import { MaterialIcons, Foundation } from '@expo/vector-icons';
 import AuthedFooter from '../components/AuthedFooter';
 import { Context as UserContext } from '../contexts/userContext';
+import { Context as ReviewContext } from '../contexts/reviewContext';
+import { useFocusEffect } from '@react-navigation/native';
+import ShowReviewItem from '../components/ShowReviewItem';
 
 const ProfileScreen = ({ navigation }) => {
+    const [userReviews, setUserReviews] = useState([]);
+
     const userContext = useContext(UserContext);
+    const reviewContext = useContext(ReviewContext);
 
     const { state: userState } = userContext
-    
+    const { state: reviewState, getReviews } = reviewContext;
+
+    useFocusEffect(useCallback(() => {
+        setUserReviews(reviewState.reviews.filter(review => review.user.id === userState.user.id));
+    }, [reviewState.reviews]))
+
+    useEffect(() => {
+        getReviews();
+    }, []);
+
     return (
         <View style={styles.mainViewStyle}>
             <View style={styles.headerViewStyle}>
@@ -66,8 +81,15 @@ const ProfileScreen = ({ navigation }) => {
                                     </Text>
                                 </View>
                             </View>
-                        </>
+                        </>                        
                     }
+                    data={userReviews}
+                    keyExtractor={review => review.id}
+                    renderItem={({ item }) => <ShowReviewItem 
+                                                review={item} 
+                                                deleteButton={true} 
+                                                showBook={true}
+                                              />}
                 />
             </View>
             <AuthedFooter parentNavigation={navigation} />

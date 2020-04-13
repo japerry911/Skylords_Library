@@ -22,10 +22,9 @@ const FavoritesScreen = ({ navigation }) => {
     }, []);
 
     useFocusEffect(useCallback(() => {
-        const currentUser = userState.user;
-        setCurrentFavorites(favoriteState.favorites.filter(favorite => favorite.user.id === currentUser.id));
+        setCurrentFavorites(favoriteState.favorites.filter(favorite => favorite.user.id === userState.user.id));
     }, [favoriteState.favorites]));
-    console.log(favoriteState.favorites);
+
     return (
         <View style={styles.mainViewStyle}>
             <View style={styles.headerViewStyle}>
