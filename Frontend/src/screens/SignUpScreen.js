@@ -3,6 +3,7 @@ import { Text, StyleSheet, View } from 'react-native';
 import { Label, Item, Input, Button, Icon } from 'native-base';
 import Colors from '../constants/colors';
 import { Context as UserContext } from '../contexts/userContext';
+import { useFocusEffect } from '@react-navigation/native';
 
 const SignUpScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
@@ -139,6 +140,7 @@ const SignUpScreen = ({ navigation }) => {
                         />
                         <Icon name={passwordMatchingBool ? 'checkmark-circle' : 'close-circle'} />
                     </Item>
+                    <View>
                     <Button 
                         style={styles.signUpButtonStyle}
                         disabled={!validationStatus}
@@ -153,6 +155,7 @@ const SignUpScreen = ({ navigation }) => {
                     >
                         <Text style={styles.buttonTextStyle}>Go Back</Text>
                     </Button>
+                    </View>
                 </View>
             </View>
         </View>
@@ -171,7 +174,7 @@ const styles = StyleSheet.create({
     buttonTextStyle: {
         fontSize: 24,
         fontFamily: 'Avenir_bold',
-        paddingTop: 5,
+        paddingTop: '2%',
         color: Colors.accentLightWhite,
         paddingHorizontal: '3%'
     },
@@ -181,13 +184,12 @@ const styles = StyleSheet.create({
     },
     signUpButtonStyle: {
         backgroundColor: Colors.primaryOrange,
-        marginVertical: 15,
-        paddingHorizontal: 25
+        padding: '5%',
+        marginVertical: '1%'
     },
     goBackButtonStyle: {
         backgroundColor: Colors.accentLightOrange,
-        marginBottom: 25,
-        paddingHorizontal: 5
+        alignSelf: 'center'
     },
     formViewStyle: {
         borderRadius: 10,
@@ -196,7 +198,7 @@ const styles = StyleSheet.create({
         marginTop: '5%',
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        height: '70%'
+        height: '85%'
     },
     mainHeaderStyle: {
         fontSize: 20,
