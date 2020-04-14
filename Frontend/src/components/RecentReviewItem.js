@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         padding: '3%',
         borderRadius: 10,
         width: '70%',
-        marginVertical: '20%'
+        marginVertical: '5%'
     },
     mostRecentReviewItalStyle: {
         color: Colors.accentLightGrayText,
