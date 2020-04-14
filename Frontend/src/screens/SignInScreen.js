@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { Text, StyleSheet, ImageBackground, View } from 'react-native';
 import { Label, Input, Item, Button, Toast } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 import { Context as UserContext } from '../contexts/userContext';
+import { useFocusEffect } from '@react-navigation/native';
 
 const SignInScreen = ({ navigation, route }) => {
     const userContext = useContext(UserContext);
@@ -42,13 +43,18 @@ const SignInScreen = ({ navigation, route }) => {
         const loginSuccess = await signInUser(username, password);
 
         if (loginSuccess) {
-            setUsername('');
-            setPassword('')
             navigation.navigate('Authed', { screen: 'Home'});
         } else {
             setInvalidLogin(true);
         }
     };
+
+    useFocusEffect(useCallback(() => {
+        return () => {
+            setUsername('');
+            setPassword('');
+        };
+    }, []))
 
     return (
         <ImageBackground 
