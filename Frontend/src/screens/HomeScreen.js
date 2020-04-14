@@ -35,10 +35,8 @@ const HomeScreen = ({ navigation, route }) => {
     }, [route.params]));
 
     useEffect(() => {
-        const timeout = setTimeout(() => setIsLoading(false), 2000);
-
-        return () => clearTimeout(timeout);
-    }, [reviewState.fiveMostRecentReviews]);
+        setIsLoading(false);
+    }, [reviewState.fiveMostRecentReviews, isLoading]);
     
     return ( 
         <>

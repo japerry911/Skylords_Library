@@ -76,10 +76,10 @@ const AddReviewScreen = ({ navigation, route }) => {
         const userId = userState.user.id;
 
         //Posting of the Review with userId (from UserContext) and previously obtained bookId 
-        addReview(userState.user.token, bookId, userId, rating, description);
+        setIsLoading(true);
+        await addReview(userState.user.token, bookId, userId, rating, description);
 
         navigation.navigate('Home', { submittedReview: true });
-        //navigation.dispatch(DrawerActions.jumpTo('Home'));
     };
 
     // Resets the screen on blur & sets screen/gets all books on focus

@@ -37,7 +37,7 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={styles.headerViewStyle}>
                     <View style={styles.myProfileBackViewStyle}>
                         <TouchableOpacity 
-                            onPress={() => navigation.navigate('Home')}
+                            onPress={() => navigation.navigate('Home', { fromProfileScreen: true })}
                         >
                             <MaterialIcons 
                                 name='chevron-left'
