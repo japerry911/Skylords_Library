@@ -67,9 +67,18 @@ const AuthStack = () => {
             <Drawer.Screen name='Books' component={BooksStack} />
             <Drawer.Screen name='Add a Review' component={AddReviewScreen} />
             <Drawer.Screen name='Favorites' component={FavoritesScreen} />
-            <Drawer.Screen name='My Profile' component={ProfileScreen} />
+            <Drawer.Screen name='My Profile' component={ProfileStack} />
         </Drawer.Navigator>
     );
+};
+
+const ProfileStack = () => {
+  return (
+    <Stack.Navigator initialRouteName='My Profile' headerMode='none'>
+      <Stack.Screen name='My Profile' component={ProfileScreen} />
+      <Stack.Screen name='Edit Profile' component={EditProfileScreen} />
+    </Stack.Navigator>
+  );
 };
   
 const BooksStack = () => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useRef, useCallback } from 'react';
 import { Input, Label, Item, CheckBox, Textarea, Button, Icon } from 'native-base';
-import { StyleSheet, View, TouchableOpacity, Text, Keyboard } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import Colors from '../constants/colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
@@ -78,7 +78,8 @@ const AddReviewScreen = ({ navigation, route }) => {
         //Posting of the Review with userId (from UserContext) and previously obtained bookId 
         addReview(userState.user.token, bookId, userId, rating, description);
 
-        navigation.dispatch(DrawerActions.jumpTo('Home'));
+        navigation.navigate('Home', { submittedReview: true });
+        //navigation.dispatch(DrawerActions.jumpTo('Home'));
     };
 
     // Resets the screen on blur & sets screen/gets all books on focus
@@ -87,7 +88,7 @@ const AddReviewScreen = ({ navigation, route }) => {
         setTitle(route.params === undefined ? '' : route.params.params.title);
         setExistingTitle(route.params === undefined ? false : route.params.params.existingBool);
         setIsLoading(false);
-        console.log('here');
+
         return () => {
             route.params = undefined;
             setIsLoading(true);
