@@ -24,7 +24,8 @@ class UsersController < ApplicationController
 
         @user_to_edit.update(user_params)
 
-        render json: { user: @user_to_edit.as_json(:only => [:id, :username, :age, :phone:, :email]) }
+        render json: { user: @user_to_edit.as_json(:only => [:id, :username, :age, :phone, :email]) }
+    end
 
     private
     

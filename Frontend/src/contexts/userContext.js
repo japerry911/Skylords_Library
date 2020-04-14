@@ -46,9 +46,9 @@ const signOutUser = dispatch => {
 };
 
 const updateUser = dispatch => {
-    return async (token, age, email, phone, password) => {
-        const updateUserResponse = railsServer.put('/users', { user: { age, email, phone, password }}, 
-            { headers: { Authorization: `Bearer ${token}` }});
+    return async (id, token, age, email, phone, password) => {
+        const updateUserResponse = await railsServer.put(`/users/${id}`, { user: { age, email, phone, password }}, 
+        { headers: { Authorization: `Bearer ${token}` }});
         dispatch({ type: 'UPDATE_USER', payload: { ...updateUserResponse.data.user, token }});
     }
 };

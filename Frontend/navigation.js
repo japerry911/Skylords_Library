@@ -74,7 +74,7 @@ const AuthStack = () => {
 
 const ProfileStack = () => {
   return (
-    <Stack.Navigator initialRouteName='MyProfile' headerMode='none'>
+    <Stack.Navigator initialRouteName='My Profile' headerMode='none'>
       <Stack.Screen name='MyProfile' component={ProfileScreen} />
       <Stack.Screen name='EditProfile' component={EditProfileScreen} />
     </Stack.Navigator>

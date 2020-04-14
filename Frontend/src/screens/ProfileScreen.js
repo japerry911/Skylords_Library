@@ -51,7 +51,7 @@ const ProfileScreen = ({ navigation }) => {
                     </View>
                     <View>
                         <TouchableOpacity
-                            onPress={() => {}}
+                            onPress={() => navigation.navigate('EditProfile')}
                             style={styles.editTOStyle}
                         >
                             <AntDesign
@@ -212,7 +212,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'
-        
     },
     headerTitleStyle: {
         color: Colors.accentLightGrayText,
