@@ -54,13 +54,13 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.accentLightGray,
         padding: '3%',
         borderRadius: 10,
-        width: '70%',
-        marginVertical: '5%'
+        width: '60%',
+        marginVertical: '20%'
     },
     mostRecentReviewItalStyle: {
         color: Colors.accentLightGrayText,
         fontFamily: 'Avenir_italicize',
-        flexShrink: 1
+        flexShrink: 1,
     },
     mostRecentReviewMedStyle: {
         color: Colors.accentLightGrayText,
