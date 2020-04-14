@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
         color: Colors.primaryOrange
     },
     bodyIconViewStyle: {
+        flexGrow: 1,
         marginTop: 20,
         flexDirection: 'row',
         alignItems: 'center',
