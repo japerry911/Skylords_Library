@@ -13,6 +13,7 @@ import ShowBookScreen from './src/screens/ShowBookScreen';
 import AddReviewScreen from './src/screens/AddReviewScreen';
 import FavoritesScreen from './src/screens/FavoritesScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import EditProfileScreen from './src/screens/EditProfileScreen';
 import React from 'react';
 import Colors from './src/constants/colors';
 import { StyleSheet, TouchableOpacity } from 'react-native';
