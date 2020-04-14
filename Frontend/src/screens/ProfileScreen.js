@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useCallback, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import Colors from '../constants/colors';
-import { MaterialIcons, Foundation } from '@expo/vector-icons';
+import { MaterialIcons, Foundation, AntDesign } from '@expo/vector-icons';
 import AuthedFooter from '../components/AuthedFooter';
 import { Context as UserContext } from '../contexts/userContext';
 import { Context as ReviewContext } from '../contexts/reviewContext';
@@ -35,18 +35,36 @@ const ProfileScreen = ({ navigation }) => {
             {isLoading ? <Spinner /> :
             <View style={styles.mainViewStyle}>
                 <View style={styles.headerViewStyle}>
-                    <TouchableOpacity onPress={() => {
-                        navigation.navigate('Home');
-                    }}>
-                        <MaterialIcons 
-                            name='chevron-left'
-                            size={40}
-                            style={styles.backIconStyle}
-                        />
-                    </TouchableOpacity>
-                    <Text style={styles.headerTitleStyle}>
-                        My Profile
-                    </Text>
+                    <View style={styles.myProfileBackViewStyle}>
+                        <TouchableOpacity 
+                            onPress={() => navigation.navigate('Home')}
+                        >
+                            <MaterialIcons 
+                                name='chevron-left'
+                                size={40}
+                                style={styles.backIconStyle}
+                            />
+                        </TouchableOpacity>
+                        <Text style={styles.headerTitleStyle}>
+                            My Profile
+                        </Text>
+                    </View>
+                    <View>
+                        <TouchableOpacity
+                            onPress={() => {}}
+                            style={styles.editTOStyle}
+                        >
+                            <AntDesign
+                                name='edit'
+                                size={20}
+                                style={styles.editButtonStyle}
+                            />
+                        
+                            <Text style={styles.editTextStyle}>
+                                Edit
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 <View style={styles.bodyViewStyle}>
                     <FlatList
@@ -102,6 +120,7 @@ const ProfileScreen = ({ navigation }) => {
                                                     deleteAction={deleteReview}
                                                     token={userState.user.token}
                                                 />}
+                        showsVerticalScrollIndicator={false}
                     />
                 </View>
                 <AuthedFooter parentNavigation={navigation} />
@@ -111,6 +130,25 @@ const ProfileScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    myProfileBackViewStyle: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    editTOStyle: {
+        marginRight: '4%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: '2%'
+    },
+    editTextStyle: {
+        fontFamily: 'Avenir_medium',
+        fontSize: 12,
+        color: Colors.accentLightGrayText,
+        marginLeft: '5%'
+    },
+    editButtonStyle: {
+        color: Colors.primaryOrange
+    },
     reviewsTitleStyle: {
         color: Colors.accentLightGrayText,
         fontSize: 18,
@@ -173,6 +211,7 @@ const styles = StyleSheet.create({
         marginLeft: '5%',
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between'
         
     },
     headerTitleStyle: {
