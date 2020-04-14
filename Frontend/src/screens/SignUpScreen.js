@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import { Label, Item, Input, Button, Icon } from 'native-base';
 import Colors from '../constants/colors';
@@ -19,14 +19,22 @@ const SignUpScreen = ({ navigation }) => {
     const userContext = useContext(UserContext);
     const { signUpUser } = userContext;
 
-    const onFormSubmit = async (username, age, password) => {
-        await signUpUser(username, age, password);
-        setUsername('');
-        setAge('');
-        setPassword('');
-        setConfirmPassword('');
+    const onFormSubmit = () => {
+        const formattedPhone = phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1.$2.$3");
+        signUpUser(username, age, email, formattedPhone, password);
         navigation.navigate('Sign In', { signedUp: true });
     }; 
+
+    useFocusEffect(useCallback(() => {
+        return () => {
+            setUsername('');
+            setAge('');
+            setEmail('');
+            setPhone('');
+            setPassword('');
+            setConfirmPassword('');
+        }
+    }, []));
 
     useEffect(() => {
         setPasswordMatchingBool(!(password !== confirmPassword || password === '' || confirmPassword === ''));
@@ -104,7 +112,7 @@ const SignUpScreen = ({ navigation }) => {
                             value={phone}
                             onChangeText={newPhone => setPhone(newPhone.replace(/[^0-9]/g, ''))}
                             keyboardType='numeric'
-                            maxLength={10}
+                            maxLength={12}
                         />
                          <Icon name={phone.length === 10 ? 'checkmark-circle' : 'close-circle'} />
                     </Item>
@@ -144,7 +152,7 @@ const SignUpScreen = ({ navigation }) => {
                     <Button 
                         style={styles.signUpButtonStyle}
                         disabled={!validationStatus}
-                        onPress={() => onFormSubmit(username, age, password)}
+                        onPress={() => onFormSubmit()}
                     >
                         <Text style={styles.buttonTextStyle}>Sign Up</Text>
                         <Icon name={validationStatus ? 'checkmark-circle' : 'close-circle'} />
@@ -189,7 +197,9 @@ const styles = StyleSheet.create({
     },
     goBackButtonStyle: {
         backgroundColor: Colors.accentLightOrange,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        marginTop: '3%',
+        paddingBottom: '10%'
     },
     formViewStyle: {
         borderRadius: 10,

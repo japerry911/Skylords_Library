@@ -51,9 +51,10 @@ const styles = StyleSheet.create({
     itemViewStyle: {
         paddingVertical: '3%',
         flexDirection: 'row',
-        marginVertical: '3%',
+        marginVertical: '1%',
         overflow: 'hidden',
-        flex: 1
+        flex: 1,
+        alignItems: 'center'
     },
     mostRecentReviewItalStyle: {
         fontSize: 13,
@@ -65,10 +66,12 @@ const styles = StyleSheet.create({
         fontFamily: 'Avenir_medium'
     },
     textViewStyle: {
-        marginLeft: '10%',
-        marginRight: '3%',
-        width: '40%',
-        flexShrink: 1
+        marginLeft: '5%',
+        width: '60%',
+        flexShrink: 1,
+        backgroundColor: Colors.accentLightGray,
+        padding: '5%',
+        borderRadius: 20
     }
 });
 
