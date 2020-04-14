@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         color: Colors.accentLightWhite,
         fontSize: 30,
         fontFamily: 'Avenir_bold',
-        marginTop: 10
+        marginTop: '4%'
     },
     footerStyle: {
         backgroundColor: Colors.primaryOrange,
