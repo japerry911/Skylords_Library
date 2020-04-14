@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    before_action :authenticate, only: [:index, :show]
+    before_action :authenticate, only: [:index, :show, :update]
 
     def index 
         @users = User.all 
@@ -17,6 +17,14 @@ class UsersController < ApplicationController
         @new_user = User.create(user_params)
 
         render json: { user: @new_user.as_json(:only => [:id, :username, :age, :phone, :email]) }
+    end
+
+    def update
+        @user_to_edit = User.find(params[:id])
+
+        @user_to_edit.update(user_params)
+
+        render json: { user: @user_to_edit.as_json(:only => [:id, :username, :age, :phone, :email]) }
     end
 
     private

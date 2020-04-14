@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useCallback, useLayoutEffect } from 'react';
+import React, { useEffect, useContext, useState, useCallback, useRef } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList } from 'react-native';
 import Colors from '../constants/colors';
 import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
@@ -9,7 +9,7 @@ import AuthedFooter from '../components/AuthedFooter';
 import Spinner from '../components/Spinner';
 import { useFocusEffect } from '@react-navigation/native';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, route }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const userContext = useContext(UserContext);
@@ -20,17 +20,23 @@ const HomeScreen = ({ navigation }) => {
 
     const user = userState.user;
 
+    const firstUpdate = useRef(true);
+
     useFocusEffect(useCallback(() => {
-        if (isLoading) {
+        if (route.params !== undefined) {
             pullFiveMostRecentReviews(user.token);
+            route.params = undefined;
+        } else if (firstUpdate.current && route.params === undefined) {
+            pullFiveMostRecentReviews(user.token);
+            firstUpdate.current = false;
         }
 
         return () => setIsLoading(true);
-    }, []));
+    }, [route.params]));
 
     useEffect(() => {
         setIsLoading(false);
-    }, [reviewState.fiveMostRecentReviews]);
+    }, [reviewState.fiveMostRecentReviews, isLoading]);
     
     return ( 
         <>

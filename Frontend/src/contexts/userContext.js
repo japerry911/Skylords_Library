@@ -13,6 +13,9 @@ const userReducer = ((state, action) => {
 
         case 'ADD_USER':
             return state;
+
+        case 'UPDATE_USER':
+            return { ...state, user: action.payload };
         
         default: 
             return state;
@@ -42,4 +45,13 @@ const signOutUser = dispatch => {
     return async () => dispatch({ type: 'CLEAR_USER' });
 };
 
-export const { Context, Provider } = createDataContext(userReducer, { signInUser, signOutUser, signUpUser }, INITIAL_STATE);
+const updateUser = dispatch => {
+    return async (id, token, age, email, phone, password) => {
+        const updateUserResponse = await railsServer.put(`/users/${id}`, { user: { age, email, phone, password }}, 
+        { headers: { Authorization: `Bearer ${token}` }});
+        dispatch({ type: 'UPDATE_USER', payload: { ...updateUserResponse.data.user, token }});
+    }
+};
+
+export const { Context, Provider } = createDataContext(userReducer, { signInUser, signOutUser, signUpUser, updateUser }, 
+    INITIAL_STATE);
