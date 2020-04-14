@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import { Button, Toast } from 'native-base';
 import { Text, StyleSheet, TouchableOpacity, View, Image, FlatList } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -11,6 +11,7 @@ import { Context as BookContext } from '../contexts/bookContext';
 import { Context as FavoritesContext } from '../contexts/favoriteContext';
 import { Context as UserContext } from '../contexts/userContext';
 import Spinner from '../components/Spinner';
+import { useFocusEffect } from '@react-navigation/native';
 
 const calcAverageRating = reviews => {
     const total = reviews.reduce((total, review) => total + review.rating, 0);
@@ -31,25 +32,20 @@ const ShowBookScreen = ({ route, navigation }) => {
     const { state: bookState, getShowBook, clearShowBook } = bookContext;
     const { state: userState } = userContext;
 
-    useEffect(() => {
+    useFocusEffect(useCallback(() => {
         getShowBook(userState.user.token, bookId);
 
-        const listener = navigation.addListener('blur', () => {
+        return () => {
             clearShowBook();
             setIsLoading(true);
-        });
-
-        return listener;
-    }, []);
+        };
+    }, []));
 
     useEffect(() => {
-        if (Object.keys(bookState.showBook).length > 0) {
-            setIsLoading(false);
-        }
-
         if (bookState.showBook.reviews !== undefined) {
             setAverageRating(calcAverageRating(bookState.showBook.reviews));
         }
+        setIsLoading(false);
     }, [bookState.showBook]);
 
     return (
@@ -192,8 +188,7 @@ const styles = StyleSheet.create({
     },
     mainViewStyle: {
         flex: 1,
-        backgroundColor: Colors.accentLightGray,
-        alignItems: 'center'
+        backgroundColor: Colors.accentLightGray
     },
     headerViewStyle: {
         marginTop: '5%',

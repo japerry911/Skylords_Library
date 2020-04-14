@@ -21,8 +21,9 @@ const FavoritesScreen = ({ navigation }) => {
 
     useFocusEffect(useCallback(() => {
         getFavorites(userState.user.token);
+        
         return () => setIsLoading(true);
-    }, [isLoading]));
+    }, []));
 
     useEffect(() => {
         setCurrentFavorites(favoriteState.favorites.filter(favorite => favorite.user.id === userState.user.id));

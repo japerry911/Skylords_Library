@@ -19,93 +19,93 @@ const ProfileScreen = ({ navigation }) => {
     const { state: userState } = userContext
     const { state: reviewState, getReviews, deleteReview } = reviewContext;
 
-    useFocusEffect(useCallback(() => { 
-        setUserReviews(reviewState.reviews.filter(review => review.user.id === userState.user.id));
-        setIsLoading(false);
+    useFocusEffect(useCallback(() => {
+        getReviews(userState.user.token);
 
         return () => setIsLoading(true);
-    }, [reviewState.reviews.length]))
+    }, []));
 
     useEffect(() => {
-        getReviews(userState.user.token);
-    }, []);
+        setUserReviews(reviewState.reviews.filter(review => review.user.id === userState.user.id));
+        setIsLoading(false);
+    }, [reviewState.reviews]);
 
     return (
         <>
-        {isLoading ? <Spinner /> :
-        <View style={styles.mainViewStyle}>
-            <View style={styles.headerViewStyle}>
-                <TouchableOpacity onPress={() => {
-                    navigation.navigate('Home');
-                }}>
-                    <MaterialIcons 
-                        name='chevron-left'
-                        size={40}
-                        style={styles.backIconStyle}
+            {isLoading ? <Spinner /> :
+            <View style={styles.mainViewStyle}>
+                <View style={styles.headerViewStyle}>
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate('Home');
+                    }}>
+                        <MaterialIcons 
+                            name='chevron-left'
+                            size={40}
+                            style={styles.backIconStyle}
+                        />
+                    </TouchableOpacity>
+                    <Text style={styles.headerTitleStyle}>
+                        My Profile
+                    </Text>
+                </View>
+                <View style={styles.bodyViewStyle}>
+                    <FlatList
+                        ListHeaderComponent={
+                            <>
+                                <Text style={styles.titleTextStyle}>
+                                    {userState.user.username}
+                                </Text>
+                                <Text style={styles.subtitleTextStyle}>
+                                    Age: {userState.user.age}
+                                </Text>
+                                <Text style={styles.mobileEmailTextStyle}>
+                                    Mobile
+                                </Text>
+                                <View style={styles.mobileEmailViewStyle}>
+                                    <MaterialIcons
+                                        style={styles.phoneIconStyle}
+                                        name='phone-in-talk'
+                                        size={40}
+                                    />
+                                    <View style={styles.textViewStyle}>
+                                        <Text style={styles.mobileEmailValueStyle}>
+                                            {userState.user.phone}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <Text style={styles.mobileEmailTextStyle}>
+                                    Email
+                                </Text>
+                                <View style={styles.mobileEmailViewStyle}>
+                                    <Foundation
+                                        style={styles.emailIconStyle}
+                                        name='mail'
+                                        size={40}
+                                    />
+                                    <View style={styles.textViewStyle}>
+                                        <Text style={styles.mobileEmailValueStyle}>
+                                            {userState.user.email}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <Text style={styles.reviewsTitleStyle}>
+                                    Your Reviews
+                                </Text>
+                            </>                        
+                        }
+                        data={userReviews}
+                        keyExtractor={review => review.id}
+                        renderItem={({ item }) => <ShowReviewItem 
+                                                    review={item} 
+                                                    deleteButton={true} 
+                                                    showBook={true}
+                                                    deleteAction={deleteReview}
+                                                    token={userState.user.token}
+                                                />}
                     />
-                </TouchableOpacity>
-                <Text style={styles.headerTitleStyle}>
-                    My Profile
-                </Text>
-            </View>
-            <View style={styles.bodyViewStyle}>
-                <FlatList
-                    ListHeaderComponent={
-                        <>
-                            <Text style={styles.titleTextStyle}>
-                                {userState.user.username}
-                            </Text>
-                            <Text style={styles.subtitleTextStyle}>
-                                Age: {userState.user.age}
-                            </Text>
-                            <Text style={styles.mobileEmailTextStyle}>
-                                Mobile
-                            </Text>
-                            <View style={styles.mobileEmailViewStyle}>
-                                <MaterialIcons
-                                    style={styles.phoneIconStyle}
-                                    name='phone-in-talk'
-                                    size={40}
-                                />
-                                <View style={styles.textViewStyle}>
-                                    <Text style={styles.mobileEmailValueStyle}>
-                                        {userState.user.phone}
-                                    </Text>
-                                </View>
-                            </View>
-                            <Text style={styles.mobileEmailTextStyle}>
-                                Email
-                            </Text>
-                            <View style={styles.mobileEmailViewStyle}>
-                                <Foundation
-                                    style={styles.emailIconStyle}
-                                    name='mail'
-                                    size={40}
-                                />
-                                <View style={styles.textViewStyle}>
-                                    <Text style={styles.mobileEmailValueStyle}>
-                                        {userState.user.email}
-                                    </Text>
-                                </View>
-                            </View>
-                            <Text style={styles.reviewsTitleStyle}>
-                                Your Reviews
-                            </Text>
-                        </>                        
-                    }
-                    data={userReviews}
-                    keyExtractor={review => review.id}
-                    renderItem={({ item }) => <ShowReviewItem 
-                                                review={item} 
-                                                deleteButton={true} 
-                                                showBook={true}
-                                                deleteAction={deleteReview}
-                                                token={userState.user.token}
-                                              />}
-                />
-            </View>
-            <AuthedFooter parentNavigation={navigation} />
-        </View>}
+                </View>
+                <AuthedFooter parentNavigation={navigation} />
+            </View>}
         </>
     );
 };
