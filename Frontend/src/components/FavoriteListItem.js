@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     },
     imageStyle: {
         height: '100%',
+        aspectRatio: 1,
         width: '30%',
         resizeMode: 'contain'
     },
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
         marginVertical: '3%',
         overflow: 'hidden',
         flexDirection: 'row',
-        minHeight: '100%'
+        flex: 1
     },
     titleTextStyle: {
         fontSize: 13,
@@ -67,7 +68,8 @@ const styles = StyleSheet.create({
     textViewStyle: {
         marginLeft: '10%',
         marginRight: '3%',
-        width: '40%'
+        width: '40%',
+        flex: 1
     }
 });
 

@@ -19,56 +19,56 @@ const FavoritesScreen = ({ navigation }) => {
     const { state: favoriteState, getFavorites, deleteFavorite } = favoriteContext;
     const { state: userState } = userContext;
 
-    const fetchFavorites = async token => await getFavorites(token);
-
     useFocusEffect(useCallback(() => {
-        fetchFavorites(userState.user.token);
+        getFavorites(userState.user.token);
+        return () => setIsLoading(true);
+    }, [isLoading]));
+
+    useEffect(() => {
         setCurrentFavorites(favoriteState.favorites.filter(favorite => favorite.user.id === userState.user.id));
         setIsLoading(false);
-
-        return () => setIsLoading(true);
-    }, []));
+    }, [favoriteState.favorites]);
 
     return (
         <>
-        {isLoading ? <Spinner /> 
-        :
-        <View style={styles.mainViewStyle}>
-            <View style={styles.headerViewStyle}>
-                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-                    <MaterialIcons 
-                        name='chevron-left'
-                        size={40}
-                        style={styles.backIconStyle}
-                    />
-                </TouchableOpacity>
-                <View style={styles.headerTextViewStyle}>
-                    <Text style={styles.headerTitleStyle}>
-                        Your Books
-                    </Text>
-                    <Text style={styles.subtitleTitleStyle}>
-                        Check our your saved books.
-                    </Text>
+            {isLoading ? <Spinner /> 
+            :
+            <View style={styles.mainViewStyle}>
+                <View style={styles.headerViewStyle}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                        <MaterialIcons 
+                            name='chevron-left'
+                            size={40}
+                            style={styles.backIconStyle}
+                        />
+                    </TouchableOpacity>
+                    <View style={styles.headerTextViewStyle}>
+                        <Text style={styles.headerTitleStyle}>
+                            Your Books
+                        </Text>
+                        <Text style={styles.subtitleTitleStyle}>
+                            Check our your saved books.
+                        </Text>
+                    </View>
                 </View>
-            </View>
-            <View style={styles.bodyViewStyle}>
-                <FlatList 
-                    data={currentFavorites}
-                    keyExtractor={favorite => favorite.id}
-                    renderItem={({ item }) => <FavoriteListItem
-                                                title={item.book.title}
-                                                author={item.book.author.name}
-                                                imageUrl={item.book.image_url}
-                                                handleDeleteFavorite={deleteFavorite}
-                                                token={userState.user.token}
-                                                id={item.id}
-                                              />
-                    }
-                    showsVerticalScrollIndicator={false}
-                />
-            </View>
-            <AuthedFooter parentNavigation={navigation} />
-        </View>}
+                <View style={styles.bodyViewStyle}>
+                    <FlatList 
+                        data={currentFavorites}
+                        keyExtractor={favorite => favorite.id}
+                        renderItem={({ item }) => <FavoriteListItem
+                                                    title={item.book.title}
+                                                    author={item.book.author.name}
+                                                    imageUrl={item.book.image_url}
+                                                    handleDeleteFavorite={deleteFavorite}
+                                                    token={userState.user.token}
+                                                    id={item.id}
+                                                />
+                        }
+                        showsVerticalScrollIndicator={false}
+                    />
+                </View>
+                <AuthedFooter parentNavigation={navigation} />
+            </View>}
         </>
     );
 };
