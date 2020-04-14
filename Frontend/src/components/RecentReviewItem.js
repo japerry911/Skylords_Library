@@ -6,30 +6,30 @@ import Colors from '../constants/colors';
 
 const RecentReviewItem = ({ imageUrl, description, username, rating }) => {
     return (
-    <View style={styles.itemViewStyle}>
-        <Image
-            source={{ uri: imageUrl }}
-            style={styles.imageStyle}
-        />                       
-        <View style={styles.textViewStyle}>
-            <Text style={styles.mostRecentReviewItalStyle}>
-                {description === null || description === '' ? "No Content" : `"${description}"`}
-                {'\n\t'}- <Text style={styles.mostRecentReviewMedStyle}>
-                {username}</Text>
-            </Text>
-            <Rating 
-                type='star'
-                startingValue={rating}
-                imageSize={20}
-                tintColor={Colors.accentLightGray}
-                selectedColor={Colors.primaryOrange}
-                type='custom'
-                ratingColor={Colors.primaryOrange}
-                readonly
-                style={styles.ratingStyle}
-            />
+        <View style={styles.itemViewStyle}>
+            <Image
+                source={{ uri: imageUrl }}
+                style={styles.imageStyle}
+            />                       
+            <View style={styles.textViewStyle}>
+                <Text style={styles.mostRecentReviewItalStyle}>
+                    {description === null || description === '' ? "No Content" : `"${description}"`}
+                    {'\n\t'}- <Text style={styles.mostRecentReviewMedStyle}>
+                    {username}</Text>
+                </Text>
+                <Rating 
+                    type='star'
+                    startingValue={rating}
+                    imageSize={20}
+                    tintColor={Colors.accentLightGray}
+                    selectedColor={Colors.primaryOrange}
+                    type='custom'
+                    ratingColor={Colors.primaryOrange}
+                    readonly
+                    style={styles.ratingStyle}
+                />
+            </View>
         </View>
-    </View>
     );
 };
 
