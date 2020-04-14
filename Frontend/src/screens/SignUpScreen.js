@@ -33,7 +33,7 @@ const SignUpScreen = ({ navigation }) => {
             setPhone('');
             setPassword('');
             setConfirmPassword('');
-        }
+        };
     }, []));
 
     useEffect(() => {
