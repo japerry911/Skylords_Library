@@ -7,12 +7,12 @@ import { Context as UserContext } from '../contexts/userContext';
 import { useFocusEffect } from '@react-navigation/native';
 
 const SignInScreen = ({ navigation, route }) => {
-    const userContext = useContext(UserContext);
-    const { signInUser } = userContext;
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [invalidLogin, setInvalidLogin] = useState(false);
+
+    const userContext = useContext(UserContext);
+    const { signInUser } = userContext;
     
     useEffect(() => {
         if (invalidLogin) {
