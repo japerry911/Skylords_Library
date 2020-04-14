@@ -1,7 +1,7 @@
 import railsServer from '../api/railsServer';
 import createDataContext from './createDataContext';
 
-const INITIAL_STATE = { reviews: [], twoMostRecentReviews: [] };
+const INITIAL_STATE = { reviews: [], fiveMostRecentReviews: [] };
 
 const reviewReducer = (state, action) => {
     switch (action.type) {
@@ -13,8 +13,8 @@ const reviewReducer = (state, action) => {
             newReviewsList.push(action.payload);
             return { ...state, reviews: newReviewsList };
 
-        case 'PULL_TWO_MOST_RECENT_REVIEWS':
-            return { ...state, twoMostRecentReviews: action.payload };
+        case 'PULL_FIVE_MOST_RECENT_REVIEWS':
+            return { ...state, fiveMostRecentReviews: action.payload };
 
         case 'DELETE_REVIEW':
             const updatedReviewsList = state.reviews.filter(review => review.id !== action.payload);
@@ -47,14 +47,14 @@ const deleteReview = dispatch => {
     };
 };
 
-const pullTwoMostRecentReviews = dispatch => {
+const pullFiveMostRecentReviews = dispatch => {
     return async token => {
-        const twoMostRecentReviewsResponse = await railsServer.get('/most_recent_two_reviews', {
+        const fiveMostRecentReviewsResponse = await railsServer.get('/most_recent_five_reviews', {
             headers: { Authorization: `Bearer ${token}`}
         });
-        dispatch({ type: 'PULL_TWO_MOST_RECENT_REVIEWS', payload: twoMostRecentReviewsResponse.data.reviews });
+        dispatch({ type: 'PULL_FIVE_MOST_RECENT_REVIEWS', payload: fiveMostRecentReviewsResponse.data.reviews });
     };
 };
 
-export const { Context, Provider } = createDataContext(reviewReducer, { addReview, pullTwoMostRecentReviews, getReviews, deleteReview }, 
+export const { Context, Provider } = createDataContext(reviewReducer, { addReview, pullFiveMostRecentReviews, getReviews, deleteReview }, 
     INITIAL_STATE);

@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginVertical: '3%',
         overflow: 'hidden',
-        flexDirection: 'row',
         flex: 1
     },
     titleTextStyle: {

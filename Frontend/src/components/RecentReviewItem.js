@@ -6,72 +6,69 @@ import Colors from '../constants/colors';
 
 const RecentReviewItem = ({ imageUrl, description, username, rating }) => {
     return (
-    <View style={styles.mostRecentViewStyle}>
-        <View style={styles.mostRecentImageViewStyle}>
-            <Image
-                source={{ uri: imageUrl }}
-                style={styles.mostRecentImageStyle}
-            />                       
-        </View>
-        <View style={styles.mostRecentReviewStyle}>
+    <View style={styles.itemViewStyle}>
+        <Image
+            source={{ uri: imageUrl }}
+            style={styles.imageStyle}
+        />                       
+        <View style={styles.textViewStyle}>
             <Text style={styles.mostRecentReviewItalStyle}>
                 {description === null || description === '' ? "No Content" : `"${description}"`}
                 {'\n\t'}- <Text style={styles.mostRecentReviewMedStyle}>
                 {username}</Text>
             </Text>
-            <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                <Rating 
-                    type='star'
-                    startingValue={rating}
-                    imageSize={20}
-                    tintColor={Colors.accentLightGray}
-                    selectedColor={Colors.primaryOrange}
-                    type='custom'
-                    ratingColor={Colors.primaryOrange}
-                    readonly
-                />
-            </View>
+            <Rating 
+                type='star'
+                startingValue={rating}
+                imageSize={20}
+                tintColor={Colors.accentLightGray}
+                selectedColor={Colors.primaryOrange}
+                type='custom'
+                ratingColor={Colors.primaryOrange}
+                readonly
+                style={styles.ratingStyle}
+            />
         </View>
     </View>
     );
 };
 
 const styles = StyleSheet.create({
-    mostRecentImageStyle: {
-        flexGrow: 1,
+    ratingStyle: {
+        marginTop: '21%'
+    },
+    imageStyle: {
+        height: '100%',
         aspectRatio: 1,
-        maxHeight: Dimensions.get('window').height / 8,
-        maxWidth: Dimensions.get('window').width / 3,
-        opacity: .50,
-        resizeMode: 'contain',
+        width: '30%',
+        resizeMode: 'contain'
     },
     mostRecentViewStyle: {
         alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: 'row',
     },
-    mostRecentReviewStyle: {
-        backgroundColor: Colors.accentLightGray,
-        padding: '3%',
-        borderRadius: 10,
-        width: '60%',
-        marginVertical: '20%'
+    itemViewStyle: {
+        paddingVertical: '3%',
+        flexDirection: 'row',
+        marginVertical: '3%',
+        overflow: 'hidden',
+        flex: 1
     },
     mostRecentReviewItalStyle: {
-        color: Colors.accentLightGrayText,
-        fontFamily: 'Avenir_italicize',
-        flexShrink: 1,
+        fontSize: 13,
+        fontFamily: 'Avenir_bold',
+        color: Colors.accentLightGrayText
     },
     mostRecentReviewMedStyle: {
         color: Colors.accentLightGrayText,
         fontFamily: 'Avenir_medium'
     },
-    mostRecentImageViewStyle: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        maxWidth: '80%',
-        overflow: 'hidden',
-        borderRadius: 10
+    textViewStyle: {
+        marginLeft: '10%',
+        marginRight: '3%',
+        width: '40%',
+        flexShrink: 1
     }
 });
 
