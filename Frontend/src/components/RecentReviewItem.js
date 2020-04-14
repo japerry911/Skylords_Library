@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Dimensions } from 'react-native';
 import { Rating } from 'react-native-ratings';
 import { Text } from 'native-base';
 import Colors from '../constants/colors';
@@ -38,25 +38,29 @@ const RecentReviewItem = ({ imageUrl, description, username, rating }) => {
 
 const styles = StyleSheet.create({
     mostRecentImageStyle: {
-        height: 300, 
-        minWidth: 200, 
-        opacity: .50
+        flexGrow: 1,
+        aspectRatio: 1,
+        maxHeight: Dimensions.get('window').height / 8,
+        maxWidth: Dimensions.get('window').width / 3,
+        opacity: .50,
+        resizeMode: 'contain',
     },
     mostRecentViewStyle: {
-        height: 500,
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingBottom: '10%'
+        flexDirection: 'row',
     },
     mostRecentReviewStyle: {
         backgroundColor: Colors.accentLightGray,
-        padding: 10,
-        marginTop: '5%',
-        borderRadius: 10
+        padding: '3%',
+        borderRadius: 10,
+        width: '70%',
+        marginVertical: '5%'
     },
     mostRecentReviewItalStyle: {
         color: Colors.accentLightGrayText,
-        fontFamily: 'Avenir_italicize'
+        fontFamily: 'Avenir_italicize',
+        flexShrink: 1
     },
     mostRecentReviewMedStyle: {
         color: Colors.accentLightGrayText,
@@ -65,7 +69,7 @@ const styles = StyleSheet.create({
     mostRecentImageViewStyle: {
         justifyContent: 'center',
         alignItems: 'center',
-        maxWidth: '90%',
+        maxWidth: '80%',
         overflow: 'hidden',
         borderRadius: 10
     }
