@@ -20,10 +20,12 @@ const BooksScreen = ({ navigation }) => {
 
     useFocusEffect(useCallback(() => {
         getBooks(userState.user.token);
-        setIsLoading(false);
-
         return () => setIsLoading(true);
     }, [isLoading]))
+
+    useEffect(() => {
+        setIsLoading(false);
+    }, [bookState.books])
 
     return (
         <>
@@ -49,7 +51,6 @@ const BooksScreen = ({ navigation }) => {
                 </View>
                 <View style={styles.bodyViewStyle}>
                     <FlatList
-                        style={styles.flatListStyle}
                         data={bookState.books}
                         keyExtractor={book => book.id}
                         renderItem={({ item }) =><BookListItem 
@@ -71,13 +72,9 @@ const BooksScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    flatListStyle: {
-        flex: 1
-    },
     bodyViewStyle: {
         backgroundColor: Colors.accentLightWhite,
         flex: 1, 
-        marginTop: '5%',
         marginBottom: '2%',
         marginHorizontal: '5%',
         paddingHorizontal: '5%',

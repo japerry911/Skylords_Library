@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, useCallback } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList } from 'react-native';
 import Colors from '../constants/colors';
 import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
@@ -7,6 +7,7 @@ import { Context as UserContext } from '../contexts/userContext';
 import { Context as ReviewContext } from '../contexts/reviewContext';
 import AuthedFooter from '../components/AuthedFooter';
 import Spinner from '../components/Spinner';
+import { useFocusEffect } from '@react-navigation/native';
 
 const HomeScreen = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -15,100 +16,102 @@ const HomeScreen = ({ navigation }) => {
     const reviewContext = useContext(ReviewContext);
 
     const { state: userState } = userContext;
-    const { state: reviewState, pullTwoMostRecentReviews } = reviewContext;
+    const { state: reviewState, pullFiveMostRecentReviews } = reviewContext;
 
     const user = userState.user;
 
-    useEffect(() => {
-        pullTwoMostRecentReviews(user.token);
-    }, [reviewState.reviews.length]);
+    useFocusEffect(useCallback(() => {
+        pullFiveMostRecentReviews(user.token);
+
+        return () => setIsLoading(true);
+    }, [isLoading]));
 
     useEffect(() => {
-        if (reviewState.twoMostRecentReviews.length > 0) {
-            setIsLoading(false);
-        }
-    }, [reviewState.twoMostRecentReviews]);
+        setIsLoading(false);
+    }, [reviewState.fiveMostRecentReviews]);
     
     return ( 
         <>
             {isLoading ? <Spinner /> : 
             <View style={styles.screenViewStyle}>
                 <View style={styles.bodyViewStyle}>
-                    <Text style={styles.greetingMessageStyle}>
-                        Hello, {user.username}!
-                    </Text>
-                    <Text style={styles.subtitleGreetingStyle}>
-                        Let's find your new favorite book.
-                    </Text>
-                    <View style={styles.bodyIconViewStyle}>
-                        <TouchableOpacity 
-                            style={styles.iconTOStyle}
-                            onPress={() => navigation.navigate('Books')}
-                        >
-                            <View style={styles.iconViewStyle}>
-                                <SimpleLineIcons
-                                    name='book-open'
-                                    style={styles.iconStyle}
-                                    size={25}
-                                />
-                                <Text style={styles.iconTextStyle}>
-                                    Books
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-                            style={styles.iconTOStyle}
-                            onPress={() => navigation.navigate('Add a Review')}
-                        >
-                            <View style={styles.iconViewStyle}>
-                                <FontAwesome
-                                    name='pencil-square-o'
-                                    style={styles.iconStyle}
-                                    size={28}
-                                />
-                                <Text style={styles.iconTextStyle}>
-                                    Tell Us
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-                            style={styles.iconTOStyle}
-                            onPress={() => navigation.navigate('Favorites')}
-                        >
-                            <View style={styles.iconViewStyle}>
-                                <MaterialCommunityIcons
-                                    name='bookmark-outline'
-                                    style={styles.iconStyle}
-                                    size={27}
-                                />
-                                <Text style={styles.iconTextStyle}>
-                                    Favorites
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-                            style={styles.iconTOStyle}
-                            onPress={() => navigation.navigate('My Profile')}
-                        >
-                            <View style={styles.iconViewStyle}>
-                                <AntDesign 
-                                    name='user'
-                                    style={styles.iconStyle}
-                                    size={28}
-                                />
-                                <Text style={styles.iconTextStyle}>
-                                    My Profile
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
                     <FlatList
                         ListHeaderComponent={
-                            <Text style={styles.mostRecentTitleStyle}>
-                                Recent Reviews
-                            </Text>
+                            <>
+                                <Text style={styles.greetingMessageStyle}>
+                                    Hello, {user.username}!
+                                </Text>
+                                <Text style={styles.subtitleGreetingStyle}>
+                                    Let's find your new favorite book.
+                                </Text>
+                                <View style={styles.bodyIconViewStyle}>
+                                    <TouchableOpacity 
+                                        style={styles.iconTOStyle}
+                                        onPress={() => navigation.navigate('Books')}
+                                    >
+                                        <View style={styles.iconViewStyle}>
+                                            <SimpleLineIcons
+                                                name='book-open'
+                                                style={styles.iconStyle}
+                                                size={25}
+                                            />
+                                            <Text style={styles.iconTextStyle}>
+                                                Books
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity 
+                                        style={styles.iconTOStyle}
+                                        onPress={() => navigation.navigate('Add a Review')}
+                                    >
+                                        <View style={styles.iconViewStyle}>
+                                            <FontAwesome
+                                                name='pencil-square-o'
+                                                style={styles.iconStyle}
+                                                size={28}
+                                            />
+                                            <Text style={styles.iconTextStyle}>
+                                                Tell Us
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity 
+                                        style={styles.iconTOStyle}
+                                        onPress={() => navigation.navigate('Favorites')}
+                                    >
+                                        <View style={styles.iconViewStyle}>
+                                            <MaterialCommunityIcons
+                                                name='bookmark-outline'
+                                                style={styles.iconStyle}
+                                                size={27}
+                                            />
+                                            <Text style={styles.iconTextStyle}>
+                                                Favorites
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity 
+                                        style={styles.iconTOStyle}
+                                        onPress={() => navigation.navigate('My Profile')}
+                                    >
+                                        <View style={styles.iconViewStyle}>
+                                            <AntDesign 
+                                                name='user'
+                                                style={styles.iconStyle}
+                                                size={28}
+                                            />
+                                            <Text style={styles.iconTextStyle}>
+                                                My Profile
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                                <Text style={styles.mostRecentTitleStyle}>
+                                    Recent Reviews
+                                </Text>
+                            </>
                         }
-                        data={reviewState.twoMostRecentReviews}
+                        data={reviewState.fiveMostRecentReviews}
                         keyExtractor={review => review.review.id}
                         renderItem={({ item }) => {
                             return (
@@ -146,7 +149,6 @@ const styles = StyleSheet.create({
     },
     iconViewStyle: {
         backgroundColor: Colors.accentLightGray,
-        paddingHorizontal: 5,
         paddingVertical: 5,
         borderRadius: 10,
         alignItems: 'center',
@@ -165,21 +167,23 @@ const styles = StyleSheet.create({
         marginTop: 20,
         flexDirection: 'row',
         alignItems: 'center',
-        width: '90%' ,
-        justifyContent: 'space-evenly',
+        width: '100%',
+        justifyContent: 'center',
         marginBottom: '3%'
     },
     greetingMessageStyle: {
         marginTop: '10%',
         fontSize: 20,
         fontFamily: 'Avenir_bold',
-        color: Colors.accentLightGrayText
+        color: Colors.accentLightGrayText,
+        textAlign: 'center'
     },
     subtitleGreetingStyle: {
         fontFamily: 'Avenir_next',
         color: Colors.accentLightGrayText,
         fontSize : 16,
-        marginTop: '3%'
+        marginTop: '3%',
+        textAlign: 'center'
     },
     screenViewStyle:  {
         backgroundColor: Colors.accentLightGray,

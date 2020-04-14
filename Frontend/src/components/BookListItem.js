@@ -42,30 +42,33 @@ const styles = StyleSheet.create({
     },
     imageStyle: {
         height: '100%',
-        width: '20%',
-        resizeMode: 'stretch'
+        aspectRatio: 1,
+        width: '30%',
+        resizeMode: 'contain'
     },
     itemViewStyle: {
+        paddingVertical: '3%',
         flexDirection: 'row',
         marginVertical: '3%',
         overflow: 'hidden',
-        flexDirection: 'row',
+        flex: 1
     },
     titleTextStyle: {
         fontSize: 13,
         fontFamily: 'Avenir_bold',
-        color: Colors.accentLightGrayText
+        color: Colors.accentLightGrayText,
     },
     authorTextStyle: {
         fontSize: 13, 
         fontFamily: 'Avenir_medium',
         color: Colors.accentLightGrayText,
-        marginBottom: '3%'
+        marginBottom: '3%',
     },
     textViewStyle: {
         marginLeft: '10%',
         marginRight: '3%',
-        width: '55%'
+        width: '40%',
+        flex: 1
     },
     descriptionTextStyle: {
         fontSize: 13,

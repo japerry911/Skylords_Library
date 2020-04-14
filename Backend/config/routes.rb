@@ -6,5 +6,5 @@ Rails.application.routes.draw do
   resources :favorites, only: [:index, :show, :create, :destroy]
 
   post '/login', to: 'sessions#login'
-  get '/most_recent_two_reviews', to: 'reviews#most_recent_two_reviews'
+  get '/most_recent_five_reviews', to: 'reviews#most_recent_five_reviews'
 end
