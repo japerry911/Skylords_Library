@@ -20,8 +20,8 @@ const userReducer = ((state, action) => {
 });
 
 const signUpUser = dispatch => {
-    return async (username, age, password) => {
-        await railsServer.post('/users', { user: { username, age, password }});
+    return async (username, age, email, phone, password) => {
+        await railsServer.post('/users', { user: { username, age, email, phone, password }});
         dispatch({ type: 'ADD_USER' });
     };
 };

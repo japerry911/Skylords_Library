@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useCallback } from 'react';
+import React, { useEffect, useContext, useState, useCallback, useLayoutEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList } from 'react-native';
 import Colors from '../constants/colors';
 import { SimpleLineIcons, FontAwesome, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
@@ -21,10 +21,12 @@ const HomeScreen = ({ navigation }) => {
     const user = userState.user;
 
     useFocusEffect(useCallback(() => {
-        pullFiveMostRecentReviews(user.token);
+        if (isLoading) {
+            pullFiveMostRecentReviews(user.token);
+        }
 
         return () => setIsLoading(true);
-    }, [isLoading]));
+    }, []));
 
     useEffect(() => {
         setIsLoading(false);
@@ -113,8 +115,7 @@ const HomeScreen = ({ navigation }) => {
                         }
                         data={reviewState.fiveMostRecentReviews}
                         keyExtractor={review => review.review.id}
-                        renderItem={({ item }) => {
-                            return (
+                        renderItem={({ item }) => 
                                 <RecentReviewItem
                                     key={item.review.id}
                                     imageUrl={item.book.image_url}
@@ -122,8 +123,7 @@ const HomeScreen = ({ navigation }) => {
                                     username={item.user.username}
                                     rating={item.review.rating}
                                 />
-                            );
-                        }}
+                        }
                         showsVerticalScrollIndicator={false}
                     />
                 </View>

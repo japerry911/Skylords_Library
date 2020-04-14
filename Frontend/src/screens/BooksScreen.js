@@ -21,7 +21,7 @@ const BooksScreen = ({ navigation }) => {
     useFocusEffect(useCallback(() => {
         getBooks(userState.user.token);
         return () => setIsLoading(true);
-    }, [isLoading]))
+    }, []))
 
     useEffect(() => {
         setIsLoading(false);
