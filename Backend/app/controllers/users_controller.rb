@@ -19,6 +19,13 @@ class UsersController < ApplicationController
         render json: { user: @new_user.as_json(:only => [:id, :username, :age, :phone, :email]) }
     end
 
+    def update
+        @user_to_edit = User.find(params[:id])
+
+        @user_to_edit.update(user_params)
+
+        render status: 200
+
     private
     
         def user_params
