@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useCallback } from 'react';
+import React, { useEffect, useState, useContext, useCallback, useRef } from 'react';
 import { Button, Toast } from 'native-base';
 import { Text, StyleSheet, TouchableOpacity, View, Image, FlatList } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -15,7 +15,11 @@ import { useFocusEffect } from '@react-navigation/native';
 
 const calcAverageRating = reviews => {
     const total = reviews.reduce((total, review) => total + review.rating, 0);
-    return total / reviews.length;
+    if (total === 0) {
+        return 0;
+    } else {
+        return total / reviews.length;
+    }
 };
 
 const ShowBookScreen = ({ route, navigation }) => {
@@ -32,18 +36,22 @@ const ShowBookScreen = ({ route, navigation }) => {
     const { state: bookState, getShowBook, clearShowBook } = bookContext;
     const { state: userState } = userContext;
 
+    const firstUpdate = useRef(true);
+
     useFocusEffect(useCallback(() => {
         getShowBook(userState.user.token, bookId);
 
         return () => {
             clearShowBook();
             setIsLoading(true);
+            firstUpdate.current = true;
         };
     }, []));
 
     useEffect(() => {
-        if (bookState.showBook.reviews !== undefined) {
+        if (bookState.showBook.reviews !== undefined && firstUpdate.current) {
             setAverageRating(calcAverageRating(bookState.showBook.reviews));
+            firstUpdate.current = false;
         }
         setIsLoading(false);
     }, [bookState.showBook]);
