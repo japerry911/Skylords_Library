@@ -1,7 +1,7 @@
 
 # Skylord's Library App
  
-Skylord's Library App is an App that is meant to be a hangout for all book lovers. In this App, users are able to review books, add new books/authors, make a favorite books list, and much more. The App is built with a React Native Frontend and a Ruby on Rails Backend. The App is built with only functional components and utilizes React's hooks instead of using classes. This is Jack's first React Native App, and was inspired by his dog, Skylord, and was also inspired by his love to read. Enjoy! 
+Skylord's Library App is an App that is meant to be a hangout for all book lovers. In this App, users are able to review books, add new books/authors, make a favorite books list, and much more. The App is built with a React Native Frontend and a Ruby on Rails Backend. The App is built with only functional components and utilizes React's hooks instead of using classes. This is Jack's first React Native App, and was inspired by his dog, Skylord, and was also inspired by my love to read. Enjoy! 
 - React Native -> iOS/Android Compatible || For iOS: works on most iOS phones/iPads
 
 ### Required Versions
